@@ -76,12 +76,14 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
           SizedBox(
             height: 2.h,
           ),
-          Text(controller.balanceAccountVND,
-              style: subtitle1.copyWith(
-                fontSize: 18.sp,
-                color: AppColors.softBlack,
-                fontWeight: FontWeights.medium,
-              )),
+          Obx(
+            () => Text(controller.balanceAccountVND,
+                style: subtitle1.copyWith(
+                  fontSize: 18.sp,
+                  color: AppColors.softBlack,
+                  fontWeight: FontWeights.medium,
+                )),
+          ),
           SizedBox(
             height: 3.h,
           ),

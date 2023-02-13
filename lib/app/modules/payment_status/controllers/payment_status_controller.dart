@@ -5,6 +5,8 @@ import 'package:tien_duong/app/modules/profile_page/controllers/profile_page_con
 import 'package:tien_duong/app/routes/app_pages.dart';
 
 class PaymentStatusController extends GetxController {
+  final AuthController _authController = Get.find<AuthController>();
+
   PaymentResult paymentResult = PaymentResult();
 
   @override
@@ -12,7 +14,7 @@ class PaymentStatusController extends GetxController {
     if (Get.arguments != null) {
       paymentResult = Get.arguments['paymentResult'] as PaymentResult;
       if (paymentResult.status) {
-        AuthController.reloadAccount();
+        _authController.reloadAccount();
       }
     }
     super.onInit();
@@ -20,8 +22,7 @@ class PaymentStatusController extends GetxController {
 
   void returnProfilePage() {
     ProfilePageController profileController = Get.find<ProfilePageController>();
-    profileController.account.balance =
-        AuthController.instance.account?.balance;
+    profileController.account?.balance = _authController.account?.balance;
     Get.offAllNamed(Routes.HOME, arguments: {'initialPageIndex': '4'});
   }
 }

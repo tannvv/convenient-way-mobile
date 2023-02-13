@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:tien_duong/app/core/base/base_paging_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
@@ -9,12 +12,11 @@ import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/account_pickup_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 
 class ReceivedPackageController extends BasePagingController<Package>
     with GetSingleTickerProviderStateMixin {
+  final AuthController _authController = Get.find<AuthController>();
+
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
   RxList<String> packageIdsWarning = <String>[].obs;
   Future<void> accountConfirmPackage(String packageId) async {
@@ -22,8 +24,7 @@ class ReceivedPackageController extends BasePagingController<Package>
         msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
         onConfirmTap: () async {
           AccountPickUpModel model = AccountPickUpModel(
-              deliverId: AuthController.instance.account!.id!,
-              packageIds: [packageId]);
+              deliverId: _authController.account!.id!, packageIds: [packageId]);
           _packageRepo.accountConfirmPackage(model).then((response) async {
             packageIdsWarning.value = getPackageIdsNearPackage(
                 dataApis.firstWhere((element) => element.id == packageId),
@@ -36,6 +37,7 @@ class ReceivedPackageController extends BasePagingController<Package>
               MotionToastService.showSuccess('Đã lấy hàng để đi giao');
             }
             onRefresh();
+            _authController.reloadAccount();
           }).catchError((error) {
             Get.back();
             MotionToastService.showError(error.messages[0]);
@@ -44,14 +46,9 @@ class ReceivedPackageController extends BasePagingController<Package>
   }
 
   @override
-  Future<void> onRefresh() {
-    return super.onRefresh();
-  }
-
-  @override
   Future<void> fetchDataApi() async {
     PackageListModel requestModel = PackageListModel(
-        deliverId: AuthController.instance.account!.id,
+        deliverId: _authController.account!.id,
         status: PackageStatus.DELIVER_PICKUP,
         pageSize: pageSize,
         pageIndex: pageIndex);

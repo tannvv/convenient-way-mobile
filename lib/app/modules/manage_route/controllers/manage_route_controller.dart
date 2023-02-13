@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
@@ -9,9 +10,9 @@ import 'package:tien_duong/app/data/repository/goong_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_route_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
-import 'package:get/get.dart';
 
 class ManageRouteController extends BaseController {
+  final AuthController _authController = Get.find<AuthController>();
   RxList<RouteAcc> routes = <RouteAcc>[].obs;
 
   final AccountRep _accountRep = Get.find(tag: (AccountRep).toString());
@@ -30,7 +31,7 @@ class ManageRouteController extends BaseController {
   }
 
   void loadRoutes() {
-    accountId = AuthController.instance.account!.id!;
+    accountId = _authController.account!.id!;
     var future = _accountRep.getRoutes(accountId);
     callDataService<List<RouteAcc>>(
       future,
@@ -101,8 +102,8 @@ class ManageRouteController extends BaseController {
       routes[activeIndex].isActive = true;
       MotionToastService.showSuccess(
           response.message ?? 'Thay đổi lộ trình thành công');
-      AuthController.instance.account?.infoUser?.routes = routes;
-      AuthController.setDataPrefs();
+      _authController.account?.infoUser?.routes = routes;
+      _authController.setDataPrefs();
     }, onError: (exception) {
       if (exception is BaseException) {
         MotionToastService.showError(exception.message);

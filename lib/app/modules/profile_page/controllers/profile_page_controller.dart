@@ -9,19 +9,22 @@ import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
 class ProfilePageController extends BaseController {
-  Account account = AuthController.instance.account!;
+  final AuthController _authController = Get.find<AuthController>();
+  Account? account;
   final photoUrl = ''.obs;
   final PickUpFileController _pickup = Get.find<PickUpFileController>();
 
-  String get accountBalanceVND => account.balance.toVND();
+  String get accountBalanceVND =>
+      _authController.account?.balance.toVND() ?? '-';
   String get initName =>
-      '${account.infoUser!.firstName ?? ''} ${account.infoUser!.lastName ?? ''}';
-  String get initPhone => '+84 ${account.infoUser!.phone!}';
-  String get initGender => account.infoUser!.gender ?? 'OTHER';
-  String get initEmail => account.infoUser!.email ?? '-';
+      '${account?.infoUser?.firstName ?? '-'} ${account?.infoUser?.lastName ?? '-'}';
+  String get initPhone => '+84 ${account?.infoUser!.phone!}';
+  String get initGender => account?.infoUser?.gender ?? 'OTHER';
+  String get initEmail => account?.infoUser?.email ?? '-';
   @override
   void onInit() {
-    photoUrl.value = account.infoUser!.photoUrl!;
+    account = _authController.account;
+    photoUrl.value = account?.infoUser?.photoUrl! ?? '-';
     super.onInit();
   }
 
@@ -33,7 +36,7 @@ class ProfilePageController extends BaseController {
     MaterialDialogService.showConfirmDialog(
       title: 'Đăng xuất',
       msg: 'Bạn có muốn đăng xuất không?',
-      onConfirmTap: () => AuthController.logout(),
+      onConfirmTap: () => _authController.logout(),
     );
   }
 
@@ -41,7 +44,7 @@ class ProfilePageController extends BaseController {
     XFile? image = await _pickup.pickImage();
     if (image != null) {
       photoUrl.value = await _pickup.uploadImageToFirebase(
-              image, 'user/avatar/${account.id}') ??
+              image, 'user/avatar/${account?.id}') ??
           'https://thuvienplus.com/themes/cynoebook/public/images/default-user-image.png';
     }
   }

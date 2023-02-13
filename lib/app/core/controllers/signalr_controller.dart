@@ -24,6 +24,8 @@ class SignalR extends BaseController {
   Rx<HubConnectionState> hubState = HubConnectionState.Disconnected.obs;
   final String _hubUrl = '${BuildConfig.instance.config.baseUrlOrigin}/chat';
 
+  final AuthController _authController = Get.find<AuthController>();
+
   @override
   void onInit() {
     start();
@@ -52,7 +54,7 @@ class SignalR extends BaseController {
   }
 
   Future<void> _openConnection() async {
-    var token = AuthController.instance.token;
+    var token = _authController.token;
 
     final httpConnectionOptions = HttpConnectionOptions(
         logger: _logger,
@@ -109,7 +111,7 @@ class SignalR extends BaseController {
 
         if (connection.state == HubConnectionState.Connected) {
           debugPrint('SignalR: Kết nối thành công');
-          Account? account = AuthController.instance.account;
+          Account? account = _authController.account;
           if (account != null) {
             connection.invoke('RegisterUser', args: [account.id!, 'SHIPPER']);
           }

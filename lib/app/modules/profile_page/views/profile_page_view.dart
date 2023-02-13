@@ -100,12 +100,14 @@ class ProfilePageView extends GetView<ProfilePageController> {
           SizedBox(
             height: 5.h,
           ),
-          Text(
-            controller.accountBalanceVND,
-            style: subtitle1.copyWith(
-              fontSize: 18.sp,
-              color: AppColors.softBlack,
-              fontWeight: FontWeights.medium,
+          Obx(
+            () => Text(
+              controller.accountBalanceVND,
+              style: subtitle1.copyWith(
+                fontSize: 18.sp,
+                color: AppColors.softBlack,
+                fontWeight: FontWeights.medium,
+              ),
             ),
           ),
           SizedBox(

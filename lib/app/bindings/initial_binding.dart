@@ -1,7 +1,7 @@
+import 'package:get/get.dart';
 import 'package:tien_duong/app/bindings/controller_binding.dart';
 import 'package:tien_duong/app/bindings/local_bindings.dart';
 import 'package:tien_duong/app/bindings/repository_bindings.dart';
-import 'package:get/get.dart';
 
 class InitialBinding implements Bindings {
   @override

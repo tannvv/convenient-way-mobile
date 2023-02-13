@@ -12,6 +12,8 @@ import 'package:tien_duong/app/network/exceptions/base_api_exception.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
 class PaymentController extends BaseController {
+  final AuthController _authController = Get.find<AuthController>();
+
   final formKey = GlobalKey<FormState>();
 
   final depositController = TextEditingController();
@@ -37,8 +39,8 @@ class PaymentController extends BaseController {
   final VnPayReq _vnpayRepo = Get.find(tag: (VnPayReq).toString());
 
   Future<void> reload() async {
-    await AuthController.reloadAccount();
-    accountBalance = AuthController.instance.account!.balance!;
+    await _authController.reloadAccount();
+    accountBalance = _authController.account!.balance!;
   }
 
   @override
@@ -113,7 +115,7 @@ class PaymentController extends BaseController {
     } else if (selectedPaymentMethod == PaymentMethod.vnpay) {
       VnpayUrlModel model = VnpayUrlModel(
         amount: depositValue,
-        accountId: AuthController.instance.account!.id!,
+        accountId: _authController.account!.id!,
         // accountId: '0ec0a943-50d2-4f87-b44d-08daf498a55e',
         ip: '192.168.123.123',
       );

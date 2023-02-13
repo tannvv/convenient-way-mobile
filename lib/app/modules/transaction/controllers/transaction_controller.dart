@@ -1,22 +1,19 @@
+import 'package:get/get.dart';
 import 'package:tien_duong/app/core/base/base_paging_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/datetime_utils.dart';
 import 'package:tien_duong/app/data/models/transaction_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/transaction_list_model.dart';
 import 'package:tien_duong/app/data/repository/transaction_req.dart';
-import 'package:get/get.dart';
 
 class TransactionController extends BasePagingController<Transaction> {
+  final AuthController _authController = Get.find<AuthController>();
   final TransactionReq _transactionRepo =
       Get.find(tag: (TransactionReq).toString());
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   Future<void> fetchDataApi() async {
-    String accountId = AuthController.instance.account!.id!;
+    String accountId = _authController.account!.id!;
     TransactionListModel model = TransactionListModel(
         accountId: accountId, pageIndex: pageIndex, pageSize: pageSize);
     Future<List<Transaction>> future = _transactionRepo.getList(model);

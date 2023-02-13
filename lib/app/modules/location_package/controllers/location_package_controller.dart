@@ -1,3 +1,6 @@
+import 'package:flutter_map/flutter_map.dart';
+import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/controllers/map_location_controller.dart';
@@ -10,11 +13,9 @@ import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:get/get.dart';
-import 'package:latlong2/latlong.dart';
 
 class LocationPackageController extends BaseController {
+  final AuthController _authController = Get.find<AuthController>();
   MapController? _mapController;
   late AnimatedMapService _animatedMapService;
   final MapLocationController _mapLocationController =
@@ -41,12 +42,15 @@ class LocationPackageController extends BaseController {
   }
 
   void gotoCurrentLocation() {
-    LatLng currentLocation = _mapLocationController.location!;
-    _animatedMapService.move(currentLocation, AppValues.focusZoomLevel);
+    if (_mapLocationController.location != null) {
+      LatLng currentLocation = _mapLocationController.location!;
+      _animatedMapService.move(currentLocation, AppValues.focusZoomLevel);
+    }
   }
 
   Future<void> fetchPackages() async {
-    String deliverId = AuthController.instance.account!.id!;
+    if (_authController.account == null) return;
+    String deliverId = _authController.account!.id!;
     PackageListModel model = PackageListModel(
       deliverId: deliverId,
       status:
