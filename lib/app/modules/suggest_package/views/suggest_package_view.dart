@@ -16,7 +16,6 @@ import 'package:tien_duong/app/modules/suggest_package/widgets/show_wallet.dart'
 import 'package:tien_duong/app/modules/suggest_package/widgets/suggest_item.dart';
 import 'package:tien_duong/app/modules/suggest_package/widgets/user_avatar.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
-
 import '../controllers/suggest_package_controller.dart';
 
 class SuggestPackageView extends GetView<SuggestPackageController> {
