@@ -47,7 +47,7 @@ class ReceivedView extends GetView<ReceivedPackageController> {
                                   controller.accountConfirmPackage(
                                       controller.dataApis[index].id!);
                                 },
-                                child: const Text('Xác nhận lo được'))
+                                child: const Text('Xác nhận nhận hàng'))
                           ],
                         )
                       ],
