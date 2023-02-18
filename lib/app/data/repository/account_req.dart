@@ -3,6 +3,7 @@ import 'package:tien_duong/app/data/models/notification_model.dart';
 import 'package:tien_duong/app/data/models/route_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_account_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_route_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/is_valid_account_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/login_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/notification_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/send_notification_model.dart';
@@ -22,4 +23,5 @@ abstract class AccountRep {
   Future<SimpleResponseModel> sendNotification(SendNotificationModel model);
   Future<SimpleResponseModel> sendNotificationTracking(
       SendNotificationTrackingModel model);
+  Future<SimpleResponseModel> isValidAccount(IsValidAccountModel model);
 }

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
-import 'package:tien_duong/app/core/services/animated_map_controller.dart';
+import 'package:tien_duong/app/core/services/animated_map_service.dart';
 import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
 import 'package:tien_duong/app/core/utils/motion_toast_service.dart';

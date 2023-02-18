@@ -1,13 +1,10 @@
 import 'package:tien_duong/app/core/values/app_colors.dart';
-import 'package:tien_duong/app/core/values/input_styles.dart';
-import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/core/widgets/hyper_shape.dart';
 import 'package:tien_duong/app/data/models/response_goong_model.dart';
 import 'package:tien_duong/app/modules/create-route/controllers/create_route_controller.dart';
 import 'package:tien_duong/app/modules/create-route/widgets/place_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -91,102 +88,6 @@ class RouteInfo extends GetWidget<CreateRouteController> {
           ],
         ),
       ],
-    );
-  }
-
-  TypeAheadField _homeTextField() {
-    return TypeAheadField<ResponseGoong>(
-      debounceDuration: const Duration(milliseconds: 500),
-      minCharsForSuggestions: 2,
-      textFieldConfiguration: TextFieldConfiguration(
-        controller: controller.homeController,
-        autofocus: true,
-        style: subtitle1.copyWith(
-          color: AppColors.lightBlack,
-        ),
-        decoration: InputStyles.map(
-          hintText: 'Nhập điểm đi chỉ của bạn',
-          labelText: 'Điểm đi',
-        ),
-      ),
-      suggestionsCallback: (pattern) async {
-        if (pattern.isEmpty) {
-          return [];
-        }
-        controller.setFromName = pattern;
-        return await controller.queryLocation(pattern);
-      },
-      itemBuilder: (context, suggestion) {
-        return ListTile(
-          leading: const Icon(Icons.location_pin),
-          minLeadingWidth: 20,
-          title: Text(
-            suggestion.name ?? 'Unknown',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      },
-      onSuggestionSelected: (suggestion) {
-        controller.setFromName = suggestion.name ?? '';
-        LatLng coord =
-            LatLng(suggestion.latitude ?? 0, suggestion.longitude ?? 0);
-        controller.setFromCoord = coord;
-        controller.homeController.text = suggestion.name ?? '';
-      },
-      noItemsFoundBuilder: (context) => Padding(
-          padding: EdgeInsets.all(10.w),
-          child: const Text('Không tìm thấy địa chỉ')),
-      errorBuilder: ((context, error) => Padding(
-          padding: EdgeInsets.all(10.w), child: Text(error.toString()))),
-    );
-  }
-
-  TypeAheadField _destinationTextField() {
-    return TypeAheadField<ResponseGoong>(
-      debounceDuration: const Duration(seconds: 2),
-      minCharsForSuggestions: 4,
-      textFieldConfiguration: TextFieldConfiguration(
-        controller: controller.workController,
-        autofocus: true,
-        style: subtitle1.copyWith(
-          color: AppColors.lightBlack,
-        ),
-        decoration: InputStyles.map(
-          hintText: 'Nhập điểm đến của bạn',
-          labelText: 'Điểm đến',
-        ),
-      ),
-      suggestionsCallback: (pattern) async {
-        if (pattern.isEmpty) {
-          return [];
-        }
-        controller.setToName = pattern;
-        return await controller.queryLocation(pattern);
-      },
-      itemBuilder: (context, suggestion) {
-        return ListTile(
-          leading: const Icon(Icons.location_pin),
-          minLeadingWidth: 20,
-          title: Text(
-            suggestion.name ?? 'Unknown',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      },
-      onSuggestionSelected: (suggestion) {
-        controller.setToName = suggestion.name ?? '';
-        LatLng coord =
-            LatLng(suggestion.latitude ?? 0, suggestion.longitude ?? 0);
-        controller.setToCoord = coord;
-        controller.workController.text = suggestion.name ?? '';
-      },
-      noItemsFoundBuilder: (context) => Padding(
-          padding: EdgeInsets.all(10.w),
-          child: const Text('Không tìm thấy địa chỉ')),
-      errorBuilder: ((context, error) => Padding(
-          padding: EdgeInsets.all(10.w), child: Text(error.toString()))),
     );
   }
 

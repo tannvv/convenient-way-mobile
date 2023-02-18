@@ -70,7 +70,7 @@ class RegisterView extends GetView<RegisterController> {
                       _rePasswordTextField(),
                       _firstNameTextField(),
                       Obx(() => _phoneNumberTextField()),
-                      _verifyOtpButton(),
+                      // _verifyOtpButton(),
                       _registerButton(),
                       Gap(12.h),
                       _loginRow(),
@@ -137,7 +137,7 @@ class RegisterView extends GetView<RegisterController> {
               'Đăng kí',
               style: buttonBold.copyWith(color: AppColors.white),
             ),
-            loadingText: 'Đăng đăng kí...')),
+            loadingText: 'Đang tạo OTP...')),
       ),
     );
   }
@@ -236,7 +236,7 @@ class RegisterView extends GetView<RegisterController> {
                   shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r)))),
               child: Obx(() => HyperButton.childWhite(
-                    status: controller.isLoadingVerify.value,
+                    status: controller.isLoading,
                     loadingText: 'Đang gửi OTP',
                     child: Text(
                       'Xác thực sđt',

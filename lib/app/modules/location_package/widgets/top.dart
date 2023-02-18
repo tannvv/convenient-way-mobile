@@ -65,24 +65,4 @@ class Top extends GetWidget<LocationPackageController> {
       ],
     );
   }
-
-  Row _disable() {
-    return Row(
-      children: [
-        Text(
-          'Không hoạt động',
-          style: subtitle2.copyWith(color: AppColors.description),
-        ),
-        SizedBox(
-          width: 7.w,
-        ),
-        Container(
-          height: 7.h,
-          width: 7.h,
-          decoration: const BoxDecoration(
-              shape: BoxShape.circle, color: AppColors.description),
-        ),
-      ],
-    );
-  }
 }

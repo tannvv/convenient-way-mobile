@@ -1,6 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:tien_duong/app/core/services/local_notification_service.dart';
 
 class FirebaseMessagingService {
@@ -9,19 +8,33 @@ class FirebaseMessagingService {
   static FirebaseMessagingService get instance => _instance;
   FirebaseMessagingService._internal();
 
-  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-
   static Future<String?> getToken() async {
     final fcmToken = await FirebaseMessaging.instance.getToken();
     debugPrint('Token firebase messaging: $fcmToken');
     return fcmToken;
   }
 
+  static Future<void> init() async {
+    debugPrint('FCM token: ${await getToken()}}');
+    FirebaseMessaging.onMessage.listen(firebaseForegroundHandler);
+    FirebaseMessaging.onBackgroundMessage(
+        FirebaseMessagingService.firebaseMessagingBackgroundHandler);
+  }
+
+  @pragma('vm:entry-point')
   static Future<void> firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
     debugPrint(
         'Notification: Background message received, Title: ${message.notification?.title}, Body: ${message.notification?.body}');
+    LocalNotificationService.showCallingNotification(
+        title: 'Cuộc gọi đến', body: 'Tân Nguyễn đang gọi cho bạn');
+    // LocalNotificationService.showNotification(
+    //     title: message.notification?.title, body: message.notification?.body);
+  }
+
+  static Future<void> firebaseForegroundHandler(RemoteMessage message) async {
+    debugPrint(
+        'Notification: Foreground message received, Title: ${message.notification?.title}, Body: ${message.notification?.body}');
     LocalNotificationService.showNotification(
         title: message.notification?.title, body: message.notification?.body);
   }

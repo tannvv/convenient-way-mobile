@@ -1,3 +1,5 @@
+// ignore_for_file: library_prefixes
+
 import 'package:bubble/bubble.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
