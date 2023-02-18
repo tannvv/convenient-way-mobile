@@ -41,11 +41,6 @@ class AuthController extends BaseController {
     return _token;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   bool isTokenValidDateTime(String? token) {
     if (token == null) return false;
     Map<String, dynamic> payload = Jwt.parseJwt(_token.toString());
@@ -75,7 +70,7 @@ class AuthController extends BaseController {
             PreferenceManager prefs =
                 Get.find(tag: (PreferenceManager).toString());
             prefs.setString(PrefsMemory.userJson, jsonEncode(response));
-            BackgroundNotificationService.initializeService();
+            // BackgroundNotificationService.initializeService();
           },
           onError: (exception) {
             if (exception is BaseException) {
@@ -148,7 +143,7 @@ class AuthController extends BaseController {
   }
 
   Future<void> logout() async {
-    BackgroundNotificationService.stopService();
+    // BackgroundNotificationService.stopService();
     await FirebaseMessagingService.unregisterNotification(_account.value!.id!);
     await clearToken();
     Get.offAllNamed(Routes.LOGIN);

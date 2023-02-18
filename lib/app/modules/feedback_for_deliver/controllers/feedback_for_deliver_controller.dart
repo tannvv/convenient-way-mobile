@@ -10,8 +10,6 @@ class FeedbackForDeliverController extends BaseController {
 
   @override
   Future<void> onInit() async {
-    var data = Get.arguments as Map<String, dynamic>;
-
     // if (data.containsKey('customerTripId')) {
     //   customerTripId = data['customerTripId'];
     // }
@@ -49,11 +47,7 @@ class FeedbackForDeliverController extends BaseController {
   }
 
   void submit() async {
-    String content = '';
     if (feedBackEmotion.value.isNotEmpty && feedBackMessage.value.isNotEmpty) {
-      content = '${feedBackEmotion.value}, ${feedBackMessage.value}';
-    } else {
-      content = '${feedBackEmotion.value}${feedBackMessage.value}';
-    }
+    } else {}
   }
 }

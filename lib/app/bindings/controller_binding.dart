@@ -6,10 +6,9 @@ import 'package:tien_duong/app/core/controllers/pickup_file_controller.dart';
 class ControllerBindings implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<MapLocationController>(() => MapLocationController(),
-        fenix: true);
+    Get.put<AuthController>(AuthController(), permanent: true);
+    Get.put<MapLocationController>(MapLocationController(), permanent: true);
     Get.lazyPut<PickUpFileController>(() => PickUpFileController(),
         fenix: true);
-    Get.put<AuthController>(AuthController(), permanent: true);
   }
 }

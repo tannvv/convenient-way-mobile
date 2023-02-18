@@ -4,7 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/controllers/map_location_controller.dart';
-import 'package:tien_duong/app/core/services/animated_map_controller.dart';
+import 'package:tien_duong/app/core/services/animated_map_service.dart';
 import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
 import 'package:tien_duong/app/core/values/app_assets.dart';
 import 'package:tien_duong/app/core/values/app_values.dart';
@@ -16,7 +16,6 @@ import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 
 class LocationPackageController extends BaseController {
   final AuthController _authController = Get.find<AuthController>();
-  MapController? _mapController;
   late AnimatedMapService _animatedMapService;
   final MapLocationController _mapLocationController =
       Get.find<MapLocationController>();
@@ -32,7 +31,6 @@ class LocationPackageController extends BaseController {
   }
 
   void onMapCreated(MapController controller) {
-    _mapController = controller;
     _animatedMapService = AnimatedMapService(controller: controller);
     if (packages.isNotEmpty) {
       gotoCurrentBound();

@@ -1,3 +1,5 @@
+// ignore_for_file: library_prefixes
+
 import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
@@ -15,21 +17,10 @@ class ChatMessageController extends GetxController {
       lastName: 'Nguyen',
       imageUrl:
           'https://blog.readyplayer.me/content/images/2022/10/rainer.jpeg');
-  final _userChat = const Types.User(
-      id: '82091008-a484-4a89-ae75-a22bf8d6f3ad',
-      firstName: 'Tan',
-      lastName: 'Nguyen',
-      imageUrl:
-          'https://blog.readyplayer.me/content/images/2022/10/rainer.jpeg');
   final RxList<Types.Message> messages = RxList<Types.Message>([]);
   int _page = 0;
 
   Types.User get user => _user;
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   void _addMessage(Types.Message message) {
     messages.insert(0, message);

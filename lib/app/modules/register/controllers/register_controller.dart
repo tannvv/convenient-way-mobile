@@ -5,16 +5,19 @@ import 'package:latlong2/latlong.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
 import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/data/constants/role_name.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_account_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/is_valid_account_model.dart';
+import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
+import 'package:tien_duong/app/modules/register/models/args_register_model.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
 class RegisterController extends BaseController {
   final formKey = GlobalKey<FormState>();
-  RxBool isLoadingVerify = false.obs;
 
   final AccountRep _accountRepo = Get.find(tag: (AccountRep).toString());
 
@@ -25,8 +28,6 @@ class RegisterController extends BaseController {
   String _phone = '';
   final String _photoUrl =
       'https://cdn-icons-png.flaticon.com/512/147/147144.png';
-  final String _status = 'ACTIVE';
-  String _address = '';
   final _gender = 'OTHER'.obs;
   String _email = '';
   Rx<bool> isConfirmPhone = false.obs;
@@ -55,10 +56,6 @@ class RegisterController extends BaseController {
     _phone = value;
   }
 
-  set setAddress(String value) {
-    _address = value;
-  }
-
   set setGender(String value) {
     _gender.value = value;
   }
@@ -67,50 +64,20 @@ class RegisterController extends BaseController {
     _email = value;
   }
 
-  Future<void> showMapPickUpHome() async {
-    final data = await Get.toNamed(Routes.PICK_UP_LOCATION);
-    homeLocation.value = LatLng(data.latitude, data.longitude);
-  }
-
-  Future<void> showMapPickUpDes() async {
-    final data = await Get.toNamed(Routes.PICK_UP_LOCATION);
-    destinationLocation.value = LatLng(data.latitude, data.longitude);
-  }
-
   Future<void> registerAccount() async {
-    isLoading = true;
-    if (!isConfirmPhone.value) {
-      MotionToastService.showError('Bạn chưa xác thực sđt');
-      isLoading = false;
-      return;
-    }
-
-    CreateAccountModel createAccountModel = CreateAccountModel(
-        userName: _userName,
-        password: _password,
-        email: _email,
-        firstName: _firstName,
-        lastName: _lastName,
-        phone: _phone,
-        photoUrl: _photoUrl,
-        role: RoleName.user,
-        gender: _gender.value);
-    Future<Account?> future = _accountRepo.create(createAccountModel);
-    await callDataService(future,
-        onStart: () => isLoading = true,
-        onComplete: () => isLoading = false,
-        onSuccess: (data) async {
-          await QuickAlertService.showSuccess('Đăng kí thành công',
-              duration: 3);
-          Get.offAllNamed(Routes.LOGIN);
-        },
-        onError: (error) {
-          if (error is BaseException) {
-            MotionToastService.showError(error.message);
-          } else {
-            MotionToastService.showError('Đăng kí không thành công');
-          }
-        });
+    IsValidAccountModel isValidAccount =
+        IsValidAccountModel(phone: '+84$_phone', userName: _userName);
+    Future<SimpleResponseModel> future =
+        _accountRepo.isValidAccount(isValidAccount);
+    await callDataService<SimpleResponseModel>(future, onSuccess: (data) async {
+      verifyPhone();
+    }, onError: (error) {
+      if (error is BaseException) {
+        ToastService.showError(error.message);
+      } else {
+        ToastService.showError('Thông tin không hợp lệ');
+      }
+    });
   }
 
   Future<void> gotoSignIn() async {
@@ -124,34 +91,44 @@ class RegisterController extends BaseController {
   Future<void> verifyPhone() async {
     debugPrint('Phone number: 0$_phone');
     _phone = '+84$_phone';
-    isLoadingVerify.value = true;
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: _phone,
       timeout: const Duration(seconds: 20),
       verificationCompleted: (PhoneAuthCredential credential) {
         debugPrint('Auth Completed! \nCredential: $credential');
-        isLoadingVerify.value = false;
       },
       verificationFailed: (FirebaseAuthException e) {
-        QuickAlertService.showError('Request OTP failed!');
-        isLoadingVerify.value = false;
+        if (e.message != null) {
+          if (e.message!.contains('block')) {
+            ToastService.showError(
+                'Số điện thoại đã bị tạm khóa do gửi OTP quá nhiều');
+          } else {
+            ToastService.showError('${e.message}');
+          }
+        } else {
+          ToastService.showError('Gửi OTP bị lỗi! \n ${e.message}');
+        }
       },
       codeSent: (String verificationId, int? resendToken) async {
         debugPrint(
             'Đã gửi mã OTP \nResendToken: $resendToken, VerificationId: $verificationId');
-        var result = await Get.toNamed(Routes.VERIFY_OTP,
-            arguments: [verificationId, resendToken, _phone]);
-        isLoadingVerify.value = false;
-        if (result == true) {
-          isConfirmPhone.value = true;
-          MotionToastService.showSuccess('Xác thực thành công!');
-        }
-        // await QuickAlertService.showSuccess('Xác thực thành công!');
+        CreateAccountModel createAccountModel = CreateAccountModel(
+            userName: _userName,
+            password: _password,
+            email: _email,
+            firstName: _firstName,
+            lastName: _lastName,
+            phone: _phone,
+            photoUrl: _photoUrl,
+            role: RoleName.user,
+            gender: _gender.value);
+        ArgsRegisterModel argsRegisterModel = ArgsRegisterModel(
+            createAccountModel: createAccountModel,
+            verificationId: verificationId,
+            resendToken: resendToken);
+        await Get.toNamed(Routes.VERIFY_OTP, arguments: argsRegisterModel);
       },
-      codeAutoRetrievalTimeout: (String verificationId) async {
-        // await QuickAlertService.showError('Timeout to sent OTP!!');
-        isLoadingVerify.value = false;
-      },
+      codeAutoRetrievalTimeout: (String verificationId) async {},
     );
   }
 }

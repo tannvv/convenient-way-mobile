@@ -102,7 +102,9 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
               ),
               ColorButton(
                 'Giao dịch',
-                onPressed: () => {},
+                onPressed: () => {
+                  Get.toNamed(Routes.TRANSACTION),
+                },
                 icon: Icons.summarize_outlined,
               ),
             ],
@@ -161,48 +163,6 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
           )),
     );
   }
-
-  // TweenAnimationBuilder<double> _header() {
-  //   return TweenAnimationBuilder<double>(
-  //     tween: Tween<double>(
-  //       begin: controller.headerState.height,
-  //       end: controller.headerState.height,
-  //     ),
-  //     duration: const Duration(milliseconds: 250),
-  //     builder: (
-  //       BuildContext context,
-  //       double height,
-  //       Widget? child,
-  //     ) {
-  //       return Container(
-  //         padding: EdgeInsets.only(left: 18.w, top: 2.h, right: 18.w),
-  //         height: height,
-  //         child: Column(
-  //           children: [
-  //             _appBar(),
-  //             !controller.headerState.walletUiState
-  //                 ? Column(
-  //                     children: [
-  //                       SizedBox(
-  //                         height: 18.h,
-  //                       ),
-  //                       Obx(
-  //                         () => controller.headerState.isLoadingToShow
-  //                             ? const SizedBox()
-  //                             : _wallet(),
-  //                       ),
-  //                       SizedBox(
-  //                         height: 18.h,
-  //                       ),
-  //                     ],
-  //                   )
-  //                 : Container(),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   Container _header() {
     return Container(
