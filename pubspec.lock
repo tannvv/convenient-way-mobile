@@ -81,6 +81,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  barcode:
+    dependency: "direct main"
+    description:
+      name: barcode
+      sha256: "52570564684bbb0240a9f1fdb6bad12adc5e0540103c1c96d6dd550bd928b1c9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -217,6 +225,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  cupertino_stepper:
+    dependency: "direct main"
+    description:
+      name: cupertino_stepper
+      sha256: "124690b8b23db7b43fc6d547688e42a9f3d73c8f46d0b210568e98a04b5645b2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   currency_text_input_formatter:
     dependency: "direct main"
     description:
@@ -257,14 +273,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
-  el_tooltip:
-    dependency: "direct main"
-    description:
-      name: el_tooltip
-      sha256: "03c25f52317fe385fcd7f3eccc0e4a04bfe686a1c993e0cb1ba8ce4e84614cbb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.8"
   elegant_notification:
     dependency: "direct main"
     description:
@@ -960,6 +968,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.0"
+  just_the_tooltip:
+    dependency: "direct main"
+    description:
+      name: just_the_tooltip
+      sha256: "7a081133d57285bfb41b331f411006d57b433d7b35772e6155745f6a7a09cb82"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.12"
   jwt_decode:
     dependency: "direct main"
     description:
@@ -1352,6 +1368,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  qr:
+    dependency: transitive
+    description:
+      name: qr
+      sha256: "64957a3930367bf97cc211a5af99551d630f2f4625e38af10edd6b19131b64b3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   quickalert:
     dependency: "direct main"
     description:

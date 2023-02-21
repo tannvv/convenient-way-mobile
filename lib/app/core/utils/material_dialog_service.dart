@@ -99,4 +99,13 @@ class MaterialDialogService {
         context: Get.context!,
         actions: actions);
   }
+
+  static Future<void> showEmptyDialog({
+    required Widget child,
+  }) async {
+    await Dialogs.materialDialog(
+      context: Get.context!,
+      customView: child,
+    );
+  }
 }

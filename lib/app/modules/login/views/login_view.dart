@@ -1,3 +1,4 @@
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tien_duong/app/core/values/app_assets.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/button_styles.dart';
@@ -11,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+
+import '../../../core/widgets/custom_overlay.dart';
 
 class LoginView extends GetView<LoginController> {
   const LoginView({super.key});
@@ -115,8 +118,9 @@ class LoginView extends GetView<LoginController> {
             shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.r)))),
         onPressed: () {
-          controller.formKey.currentState!.save();
-          controller.login();
+          Get.context?.loaderOverlay.show(widget: const CustomOverlay());
+          // controller.formKey.currentState!.save();
+          // controller.login();
         },
         child: Obx(() => HyperButton.childWhite(
             status: controller.isLoading,

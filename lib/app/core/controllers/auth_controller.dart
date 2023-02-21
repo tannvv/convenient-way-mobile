@@ -82,7 +82,8 @@ class AuthController extends BaseController {
     }
   }
 
-  Future<bool> login(LoginModel model) async {
+  Future<bool> login(LoginModel model,
+      {Function? onStart, Function? onComplete}) async {
     bool result = false;
     try {
       String? token;
@@ -101,16 +102,17 @@ class AuthController extends BaseController {
         if (exception is BaseException) {
           MotionToastService.showError((exception).message);
         }
-      });
+      }, onStart: onStart, onComplete: onComplete);
 
       if (token != null) {
         _token = token;
         result = true;
-        if (_account.value?.status == "NO_ROUTE") {
-          Get.offAndToNamed(Routes.CREATE_ROUTE);
-        } else {
-          Get.offAndToNamed(Routes.HOME);
-        }
+        Get.offAndToNamed(Routes.HOME);
+        // if (_account.value?.status == "NO_ROUTE") {
+        //   Get.offAndToNamed(Routes.CREATE_ROUTE);
+        // } else {
+        //   Get.offAndToNamed(Routes.HOME);
+        // }
       }
     } catch (e) {
       debugPrint('Unable to connect');

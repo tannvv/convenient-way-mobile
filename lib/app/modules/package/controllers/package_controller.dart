@@ -36,14 +36,6 @@ class PackageController extends BaseController
 
   List<Widget> get screens => _screens;
 
-  final receivedPackages = <Package>[].obs;
-  final deliveredPackages = <Package>[].obs;
-  final deliveryPackages = <Package>[].obs;
-  final failedPackages = <Package>[].obs;
-  final accountCancelPackages = <Package>[].obs;
-  final senderCancelPackages = <Package>[].obs;
-  final successPackages = <Package>[].obs;
-
   PageStorageBucket bucket = PageStorageBucket();
   final indexScreen = 0.obs;
   Widget get currentScreen => _screens[indexScreen.value];

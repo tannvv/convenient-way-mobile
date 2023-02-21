@@ -51,17 +51,21 @@ class PickupMap extends GetWidget<SuggestPackageDetailController> {
                     height: markerSize,
                     width: markerSize,
                     point: controller.coordSender,
-                    builder: (_) => SvgPicture.asset(AppAssets.storeIcon)),
-                Marker(
-                    height: markerSize,
-                    width: markerSize,
-                    point: controller.coordAccount[0],
-                    builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
-                Marker(
-                    height: markerSize,
-                    width: markerSize,
-                    point: controller.coordAccount[1],
-                    builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
+                    builder: (_) => Image.asset(
+                          AppAssets.box,
+                        )),
+                if (controller.coordAccount.isNotEmpty)
+                  Marker(
+                      height: markerSize,
+                      width: markerSize,
+                      point: controller.coordAccount[0],
+                      builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
+                if (controller.coordAccount.length > 1)
+                  Marker(
+                      height: markerSize,
+                      width: markerSize,
+                      point: controller.coordAccount[1],
+                      builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
                 for (int i = 0; i < controller.coordPackage.length; i++)
                   if (controller.selectedPackages
                       .contains(controller.packageIds[i]))

@@ -100,9 +100,11 @@ dependencies:
   flutter_background_service_android: ^3.0.3
   internet_connection_checker: ^1.0.0+1
   expandable: ^5.0.1
-  el_tooltip: ^1.0.8
   elegant_notification: ^1.7.0
   loader_overlay: ^2.1.0
+  cupertino_stepper: ^0.2.1
+  barcode: ^2.2.3
+  just_the_tooltip: ^0.0.12
 
 dev_dependencies:
   flutter_test:

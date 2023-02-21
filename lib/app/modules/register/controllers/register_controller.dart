@@ -91,6 +91,7 @@ class RegisterController extends BaseController {
   Future<void> verifyPhone() async {
     debugPrint('Phone number: 0$_phone');
     _phone = '+84$_phone';
+    isLoading = true;
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: _phone,
       timeout: const Duration(seconds: 20),
@@ -98,6 +99,7 @@ class RegisterController extends BaseController {
         debugPrint('Auth Completed! \nCredential: $credential');
       },
       verificationFailed: (FirebaseAuthException e) {
+        isLoading = false;
         if (e.message != null) {
           if (e.message!.contains('block')) {
             ToastService.showError(
@@ -110,6 +112,7 @@ class RegisterController extends BaseController {
         }
       },
       codeSent: (String verificationId, int? resendToken) async {
+        isLoading = false;
         debugPrint(
             'Đã gửi mã OTP \nResendToken: $resendToken, VerificationId: $verificationId');
         CreateAccountModel createAccountModel = CreateAccountModel(
@@ -128,7 +131,9 @@ class RegisterController extends BaseController {
             resendToken: resendToken);
         await Get.toNamed(Routes.VERIFY_OTP, arguments: argsRegisterModel);
       },
-      codeAutoRetrievalTimeout: (String verificationId) async {},
+      codeAutoRetrievalTimeout: (String verificationId) async {
+        debugPrint('Auto Retrieval Timeout! \nVerificationId: $verificationId');
+      },
     );
   }
 }

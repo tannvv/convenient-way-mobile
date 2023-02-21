@@ -73,20 +73,21 @@ class SuggestPackageDetailController extends BaseController
   void createBounds() {
     if (_authController.account != null) {
       Account account = _authController.account!;
-      RouteAcc activeRoute = account.infoUser!.routes!
-          .where((element) => element.isActive == true)
-          .first;
-      LatLng accountHome =
-          LatLng(activeRoute.fromLatitude!, activeRoute.fromLongitude!);
-      LatLng accountDes =
-          LatLng(activeRoute.toLatitude!, activeRoute.toLongitude!);
-      coordAccount.addAll([accountHome, accountDes]);
-      currentBounds.extend(accountHome);
-      currentBounds.extend(accountDes);
-      debugPrint(
-          'Coordinates ship home: ${accountHome.latitude}, ${accountHome.longitude}');
-      debugPrint(
-          'Coordinates ship des: ${accountDes.latitude}, ${accountDes.longitude}');
+      if (account.infoUser!.routes?.isNotEmpty ?? false) {
+        RouteAcc activeRoute = account.infoUser!.routes!
+            .firstWhere((element) => element.isActive == true);
+        LatLng accountHome =
+            LatLng(activeRoute.fromLatitude!, activeRoute.fromLongitude!);
+        LatLng accountDes =
+            LatLng(activeRoute.toLatitude!, activeRoute.toLongitude!);
+        coordAccount.addAll([accountHome, accountDes]);
+        currentBounds.extend(accountHome);
+        currentBounds.extend(accountDes);
+        debugPrint(
+            'Coordinates ship home: ${accountHome.latitude}, ${accountHome.longitude}');
+        debugPrint(
+            'Coordinates ship des: ${accountDes.latitude}, ${accountDes.longitude}');
+      }
     }
     List<Package> packages = suggest.value!.packages!;
     coordSender =
