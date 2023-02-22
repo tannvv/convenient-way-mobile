@@ -1,9 +1,6 @@
-import 'package:tien_duong/app/core/values/app_colors.dart';
-import 'package:tien_duong/app/core/values/shadow_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SenderCancelPackageItem extends StatelessWidget {
   const SenderCancelPackageItem({Key? key, required this.package})
@@ -11,13 +8,9 @@ class SenderCancelPackageItem extends StatelessWidget {
   final Package package;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
-      decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(6.w),
-          boxShadow: ShadowStyles.primary),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         Row(
           children: [
             const Text('Tên người nhận: '),
@@ -52,7 +45,7 @@ class SenderCancelPackageItem extends StatelessWidget {
             ),
           ],
         ),
-      ]),
+      ],
     );
   }
 }

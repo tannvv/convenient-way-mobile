@@ -103,6 +103,9 @@ dependencies:
   el_tooltip: ^1.0.8
   elegant_notification: ^1.7.0
   loader_overlay: ^2.1.0
+  qrscan: ^0.3.3
+  qr_flutter: ^4.0.0
+  flutter_barcode_scanner: ^2.0.0
 
 dev_dependencies:
   flutter_test:

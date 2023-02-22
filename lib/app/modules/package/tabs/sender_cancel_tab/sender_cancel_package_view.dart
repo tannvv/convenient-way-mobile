@@ -1,3 +1,5 @@
+import 'package:tien_duong/app/core/values/app_colors.dart';
+import 'package:tien_duong/app/core/values/shadow_styles.dart';
 import 'package:tien_duong/app/core/widgets/custom_footer_smart_refresh.dart';
 import 'package:tien_duong/app/modules/package/tabs/sender_cancel_tab/sender_cancel_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/sender_cancel_tab/sender_cancel_package_item.dart';
@@ -22,13 +24,19 @@ class SenderCancelView extends GetView<SenderCancelPackageController> {
               footer: CustomFooterSmartRefresh.defaultCustom(),
               child: ListView.separated(
                   itemBuilder: (_, index) {
-                    return Column(
+                    return Container(
+                        padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
+                    decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(6.w),
+                    boxShadow: ShadowStyles.primary),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SenderCancelPackageItem(
                             package: controller.dataApis[index]),
                       ],
-                    );
+                    ));
                   },
                   separatorBuilder: (_, index) => Gap(12.h),
                   itemCount: controller.dataApis.length),

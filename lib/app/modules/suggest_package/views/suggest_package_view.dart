@@ -12,6 +12,7 @@ import 'package:tien_duong/app/core/values/shadow_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/core/widgets/custom_footer_smart_refresh.dart';
+import 'package:tien_duong/app/modules/home/views/home_view.dart';
 import 'package:tien_duong/app/modules/suggest_package/widgets/show_wallet.dart';
 import 'package:tien_duong/app/modules/suggest_package/widgets/suggest_item.dart';
 import 'package:tien_duong/app/modules/suggest_package/widgets/user_avatar.dart';
@@ -118,7 +119,7 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
       children: [
         const Expanded(
           child: UserAvatar(),
-        ),
+          ),
         ShowWallet(
           onPressed: () {
             controller.toggleHeader();

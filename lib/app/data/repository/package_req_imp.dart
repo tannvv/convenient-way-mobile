@@ -4,6 +4,7 @@ import 'package:tien_duong/app/data/models/suggest_package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/account_pickup_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/cancel_package_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/package_cancel_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_cancel_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/suggest_package_request_model.dart';
@@ -47,15 +48,15 @@ class PackageReqImp extends BaseRepository implements PackageReq {
   }
 
   @override
-  Future<List<Package>> getListCancel(PackageCancelListModel model) {
+  Future<List<PackageCancelListModel>> getListCancel(CancelModel model) {
     String endpoint =
         '${DioProvider.baseUrl}/transactionpackages/deliver-cancel';
     Map<String, dynamic> queryParams = model.toJson();
     var dioCall = dioClient.get(endpoint, queryParameters: queryParams);
     try {
       return callApi(dioCall).then((response) {
-        List<Package> data = (response.data['data'] as List)
-            .map((e) => Package.fromJson(e))
+        List<PackageCancelListModel> data = (response.data['data'] as List)
+            .map((e) => PackageCancelListModel.fromJson(e))
             .toList();
         return data;
       });
