@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:tien_duong/app/modules/create_package_page/views/create_package_page_view.dart';
 
 import '../modules/cancel_package/bindings/cancel_package_binding.dart';
 import '../modules/cancel_package/views/cancel_package_view.dart';

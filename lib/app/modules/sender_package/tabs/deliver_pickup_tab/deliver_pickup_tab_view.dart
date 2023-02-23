@@ -33,6 +33,10 @@ class DeliverPickupTabView extends GetView<DeliverPickupTabController> {
                             controller
                                 .showMapTracking(controller.dataApis[index]);
                           },
+                          onShowDeliverInfo: () {
+                            controller.showInfoDeliver(
+                                controller.dataApis[index].deliver!);
+                          },
                         ),
                       ],
                     );

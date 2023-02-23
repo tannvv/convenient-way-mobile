@@ -30,6 +30,7 @@ class ReceivedInfo extends GetWidget<CreatePackagePageController> {
                 ),
                 onChanged: (value) => controller.receivedName = value,
                 validator: validatorNotNull,
+                initialValue: controller.receivedName,
                 decoration: InputStyles.map(
                   labelText: 'Tên người nhận',
                 )),
@@ -39,6 +40,7 @@ class ReceivedInfo extends GetWidget<CreatePackagePageController> {
                   color: AppColors.lightBlack,
                 ),
                 validator: validatorNotNull,
+                initialValue: controller.receivedPhone,
                 onChanged: (value) => controller.receivedPhone = value,
                 decoration: InputStyles.map(
                   labelText: 'Số điện thoại',

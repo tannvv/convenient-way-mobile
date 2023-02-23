@@ -3,8 +3,12 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:logger/logger.dart';
 import 'package:tien_duong/app/config/build_config.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
+import 'package:tien_duong/app/core/widgets/custom_overlay.dart';
+import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 
 import '/app/network/exceptions/api_exception.dart';
 import '/app/network/exceptions/app_exception.dart';
@@ -26,6 +30,29 @@ abstract class BaseController extends GetxController {
   showLoading() => _isLoading.value = true;
 
   hideLoading() => _isLoading.value = false;
+
+  void showOverlay({content = "Đang tải..."}) {
+    if (Get.context != null) {
+      Get.context!.loaderOverlay.show(
+          widget: CustomOverlay(
+        content: content,
+      ));
+    }
+  }
+
+  void hideOverlay() {
+    if (Get.context != null) {
+      Get.context!.loaderOverlay.hide();
+    }
+  }
+
+  void showError(Exception ex) {
+    if (ex is BaseException) {
+      ToastService.showError(ex.message);
+    } else {
+      ToastService.showError('Có lỗi xảy ra');
+    }
+  }
 
   dynamic callDataService<T>(
     Future<T> future, {

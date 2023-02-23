@@ -38,6 +38,13 @@ class CreatePackagePageController extends BaseController {
   String note = '';
   RxList<CreateProductModel> products = <CreateProductModel>[].obs;
 
+  @override
+  void onInit() {
+    receivedName = _authController.account?.infoUser?.firstName ?? '';
+    receivedPhone = _authController.account?.infoUser?.phone ?? '';
+    super.onInit();
+  }
+
   Future<List<ResponseGoong>> queryLocation(String query) async {
     return _goongRepo.getList(query);
   }

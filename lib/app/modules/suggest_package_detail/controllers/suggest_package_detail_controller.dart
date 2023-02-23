@@ -4,6 +4,7 @@ import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/services/animated_map_service.dart';
@@ -11,6 +12,7 @@ import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
 import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
 import 'package:tien_duong/app/core/values/app_values.dart';
+import 'package:tien_duong/app/core/widgets/custom_overlay.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/models/route_model.dart';
@@ -139,20 +141,20 @@ class SuggestPackageDetailController extends BaseController
               deliverId: accountId, packageIds: selectedPackages);
           Future<SimpleResponseModel> future =
               _packageRepo.pickUpPackage(model);
-          callDataService(
-            future,
-            onSuccess: (response) async {
-              Get.back(); // close dialog
-              await QuickAlertService.showSuccess('Chọn gói hàng thành công',
-                  duration: 3);
-              Get.back(result: true);
-            },
-            onError: (error) {
-              if (error is BaseException) {
-                QuickAlertService.showError(error.message);
-              }
-            },
-          );
+          callDataService(future,
+              onSuccess: (response) async {
+                Get.back(); // close dialog
+                await QuickAlertService.showSuccess('Chọn gói hàng thành công',
+                    duration: 3);
+                Get.back(result: true);
+              },
+              onError: (error) {
+                if (error is BaseException) {
+                  QuickAlertService.showError(error.message);
+                }
+              },
+              onStart: () => showOverlay(),
+              onComplete: () => hideOverlay());
         });
   }
 

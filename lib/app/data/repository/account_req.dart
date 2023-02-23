@@ -1,4 +1,5 @@
 import 'package:tien_duong/app/data/models/account_model.dart';
+import 'package:tien_duong/app/data/models/account_rating_model.dart';
 import 'package:tien_duong/app/data/models/notification_model.dart';
 import 'package:tien_duong/app/data/models/route_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_account_model.dart';
@@ -24,4 +25,5 @@ abstract class AccountRep {
   Future<SimpleResponseModel> sendNotificationTracking(
       SendNotificationTrackingModel model);
   Future<SimpleResponseModel> isValidAccount(IsValidAccountModel model);
+  Future<AccountRating> getRating(String accountId);
 }

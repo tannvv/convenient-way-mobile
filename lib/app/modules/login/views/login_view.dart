@@ -118,9 +118,8 @@ class LoginView extends GetView<LoginController> {
             shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.r)))),
         onPressed: () {
-          Get.context?.loaderOverlay.show(widget: const CustomOverlay());
-          // controller.formKey.currentState!.save();
-          // controller.login();
+          controller.formKey.currentState!.save();
+          controller.login();
         },
         child: Obx(() => HyperButton.childWhite(
             status: controller.isLoading,

@@ -15,7 +15,7 @@ class DeliverCancelTabView extends GetView<DeliverCancelTabController> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
         child: Obx(() => SmartRefresher(
               controller: controller.refreshController,
               onRefresh: () => controller.onRefresh(),
@@ -27,11 +27,14 @@ class DeliverCancelTabView extends GetView<DeliverCancelTabController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         DeliverCancelTabItem(
-                            package: controller.dataApis[index]),
+                          package: controller.dataApis[index],
+                          onShowDeliverInfo: () => controller.showInfoDeliver(
+                              controller.dataApis[index].deliver!),
+                        ),
                       ],
                     );
                   },
-                  separatorBuilder: (_, index) => Gap(12.h),
+                  separatorBuilder: (_, index) => Gap(16.h),
                   itemCount: controller.dataApis.length),
             )));
   }

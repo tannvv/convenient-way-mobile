@@ -1,3 +1,4 @@
+import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/models/product_model.dart';
 
 class PackageCancel {
@@ -23,6 +24,7 @@ class PackageCancel {
   String? modifiedAt;
   String? senderId;
   String? deliverId;
+  Account? deliver;
   List<Product>? products;
 
   PackageCancel(
@@ -48,6 +50,7 @@ class PackageCancel {
       this.modifiedAt,
       this.senderId,
       this.deliverId,
+      this.deliver,
       this.products});
 
   PackageCancel.fromJson(Map<String, dynamic> json) {
@@ -73,6 +76,8 @@ class PackageCancel {
     modifiedAt = json['modifiedAt'];
     senderId = json['senderId'];
     deliverId = json['deliverId'];
+    deliver =
+        json['deliver'] != null ? Account.fromJson(json['deliver']) : null;
     if (json['products'] != null) {
       products = <Product>[];
       json['products'].forEach((v) {
@@ -105,6 +110,9 @@ class PackageCancel {
     data['modifiedAt'] = modifiedAt;
     data['senderId'] = senderId;
     data['deliverId'] = deliverId;
+    if (deliver != null) {
+      data['deliver'] = deliver?.toJson();
+    }
     if (products != null) {
       data['products'] = products?.map((v) => v.toJson()).toList();
     }

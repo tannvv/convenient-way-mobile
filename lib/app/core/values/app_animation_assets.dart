@@ -41,4 +41,6 @@ abstract class AppAnimationAssets {
   static const String register = 'assets/lottiefiles/register.json';
   static const String directionMap = 'assets/lottiefiles/direction-map.json';
   static const String inputMap = 'assets/lottiefiles/input-map.json';
+
+  static const String createPackage = 'assets/lottiefiles/create-package.json';
 }

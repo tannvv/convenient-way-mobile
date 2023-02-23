@@ -105,6 +105,7 @@ dependencies:
   cupertino_stepper: ^0.2.1
   barcode: ^2.2.3
   just_the_tooltip: ^0.0.12
+  enhance_stepper: ^0.1.1
 
 dev_dependencies:
   flutter_test:
