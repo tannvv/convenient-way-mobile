@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field
 
-import 'package:tien_duong/app/core/controllers/map_location_controller.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:tien_duong/app/modules/location_package/controllers/location_package_controller.dart';
 import 'package:tien_duong/app/modules/location_package/views/location_package_view.dart';
 import 'package:tien_duong/app/modules/message_page/controllers/message_page_controller.dart';
@@ -12,8 +13,6 @@ import 'package:tien_duong/app/modules/profile_page/controllers/profile_page_con
 import 'package:tien_duong/app/modules/profile_page/views/profile_page_view.dart';
 import 'package:tien_duong/app/modules/suggest_package/controllers/suggest_package_controller.dart';
 import 'package:tien_duong/app/modules/suggest_package/views/suggest_package_view.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   late MessagePageController _messageController;
@@ -22,7 +21,6 @@ class HomeController extends GetxController {
   late SuggestPackageController _suggestPackageController;
   late ProfilePageController _profileController;
   late LocationPackageController _locationPackageController;
-  late MapLocationController _mapLocationController;
 
   final _selectedIndex = Get.arguments != null
       ? int.parse(Get.arguments['initialPageIndex']).obs
@@ -69,8 +67,5 @@ class HomeController extends GetxController {
     _packageController = Get.find<PackageController>();
     Get.put(LocationPackageController());
     _locationPackageController = Get.find<LocationPackageController>();
-    _mapLocationController = Get.find<MapLocationController>();
   }
-
-  void demoBui() {}
 }

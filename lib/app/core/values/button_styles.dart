@@ -20,8 +20,8 @@ abstract class ButtonStyles {
 
   static ButtonStyle primaryBlue() {
     return ElevatedButton.styleFrom(
-      primary: AppColors.secondary600,
-      shadowColor: Color.fromARGB(255, 84, 166, 253),
+      backgroundColor: AppColors.secondary600,
+      shadowColor: const Color.fromARGB(255, 84, 166, 253),
       padding: EdgeInsets.symmetric(
         horizontal: 16.w,
         vertical: 16.h,
@@ -35,8 +35,8 @@ abstract class ButtonStyles {
 
   static ButtonStyle primaryBlueMedium() {
     return ElevatedButton.styleFrom(
-      primary: AppColors.secondary600,
-      shadowColor: Color.fromARGB(255, 84, 166, 253),
+      backgroundColor: AppColors.secondary600,
+      shadowColor: const Color.fromARGB(255, 84, 166, 253),
       padding: EdgeInsets.symmetric(
         horizontal: 16.w,
         vertical: 12.h,
@@ -50,7 +50,7 @@ abstract class ButtonStyles {
 
   static ButtonStyle primaryBlueSmall() {
     return ElevatedButton.styleFrom(
-      primary: Colors.blue[500],
+      backgroundColor: Colors.blue[500],
       shadowColor: Colors.blue[200],
       padding: EdgeInsets.symmetric(
         horizontal: 16.w,
@@ -143,7 +143,7 @@ abstract class ButtonStyles {
         horizontal: 10.w,
         vertical: 14.h,
       ),
-      primary: AppColors.primary300.withOpacity(0.05),
+      backgroundColor: AppColors.primary300.withOpacity(0.05),
       shape: RoundedRectangleBorder(
         side: const BorderSide(
           color: AppColors.primary400,

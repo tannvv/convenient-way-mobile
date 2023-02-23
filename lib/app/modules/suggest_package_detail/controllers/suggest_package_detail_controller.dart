@@ -1,6 +1,12 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
-import 'package:tien_duong/app/core/services/animated_map_controller.dart';
+import 'package:tien_duong/app/core/services/animated_map_service.dart';
 import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
 import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
@@ -13,15 +19,10 @@ import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/account_pickup_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:latlong2/latlong.dart';
 
 class SuggestPackageDetailController extends BaseController
     with GetTickerProviderStateMixin {
+  final AuthController _authController = Get.find<AuthController>();
   final suggestPackage = Get.arguments as SuggestPackage;
   final suggest = Rx<SuggestPackage?>(null);
   LatLngBounds currentBounds = LatLngBounds();
@@ -70,8 +71,8 @@ class SuggestPackageDetailController extends BaseController
   }
 
   void createBounds() {
-    if (AuthController.instance.account != null) {
-      Account account = AuthController.instance.account!;
+    if (_authController.account != null) {
+      Account account = _authController.account!;
       RouteAcc activeRoute = account.infoUser!.routes!
           .where((element) => element.isActive == true)
           .first;
@@ -132,7 +133,7 @@ class SuggestPackageDetailController extends BaseController
     await MaterialDialogService.showConfirmDialog(
         msg: 'Bạn xác nhận chọn những đơn hàng này?',
         onConfirmTap: () {
-          String accountId = AuthController.instance.account!.id!;
+          String accountId = _authController.account!.id!;
           AccountPickUpModel model = AccountPickUpModel(
               deliverId: accountId, packageIds: selectedPackages);
           Future<SimpleResponseModel> future =

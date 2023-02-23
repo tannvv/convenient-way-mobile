@@ -12,11 +12,11 @@ import 'package:tien_duong/app/core/values/shadow_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/core/widgets/custom_footer_smart_refresh.dart';
+import 'package:tien_duong/app/modules/home/views/home_view.dart';
 import 'package:tien_duong/app/modules/suggest_package/widgets/show_wallet.dart';
 import 'package:tien_duong/app/modules/suggest_package/widgets/suggest_item.dart';
 import 'package:tien_duong/app/modules/suggest_package/widgets/user_avatar.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
-
 import '../controllers/suggest_package_controller.dart';
 
 class SuggestPackageView extends GetView<SuggestPackageController> {
@@ -76,12 +76,14 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
           SizedBox(
             height: 2.h,
           ),
-          Text(controller.balanceAccountVND,
-              style: subtitle1.copyWith(
-                fontSize: 18.sp,
-                color: AppColors.softBlack,
-                fontWeight: FontWeights.medium,
-              )),
+          Obx(
+            () => Text(controller.balanceAccountVND,
+                style: subtitle1.copyWith(
+                  fontSize: 18.sp,
+                  color: AppColors.softBlack,
+                  fontWeight: FontWeights.medium,
+                )),
+          ),
           SizedBox(
             height: 3.h,
           ),
@@ -100,7 +102,9 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
               ),
               ColorButton(
                 'Giao dịch',
-                onPressed: () => {},
+                onPressed: () => {
+                  Get.toNamed(Routes.TRANSACTION),
+                },
                 icon: Icons.summarize_outlined,
               ),
             ],
@@ -115,7 +119,7 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
       children: [
         const Expanded(
           child: UserAvatar(),
-        ),
+          ),
         ShowWallet(
           onPressed: () {
             controller.toggleHeader();
@@ -159,48 +163,6 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
           )),
     );
   }
-
-  // TweenAnimationBuilder<double> _header() {
-  //   return TweenAnimationBuilder<double>(
-  //     tween: Tween<double>(
-  //       begin: controller.headerState.height,
-  //       end: controller.headerState.height,
-  //     ),
-  //     duration: const Duration(milliseconds: 250),
-  //     builder: (
-  //       BuildContext context,
-  //       double height,
-  //       Widget? child,
-  //     ) {
-  //       return Container(
-  //         padding: EdgeInsets.only(left: 18.w, top: 2.h, right: 18.w),
-  //         height: height,
-  //         child: Column(
-  //           children: [
-  //             _appBar(),
-  //             !controller.headerState.walletUiState
-  //                 ? Column(
-  //                     children: [
-  //                       SizedBox(
-  //                         height: 18.h,
-  //                       ),
-  //                       Obx(
-  //                         () => controller.headerState.isLoadingToShow
-  //                             ? const SizedBox()
-  //                             : _wallet(),
-  //                       ),
-  //                       SizedBox(
-  //                         height: 18.h,
-  //                       ),
-  //                     ],
-  //                   )
-  //                 : Container(),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   Container _header() {
     return Container(

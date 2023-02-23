@@ -10,13 +10,16 @@ import 'package:tien_duong/app/modules/suggest_package/model/header_state.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
 class SuggestPackageController extends BasePagingController<SuggestPackage> {
+  final AuthController _authController = Get.find<AuthController>();
   final HeaderState headerState = HeaderState();
-  final Account? _account = AuthController.instance.account;
+  Account? _account;
 
   Account? get account => _account;
-  String get balanceAccountVND => account!.balance.toVND();
+  String get balanceAccountVND =>
+      _authController.account?.balance.toVND() ?? '-';
   @override
   void onInit() {
+    _account = _authController.account;
     super.onInit();
   }
 
@@ -36,7 +39,7 @@ class SuggestPackageController extends BasePagingController<SuggestPackage> {
 
   @override
   Future<void> fetchDataApi() async {
-    String? accountId = AuthController.getKeyToken('id');
+    String? accountId = _authController.account?.id;
     if (accountId != null) {
       SuggestPackageRequestModel model = SuggestPackageRequestModel(
         deliverId: accountId,

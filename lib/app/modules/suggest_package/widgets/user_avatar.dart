@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:tien_duong/app/core/values/app_assets.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/font_weight.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/modules/suggest_package/controllers/suggest_package_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 
 class UserAvatar extends GetView<SuggestPackageController> {
   const UserAvatar({
@@ -52,7 +52,7 @@ class UserAvatar extends GetView<SuggestPackageController> {
               style: body2.copyWith(color: Colors.white),
             ),
             Text(
-              '${fname} ${lname}',
+              '$fname $lname',
               style: subtitle1.copyWith(
                 fontWeight: FontWeights.medium,
                 color: AppColors.white,

@@ -7,6 +7,7 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/services/background_service_notification.dart';
+import 'package:tien_duong/app/core/services/firebase_messaging_service.dart';
 import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
 import 'package:tien_duong/app/data/constants/prefs_memory.dart';
 import 'package:tien_duong/app/data/local/preference/preference_manager.dart';
@@ -18,21 +19,20 @@ import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
 class AuthController extends BaseController {
-  AuthController();
-  static final AuthController _instance = AuthController._internal();
-  RxBool isReload = false.obs;
-  static AuthController get instance => _instance;
-  AuthController._internal();
+  final RxBool _isReload = false.obs;
 
   final AccountRep _accountRepo = Get.find(tag: (AccountRep).toString());
+  final PreferenceManager prefs = Get.find(tag: (PreferenceManager).toString());
 
   String? _token;
-  Account? _account;
+  final Rx<Account?> _account = Rx<Account?>(null);
 
-  Account? get account => _account;
+  Account? get account => _account.value;
   set setAccount(Account value) {
-    _account = value;
+    _account.value = value;
   }
+
+  bool get isReload => _isReload.value;
 
   String? get token {
     if (!isTokenValidDateTime(_token)) {
@@ -51,51 +51,52 @@ class AuthController extends BaseController {
     return true;
   }
 
-  static String? getKeyToken(String key) {
+  Future<String?> getKeyToken(String key) async {
     String? result;
-    String? token = AuthController._instance._token;
-    if (token != null) {
+    String token = await prefs.getString(PrefsMemory.token);
+    if (token.isNotEmpty) {
       Map<String, dynamic> payload = Jwt.parseJwt(token.toString());
       result = payload[key];
     }
     return result;
   }
 
-  static Future<void> reloadAccount() async {
-    if (_instance._account != null) {
-      var accountService =
-          _instance._accountRepo.getAccountId(_instance._account!.id!);
-      await _instance.callDataService<Account?>(accountService,
+  Future<void> reloadAccount() async {
+    if (_account.value != null) {
+      var accountService = _accountRepo.getAccountId(_account.value!.id!);
+      await callDataService<Account?>(accountService,
           onSuccess: (Account? response) async {
-            instance._account = response;
+            _account.value = response;
             PreferenceManager prefs =
                 Get.find(tag: (PreferenceManager).toString());
             prefs.setString(PrefsMemory.userJson, jsonEncode(response));
-            BackgroundNotificationService.initializeService();
+            // BackgroundNotificationService.initializeService();
           },
           onError: (exception) {
             if (exception is BaseException) {
               MotionToastService.showError((exception).message);
             }
           },
-          onStart: () => instance.isReload.value = true,
-          onComplete: () => instance.isReload.value = false);
+          onStart: () => _isReload.value = true,
+          onComplete: () => _isReload.value = false);
     }
   }
 
-  static Future<bool> login(LoginModel model) async {
+  Future<bool> login(LoginModel model) async {
     bool result = false;
     try {
       String? token;
-      var loginService = _instance._accountRepo.login(model);
-      await _instance.callDataService(loginService,
+      var loginService = _accountRepo.login(model);
+      await callDataService(loginService,
           onSuccess: (AuthorizeResponseModel response) async {
         token = response.token;
-        instance._account = response.account;
+        _account.value = response.account;
         PreferenceManager prefs = Get.find(tag: (PreferenceManager).toString());
         prefs.setString(PrefsMemory.token, token!);
         prefs.setString(PrefsMemory.userJson, jsonEncode(response.account));
-        BackgroundNotificationService.initializeService();
+        await BackgroundNotificationService.initializeService();
+        await FirebaseMessagingService.registerNotification(
+            _account.value!.id!);
       }, onError: (exception) {
         if (exception is BaseException) {
           MotionToastService.showError((exception).message);
@@ -103,9 +104,9 @@ class AuthController extends BaseController {
       });
 
       if (token != null) {
-        _instance._token = token;
+        _token = token;
         result = true;
-        if (_instance._account?.status == "NO_ROUTE") {
+        if (_account.value?.status == "NO_ROUTE") {
           Get.offAndToNamed(Routes.CREATE_ROUTE);
         } else {
           Get.offAndToNamed(Routes.HOME);
@@ -117,35 +118,40 @@ class AuthController extends BaseController {
     return result;
   }
 
-  static void setDataPrefs() {
+  void setDataPrefs() {
     PreferenceManager prefs = Get.find(tag: (PreferenceManager).toString());
-    prefs.setString(PrefsMemory.token, _instance.token!);
-    prefs.setString(PrefsMemory.userJson, jsonEncode(_instance.account));
+    if (token != null) {
+      prefs.setString(PrefsMemory.token, _token!);
+    }
+    if (account != null) {
+      prefs.setString(PrefsMemory.userJson, jsonEncode(_account));
+    }
   }
 
-  static Future<Account?> isLoginBefore() async {
+  Future<Account?> isLoginBefore() async {
     PreferenceManager prefs = Get.find(tag: (PreferenceManager).toString());
     String? token = await prefs.getString(PrefsMemory.token);
     if (token.isNotEmpty) {
-      _instance._token = token;
+      _token = token;
       String? userJson = await prefs.getString(PrefsMemory.userJson);
       if (userJson.isNotEmpty) {
-        _instance._account = Account.fromJson(jsonDecode(userJson));
-        return _instance._account;
+        _account.value = Account.fromJson(jsonDecode(userJson));
+        return _account.value;
       }
     }
     return null;
   }
 
-  static Future<void> logout() async {
-    BackgroundNotificationService.stopService();
-    await AuthController.clearToken();
+  Future<void> logout() async {
+    // BackgroundNotificationService.stopService();
+    await FirebaseMessagingService.unregisterNotification(_account.value!.id!);
+    await clearToken();
     Get.offAllNamed(Routes.LOGIN);
   }
 
-  static Future<void> clearToken() async {
-    _instance._token = null;
-    _instance._account = null;
+  Future<void> clearToken() async {
+    _token = null;
+    _account.value = null;
     await SharedPreferences.getInstance().then((prefs) {
       prefs.remove(PrefsMemory.token);
       prefs.remove(PrefsMemory.userJson);

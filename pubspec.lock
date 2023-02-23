@@ -61,10 +61,10 @@ packages:
     dependency: transitive
     description:
       name: args
-      sha256: "139d809800a412ebb26a3892da228b2d0ba36f0ef5d9a82166e5e52ec8d61611"
+      sha256: "4cab82a83ffef80b262ddedf47a0a8e56ee6fbf7fe21e6e768b02792034dd440"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.4.0"
   async:
     dependency: transitive
     description:
@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  back_button_interceptor:
+    dependency: transitive
+    description:
+      name: back_button_interceptor
+      sha256: e47660f2178a4392eb72001f9594d3fdcb5efde93e59d2819d61fda499e781c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -249,6 +257,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  el_tooltip:
+    dependency: "direct main"
+    description:
+      name: el_tooltip
+      sha256: "03c25f52317fe385fcd7f3eccc0e4a04bfe686a1c993e0cb1ba8ce4e84614cbb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
+  elegant_notification:
+    dependency: "direct main"
+    description:
+      name: elegant_notification
+      sha256: "076f6bead597a1ee806b5b762af4d62e333a65ba7ed14a0a497dd71ca299c02a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.7.0"
   equatable:
     dependency: transitive
     description:
@@ -438,6 +462,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  flutter_barcode_scanner:
+    dependency: "direct main"
+    description:
+      name: flutter_barcode_scanner
+      sha256: a4ba37daf9933f451a5e812c753ddd045d6354e4a3280342d895b07fecaab3fa
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   flutter_blurhash:
     dependency: transitive
     description:
@@ -724,10 +756,10 @@ packages:
     dependency: "direct main"
     description:
       name: font_awesome_flutter
-      sha256: "875dbb9ec1ad30d68102019ceb682760d06c72747c1c5b7885781b95f88569cc"
+      sha256: "959ef4add147753f990b4a7c6cccb746d5792dbdc81b1cde99e62e7edb31b206"
       url: "https://pub.dev"
     source: hosted
-    version: "10.3.0"
+    version: "10.4.0"
   gap:
     dependency: "direct main"
     description:
@@ -976,6 +1008,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  loader_overlay:
+    dependency: "direct main"
+    description:
+      name: loader_overlay
+      sha256: fba43a51a89b5578e3c05e39c9826a6853a1ab181b02e79cd41d96c58286716c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   logger:
     dependency: "direct main"
     description:
@@ -1052,10 +1092,10 @@ packages:
     dependency: "direct main"
     description:
       name: motion_toast
-      sha256: "66e083a3357fb358a568240624fae80da79dc32030bfcf593679654c171870e8"
+      sha256: "4ceb09cbc85443b73262b9ff3f924c6129270730b251277f94e41c5c29cc0fa6"
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.4"
+    version: "2.6.5"
   nested:
     dependency: transitive
     description:
@@ -1132,10 +1172,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_linux
-      sha256: ab0987bf95bc591da42dffb38c77398fc43309f0b9b894dcc5d6f40c4b26c379
+      sha256: "2e32f1640f07caef0d3cb993680f181c79e54a3827b997d5ee221490d131fbd9"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.7"
+    version: "2.1.8"
   path_provider_platform_interface:
     dependency: transitive
     description:
@@ -1320,6 +1360,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  qr:
+    dependency: transitive
+    description:
+      name: qr
+      sha256: "5c4208b4dc0d55c3184d10d83ee0ded6212dc2b5e2ba17c5a0c0aab279128d21"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
+  qr_flutter:
+    dependency: "direct main"
+    description:
+      name: qr_flutter
+      sha256: c5c121c54cb6dd837b9b9d57eb7bc7ec6df4aee741032060c8833a678c80b87e
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
+  qrscan:
+    dependency: "direct main"
+    description:
+      name: qrscan
+      sha256: "0ee72eca0dcbc35ab74894010e3589c3675ddb7c5a551d5f29ab0d3bb1bfb135"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.3"
   quickalert:
     dependency: "direct main"
     description:
@@ -1689,10 +1753,10 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_android
-      sha256: "5f49a6e5fc59e21fcec5e1bbcd401afbee9792a24a4f3d9cef9b5bb0cd1e3767"
+      sha256: da98c8cdaebea4cf89481853f37ca93ccc8d31fc386f5b3c928aea3b6e83268c
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.4"
+    version: "3.3.0"
   webview_flutter_platform_interface:
     dependency: transitive
     description:
@@ -1705,10 +1769,10 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_wkwebview
-      sha256: "92e7e7fa468f1df597fb9d37bcf1f303175cbe147c4dbdf06ecc323d950116eb"
+      sha256: dcd9ad0ef0f608f399d7a54d0b289597385e59a89f04983a672b9348faddfd98
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.5"
+    version: "3.1.0"
   win32:
     dependency: transitive
     description:

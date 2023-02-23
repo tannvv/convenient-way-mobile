@@ -9,19 +9,42 @@ class DeliveredPackageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Điểm đến: ${package.destinationAddress}.',
-          style: subtitle2,
+        Row(
+          children: [
+            const Text('Tên người nhận: '),
+            Text(
+              '${package.receiverName}.',
+              style: subtitle2,
+            ),
+          ],
         ),
-        Text(
-          'Người nhận: ${package.receiverName}.',
-          style: subtitle2,
+        Row(
+          children: [
+            const Text(
+              'Điểm đến: ',
+            ),
+            Expanded(
+              child: Text(
+                '${package.destinationAddress}.',
+                style: subtitle2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         ),
-        Text(
-          'Số điện thoại: ${package.receiverPhone}.',
-          style: subtitle2,
-        )
+        Row(
+          children: [
+            const Text(
+              'Số điện thoại: ',
+            ),
+            Text(
+              '${package.receiverPhone}.',
+              style: subtitle2,
+            ),
+          ],
+        ),
       ],
     );
   }

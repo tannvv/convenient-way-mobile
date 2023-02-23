@@ -101,7 +101,7 @@ abstract class InputStyles {
       floatingLabelStyle:
           MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
         final Color color = states.contains(MaterialState.error)
-            ? Get.theme.errorColor
+            ? Get.theme.colorScheme.error
             : AppColors.softBlack;
         return TextStyle(color: color);
       }),

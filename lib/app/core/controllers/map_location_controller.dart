@@ -2,17 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/controllers/map_stream_location.dart';
 import 'package:tien_duong/app/core/widgets/hyper_dialog.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
-class MapLocationController extends GetxController {
+class MapLocationController extends BaseController {
   LatLng? location;
   LocationPermission? permission;
   bool isUsedCurrentLocation = true;
   MapStreamLocation? _mapStreamLocation;
 
+  final AuthController _authController = Get.find<AuthController>();
   @override
   void onInit() {
     super.onInit();
@@ -91,7 +93,7 @@ class MapLocationController extends GetxController {
         }
       },
       secondaryOnPressed: () {
-        if (AuthController.instance.account != null) {
+        if (_authController.account != null) {
           Get.offAllNamed(Routes.HOME);
         } else {
           Get.offAllNamed(Routes.LOGIN);
@@ -119,7 +121,7 @@ class MapLocationController extends GetxController {
         }
       },
       secondaryOnPressed: () {
-        if (AuthController.instance.account != null) {
+        if (_authController.account != null) {
           Get.offAllNamed(Routes.HOME);
         } else {
           Get.offAllNamed(Routes.LOGIN);

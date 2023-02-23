@@ -11,6 +11,7 @@ import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 
 class DeliveryPackageController extends BasePagingController<Package>
     with GetSingleTickerProviderStateMixin {
+  final AuthController _authController = Get.find<AuthController>();
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
   @override
   void onInit() {
@@ -33,8 +34,7 @@ class DeliveryPackageController extends BasePagingController<Package>
   @override
   Future<void> fetchDataApi() async {
     PackageListModel requestModel = PackageListModel(
-        deliverId: AuthController.instance.account!.id,
-        status: PackageStatus.DELIVERY);
+        deliverId: _authController.account!.id, status: PackageStatus.DELIVERY);
     Future<List<Package>> future = _packageRepo.getList(requestModel);
     await callDataService<List<Package>>(future,
         onSuccess: onSuccess, onError: onError);

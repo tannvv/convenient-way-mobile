@@ -11,13 +11,9 @@ class ReceivedPackageItem extends StatelessWidget {
   final Package package;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
-      decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(6.w),
-          boxShadow: ShadowStyles.primary),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         Row(
           children: [
             const Text('Tên người nhận: '),
@@ -52,7 +48,7 @@ class ReceivedPackageItem extends StatelessWidget {
             ),
           ],
         ),
-      ]),
+      ]
     );
   }
 }

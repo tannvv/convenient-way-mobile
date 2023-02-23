@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tien_duong/app/bindings/initial_binding.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
+import 'package:tien_duong/app/modules/home/views/home_view.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
+
+Key keyApp = const Key('GetMaterialApp');
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -29,6 +33,15 @@ class _AppState extends State<App> {
               initialRoute: AppPages.INITIAL,
               getPages: AppPages.routes,
               debugShowCheckedModeBanner: false,
+              builder: (context, child) {
+                return Overlay(
+                  initialEntries: [
+                    OverlayEntry(
+                        builder: (context) => LoaderOverlay(
+                            child: child ?? const Scaffold(body: HomeView()))),
+                  ],
+                );
+              },
               theme: ThemeData(
                 appBarTheme: AppBarTheme(
                   shape: RoundedRectangleBorder(
@@ -51,6 +64,8 @@ class _AppState extends State<App> {
                 ),
                 focusColor: AppColors.orange,
               ),
+              enableLog: true,
+              key: keyApp,
             )));
   }
 }

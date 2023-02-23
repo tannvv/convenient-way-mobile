@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
@@ -10,11 +13,10 @@ import 'package:tien_duong/app/data/repository/goong_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_route_model.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
-import 'package:latlong2/latlong.dart';
 
 class CreateRouteController extends BaseController {
+  final AuthController _authController = Get.find<AuthController>();
+
   final formKey = GlobalKey<FormState>();
   String _toName = '';
   final Rx<LatLng?> _toCoord = Rx<LatLng?>(null);
@@ -69,7 +71,7 @@ class CreateRouteController extends BaseController {
   }
 
   Future<void> registerRoute() async {
-    String accountId = AuthController.instance.account!.id!;
+    String accountId = _authController.account!.id!;
     if (_fromCoord.value == null ||
         _toCoord.value == null ||
         _fromName == '' ||
@@ -88,9 +90,9 @@ class CreateRouteController extends BaseController {
     final future = _accountRepo.createRoute(createRouteModel);
     await callDataService<RouteAcc?>(future, onSuccess: (newRoute) async {
       if (newRoute != null) {
-        AuthController.instance.account!.infoUser!.routes!.add(newRoute);
-        AuthController.instance.account!.status = AccountStatus.active;
-        AuthController.setDataPrefs();
+        _authController.account!.infoUser!.routes!.add(newRoute);
+        _authController.account!.status = AccountStatus.active;
+        _authController.setDataPrefs();
         await QuickAlertService.showSuccess(
             'Bạn đã đăng kí tuyến đường thành công',
             duration: 3);

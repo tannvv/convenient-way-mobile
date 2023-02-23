@@ -5,6 +5,7 @@ import 'package:tien_duong/app/data/models/route_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_account_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_route_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/is_valid_account_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/login_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/notification_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/send_notification_model.dart';
@@ -155,6 +156,20 @@ class AccountReqImp extends BaseRepository implements AccountRep {
   Future<SimpleResponseModel> sendNotificationTracking(
       SendNotificationTrackingModel model) {
     String endpoint = '${DioProvider.baseUrl}/notifications/send-tracking';
+    var dioCall = dioClient.post(endpoint, data: model.toJson());
+    try {
+      return callApi(dioCall).then((response) {
+        SimpleResponseModel model = SimpleResponseModel.fromJson(response.data);
+        return model;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SimpleResponseModel> isValidAccount(IsValidAccountModel model) {
+    String endpoint = '${DioProvider.baseUrl}/accounts/is-valid';
     var dioCall = dioClient.post(endpoint, data: model.toJson());
     try {
       return callApi(dioCall).then((response) {
