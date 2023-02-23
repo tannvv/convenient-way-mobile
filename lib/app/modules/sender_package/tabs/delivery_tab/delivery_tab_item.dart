@@ -8,23 +8,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/location_start_end.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/package_info.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/user_info.dart';
+import 'package:tien_duong/app/modules/sender_package/widgets/wrap_item.dart';
 
 class DeliveryTabItem extends StatelessWidget {
-  const DeliveryTabItem({Key? key, required this.package}) : super(key: key);
+  const DeliveryTabItem(
+      {Key? key, required this.package, required this.showInfoDeliver})
+      : super(key: key);
   final Package package;
-
+  final Function() showInfoDeliver;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
-      decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(12.w),
-          boxShadow: ShadowStyles.primary),
+    return WrapItem(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          UserInfo(info: package.deliver!.infoUser!),
+          UserInfo(
+            info: package.deliver!.infoUser!,
+            onTap: showInfoDeliver,
+          ),
           LocationStartEnd(
               locationStart: package.startAddress!,
               locationEnd: package.destinationAddress!),

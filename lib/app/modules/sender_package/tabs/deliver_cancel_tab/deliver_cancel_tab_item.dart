@@ -19,9 +19,7 @@ class DeliverCancelTabItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return WrapItem(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        InkWell(
-            onTap: onShowDeliverInfo,
-            child: UserInfo(info: package.deliver!.infoUser!)),
+        UserInfo(info: package.deliver!.infoUser!),
         LocationStartEnd(
             locationStart: package.startAddress!,
             locationEnd: package.destinationAddress!),

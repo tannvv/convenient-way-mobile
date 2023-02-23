@@ -13,7 +13,7 @@ class SuccessTabView extends GetView<SuccessTabController> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
         child: Obx(() => SmartRefresher(
               controller: controller.refreshController,
               onRefresh: () => controller.onRefresh(),
@@ -24,7 +24,14 @@ class SuccessTabView extends GetView<SuccessTabController> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SuccessTabItem(package: controller.dataApis[index]),
+                        SuccessTabItem(
+                            package: controller.dataApis[index],
+                            onSendFeedbackDriver: () => {
+                                  controller
+                                      .sendFeedback(controller.dataApis[index])
+                                },
+                            showInfoDeliver: () => controller.showInfoDeliver(
+                                controller.dataApis[index].deliver!)),
                       ],
                     );
                   },

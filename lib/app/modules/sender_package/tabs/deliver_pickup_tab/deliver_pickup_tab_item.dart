@@ -28,9 +28,7 @@ class DeliverPickupTabItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          InkWell(
-              onTap: onShowDeliverInfo,
-              child: UserInfo(info: package.deliver!.infoUser!)),
+          UserInfo(info: package.deliver!.infoUser!, onTap: onShowDeliverInfo),
           LocationStartEnd(
               locationStart: package.startAddress!,
               locationEnd: package.destinationAddress!),

@@ -1,53 +1,53 @@
+import 'package:flutter/material.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:get/get.dart';
+import 'package:tien_duong/app/core/controllers/auth_controller.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
+import 'package:tien_duong/app/data/models/package_model.dart';
+import 'package:tien_duong/app/data/repository/package_req.dart';
+import 'package:tien_duong/app/data/repository/request_model/create_feedback_model.dart';
 
 class FeedbackForDeliverController extends BaseController {
+  final AuthController _authController = Get.find<AuthController>();
+  Package package = Get.arguments as Package;
+
   String? customerTripId;
   String? driverId;
   Rx<String?> photoUrl = ''.obs;
   Rx<String?> gender = ''.obs;
+  final TextEditingController messageController = TextEditingController();
   bool backToHome = false;
+
+  final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
 
   @override
   Future<void> onInit() async {
-    // if (data.containsKey('customerTripId')) {
-    //   customerTripId = data['customerTripId'];
-    // }
-    // if (data.containsKey('driverId')) {
-    //   driverId = data['driverId'];
-    // }
-    // if (data.containsKey('photoUrl')) {
-    //   photoUrl.value = data['photoUrl'];
-    // }
-    // if (data.containsKey('gender')) {
-    //   gender.value = data['gender'];
-    // }
-    // if (data.containsKey('backToHome')) {
-    //   backToHome = data['backToHome'];
-    // }
-
     super.onInit();
   }
 
-  Rx<int> feedBackPoint = 0.obs;
+  Rx<double> feedBackPoint = 0.0.obs;
 
-  void changePoint(int point) {
+  void changePoint(double point) {
     feedBackPoint.value = point;
   }
 
   Rx<String> feedBackEmotion = ''.obs;
-  Rx<String> feedBackMessage = ''.obs;
 
   void changeFeedBackEmotion(String value) {
     feedBackEmotion.value = value;
   }
 
-  void changeFeedBackMessage(String value) {
-    feedBackMessage.value = value;
-  }
-
   void submit() async {
-    if (feedBackEmotion.value.isNotEmpty && feedBackMessage.value.isNotEmpty) {
-    } else {}
+    CreateFeedbackModel model = CreateFeedbackModel();
+    model.accountId = _authController.account!.id;
+    model.content = messageController.text;
+    model.feedbackFor = 'DELIVER';
+    model.rating = feedBackPoint.value;
+    model.packageId = package.id;
+    var future = _packageRepo.createFeedback(model);
+    await callDataService(future, onSuccess: (_) {
+      ToastService.showSuccess('Tạo phản hồi thành công');
+      Get.back();
+    }, onError: showError);
   }
 }

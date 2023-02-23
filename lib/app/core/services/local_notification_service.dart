@@ -1,5 +1,4 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
@@ -42,8 +41,8 @@ class LocalNotificationService {
   }) async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('default_cw_chanel', 'Kênh mặc định',
-            priority: Priority.max,
-            importance: Importance.max,
+            priority: Priority.defaultPriority,
+            importance: Importance.defaultImportance,
             playSound: true,
             category: AndroidNotificationCategory.message,
             sound: RawResourceAndroidNotificationSound('sound_notification'),

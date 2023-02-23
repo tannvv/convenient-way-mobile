@@ -1,10 +1,12 @@
 import 'package:tien_duong/app/core/base/base_repository.dart';
+import 'package:tien_duong/app/data/models/feedback_model.dart';
 import 'package:tien_duong/app/data/models/package_cancel_model.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/models/suggest_package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/account_pickup_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/cancel_package_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/create_feedback_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_package_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_cancel_list_model.dart';
@@ -169,6 +171,20 @@ class PackageReqImp extends BaseRepository implements PackageReq {
     try {
       return callApi(dioCall)
           .then((response) => SimpleResponseModel.fromJson(response.data));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Feedback> createFeedback(CreateFeedbackModel model) async {
+    String endpoint = '${DioProvider.baseUrl}/feedbacks';
+    var dioCall = dioClient.post(endpoint, data: model.toJson());
+    try {
+      return callApi(dioCall).then((response) {
+        Feedback data = Feedback.fromJson(response.data['data']);
+        return data;
+      });
     } catch (e) {
       rethrow;
     }
