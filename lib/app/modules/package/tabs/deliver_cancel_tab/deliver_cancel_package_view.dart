@@ -5,12 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gap/gap.dart';
-import 'package:tien_duong/app/modules/sender_package/tabs/deliver_cancel_tab/deliver_cancel_tab_controller.dart';
+import 'package:tien_duong/app/modules/package/tabs/deliver_cancel_tab/deliver_cancel_package_controller.dart';
+import 'deliver_cancel_package_item.dart';
 
-import 'deliver_cancel_tab_item.dart';
-
-class DeliverCancelTabView extends GetView<DeliverCancelTabController> {
-  const DeliverCancelTabView({Key? key}) : super(key: key);
+class DeliverCancelPackageView extends GetView<DeliverCancelPackageController> {
+  const DeliverCancelPackageView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class DeliverCancelTabView extends GetView<DeliverCancelTabController> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        DeliverCancelTabItem(
+                        DeliverCancelPackageItem(
                           package: controller.dataApis[index],
                           onShowDeliverInfo: () => controller.showInfoDeliver(
                               controller.dataApis[index].deliver!),

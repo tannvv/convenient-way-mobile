@@ -106,6 +106,7 @@ dependencies:
   barcode: ^2.2.3
   just_the_tooltip: ^0.0.12
   enhance_stepper: ^0.1.1
+  flutter_barcode_scanner: ^2.0.0
 
 dev_dependencies:
   flutter_test:

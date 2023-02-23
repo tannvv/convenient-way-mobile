@@ -10,7 +10,7 @@ class ColorButton extends StatelessWidget {
       required this.icon,
       required this.onPressed,
       this.radius = 30,
-      this.backgroundColor = AppColors.primary500,
+      this.backgroundColor = AppColors.primary900,
       this.opacityBg = 0.2,
       this.height = 30,
       this.textColor = AppColors.primary500,

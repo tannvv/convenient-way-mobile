@@ -44,6 +44,16 @@ class PackageCancelInfo extends StatelessWidget {
             ),
           ],
         ),
+        Gap(4.h),
+        Row(
+          children: [
+            const Text('Lý do: '),
+            Text(
+              package.reason!,
+              style: subtitle2,
+            ),
+          ],
+        ),
       ],
     );
   }
