@@ -5,6 +5,8 @@ import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_cancel_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_cancel_list_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/package_cancel_model.dart';
+import 'package:get/get.dart';
 
 class DeliverCancelPackageController extends SenderTabBaseController<PackageCancel>
     with GetSingleTickerProviderStateMixin {
@@ -13,7 +15,7 @@ class DeliverCancelPackageController extends SenderTabBaseController<PackageCanc
 
   @override
   Future<void> fetchDataApi() async {
-    PackageCancelListModel requestModel = PackageCancelListModel(
+    CancelModel requestModel = CancelModel(
         deliverId: _authController.account!.id,
         status: PackageStatus.DELIVER_CANCEL,
         pageIndex: pageIndex,

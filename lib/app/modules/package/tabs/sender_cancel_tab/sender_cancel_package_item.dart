@@ -28,7 +28,7 @@ class SenderCancelPackageItem extends StatelessWidget {
         PackageCancelInfo(
           package: package,
         ),
-      ]),
+      ],
     );
   }
 }
