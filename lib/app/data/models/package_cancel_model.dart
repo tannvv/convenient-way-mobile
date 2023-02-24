@@ -23,6 +23,7 @@ class PackageCancel {
   String? createdAt;
   String? modifiedAt;
   String? senderId;
+  Account? sender;
   String? deliverId;
   Account? deliver;
   List<Product>? products;
@@ -49,6 +50,7 @@ class PackageCancel {
       this.createdAt,
       this.modifiedAt,
       this.senderId,
+      this.sender,
       this.deliverId,
       this.deliver,
       this.products});
@@ -75,6 +77,8 @@ class PackageCancel {
     createdAt = json['createdAt'];
     modifiedAt = json['modifiedAt'];
     senderId = json['senderId'];
+    sender =
+    json['sender'] != null ? Account.fromJson(json['sender']) : null;
     deliverId = json['deliverId'];
     deliver =
         json['deliver'] != null ? Account.fromJson(json['deliver']) : null;
@@ -109,6 +113,9 @@ class PackageCancel {
     data['createdAt'] = createdAt;
     data['modifiedAt'] = modifiedAt;
     data['senderId'] = senderId;
+    if (sender != null) {
+      data['sender'] = deliver?.toJson();
+    }
     data['deliverId'] = deliverId;
     if (deliver != null) {
       data['deliver'] = deliver?.toJson();

@@ -4,17 +4,17 @@ import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/font_weight.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 
-class ColorButton extends StatelessWidget {
-  const ColorButton(this.text,
+class ButtonColor extends StatelessWidget {
+  const ButtonColor(this.text,
       {Key? key,
-      required this.icon,
-      required this.onPressed,
-      this.radius = 30,
-      this.backgroundColor = AppColors.primary900,
-      this.opacityBg = 0.2,
-      this.height = 30,
-      this.textColor = AppColors.primary500,
-      this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 5)})
+        required this.icon,
+        required this.onPressed,
+        this.radius = 30,
+        this.backgroundColor = AppColors.primary900,
+        this.opacityBg = 0.2,
+        this.height = 30,
+        this.textColor = AppColors.primary500,
+        this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 5)})
       : super(key: key);
 
   final String text;
@@ -35,7 +35,7 @@ class ColorButton extends StatelessWidget {
           TextButton(
             style: TextButton.styleFrom(
               padding: padding,
-              backgroundColor: backgroundColor.withOpacity(opacityBg),
+              backgroundColor: backgroundColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(radius),
               ),

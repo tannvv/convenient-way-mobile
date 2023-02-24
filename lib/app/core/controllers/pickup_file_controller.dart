@@ -1,10 +1,12 @@
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
+import 'package:tien_duong/app/core/values/app_colors.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class PickUpFileController extends GetxController {
   late PermissionStatus permission;
@@ -21,6 +23,27 @@ class PickUpFileController extends GetxController {
       }
     }
     return false;
+  }
+
+  Future<String?> scanQR() async {
+    try{
+      final scannedQrCode = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666',
+        'Cancel',
+        true,
+        ScanMode.BARCODE,
+      );
+      if(scannedQrCode!="-1"){
+        // Get.snackbar(
+        //   "Result", "QR Code: "+scannedQrCode,
+        //   snackPosition: SnackPosition.BOTTOM,
+        //   backgroundColor: AppColors.softGreen,
+        //   colorText: AppColors.white,
+        //   duration: Duration(seconds: 10),
+        // );
+        return scannedQrCode as String;
+      }
+    } on PlatformException {}
   }
 
   Future<XFile?> pickImage({ImageSource source = ImageSource.gallery}) async {

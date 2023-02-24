@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:tien_duong/app/core/base/base_paging_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
+import 'package:tien_duong/app/core/controllers/pickup_file_controller.dart';
+import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
 import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
@@ -19,16 +21,31 @@ class DeliveryPackageController extends BasePagingController<Package>
   }
 
   Future<void> accountDeliveredPackage(String packageId) async {
-    Future<SimpleResponseModel> future =
-        _packageRepo.deliverySuccess(packageId);
-    await callDataService<SimpleResponseModel>(future, onSuccess: (response) {
-      MotionToastService.showSuccess(response.message ?? 'Thành công');
-      refreshController.requestRefresh();
-    }, onError: (exception) {
-      if (exception is BaseException) {
-        MotionToastService.showError(exception.message);
-      }
-    });
+    if (await PickUpFileController().scanQR() == packageId) {
+      Future<SimpleResponseModel> future =
+      _packageRepo.deliverySuccess(packageId);
+      await callDataService<SimpleResponseModel>(future, onSuccess: (response) {
+        MotionToastService.showSuccess(response.message ?? 'Thành công');
+        refreshController.requestRefresh();
+      }, onError: (exception) {
+        if (exception is BaseException) {
+          MotionToastService.showError(exception.message);
+        }
+      });
+    } else {
+      MotionToastService.showWarning('QR Code không đúng vui lòng kiểm tra lại!');
+      // MaterialDialogService.showConfirmDialog(
+      //     msg: 'QR Code không đúng vui lòng kiểm tra lại!',
+      //     onConfirmTap: () async {
+      //       Get.back();
+      //       onRefresh();
+      //       _authController.reloadAccount();
+      //     }).catchError((error) {
+      //   Get.back();
+      //   MotionToastService.showError(error.messages[0]);
+      // }
+      // );
+    }
   }
 
   @override
