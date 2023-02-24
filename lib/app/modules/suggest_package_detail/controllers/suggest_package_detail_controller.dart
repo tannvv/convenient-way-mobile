@@ -135,6 +135,7 @@ class SuggestPackageDetailController extends BaseController
     }
     await MaterialDialogService.showConfirmDialog(
         msg: 'Bạn xác nhận chọn những đơn hàng này?',
+        closeOnFinish: false,
         onConfirmTap: () {
           String accountId = _authController.account!.id!;
           AccountPickUpModel model = AccountPickUpModel(

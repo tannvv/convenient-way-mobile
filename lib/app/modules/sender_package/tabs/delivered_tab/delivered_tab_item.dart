@@ -38,7 +38,7 @@ class DeliveredTabItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ColorButton(
-                'Chưa nhận được',
+                'Chưa nhận',
                 icon: Icons.sms_failed,
                 onPressed: onConfirmFailed,
                 backgroundColor: Colors.red[700]!,
@@ -48,11 +48,11 @@ class DeliveredTabItem extends StatelessWidget {
               ),
               Gap(8.w),
               ColorButton(
-                'Đã nhận được',
+                'Đã nhận',
                 icon: Icons.check,
                 onPressed: onConfirmSuccess,
-                backgroundColor: AppColors.green,
-                textColor: AppColors.green,
+                backgroundColor: const Color.fromARGB(255, 7, 202, 30),
+                textColor: const Color.fromARGB(255, 7, 202, 30),
                 radius: 8.sp,
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
               )

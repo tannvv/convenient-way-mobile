@@ -1,5 +1,7 @@
 import 'package:tien_duong/app/core/values/app_colors.dart';
+import 'package:tien_duong/app/core/values/font_weight.dart';
 import 'package:tien_duong/app/core/values/input_styles.dart';
+import 'package:tien_duong/app/core/values/shadow_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/data/models/response_goong_model.dart';
 import 'package:flutter/material.dart';
@@ -16,62 +18,65 @@ class PlaceField extends GetWidget<CreatePackagePageController> {
       required this.labelText,
       required this.onSelected,
       this.autofocus = true,
+      this.validator,
       this.textController});
   final bool enable;
   final String hintText;
   final String labelText;
   final bool autofocus;
-  final void Function(ResponseGoong) onSelected;
+  final Function(ResponseGoong) onSelected;
   final TextEditingController? textController;
+  final String? Function(String?)? validator;
   final TextEditingController reserveTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     TextEditingController realTextCtrl =
         textController != null ? textController! : reserveTextController;
     return Material(
-        color: Colors.transparent,
-        child: TypeAheadField<ResponseGoong>(
-          debounceDuration: const Duration(milliseconds: 500),
-          minCharsForSuggestions: 2,
-          textFieldConfiguration: TextFieldConfiguration(
-            enabled: enable,
-            controller: realTextCtrl,
-            autofocus: autofocus,
-            style: subtitle1.copyWith(
-              color: AppColors.lightBlack,
-            ),
-            decoration: InputStyles.map(
-              hintText: hintText,
-              labelText: labelText,
-            ),
+        child: TypeAheadFormField<ResponseGoong>(
+      debounceDuration: const Duration(milliseconds: 500),
+      minCharsForSuggestions: 4,
+      textFieldConfiguration: TextFieldConfiguration(
+          enabled: enable,
+          controller: realTextCtrl,
+          autofocus: autofocus,
+          style: subtitle1.copyWith(
+            color: AppColors.lightBlack,
           ),
-          suggestionsCallback: (pattern) async {
-            if (pattern.isEmpty) {
-              return [];
-            }
-            return await controller.queryLocation(pattern);
-          },
-          itemBuilder: (context, suggestion) {
-            return ListTile(
-              leading: const Icon(Icons.location_pin),
-              minLeadingWidth: 10.w,
-              title: Text(
-                suggestion.name ?? 'Unknown',
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: caption.copyWith(fontSize: 14.sp),
-              ),
-            );
-          },
-          onSuggestionSelected: (suggestion) {
-            onSelected(suggestion);
-            realTextCtrl.text = suggestion.name ?? '';
-          },
-          noItemsFoundBuilder: (context) => Padding(
-              padding: EdgeInsets.all(10.w),
-              child: const Text('Không tìm thấy địa chỉ')),
-          errorBuilder: ((context, error) => Padding(
-              padding: EdgeInsets.all(10.w), child: Text(error.toString()))),
-        ));
+          decoration: InputStyles.createPackage(
+              labelText: labelText, hintText: hintText)),
+      validator: validator,
+      suggestionsCallback: (pattern) async {
+        if (pattern.isEmpty) {
+          return [];
+        }
+        return await controller.queryLocation(pattern);
+      },
+      itemBuilder: (context, suggestion) {
+        return ListTile(
+          leading: const Icon(Icons.location_pin),
+          minLeadingWidth: 10.w,
+          title: Text(
+            suggestion.name ?? 'Unknown',
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: caption.copyWith(fontSize: 14.sp),
+          ),
+        );
+      },
+      onSuggestionSelected: (suggestion) {
+        onSelected(suggestion);
+        realTextCtrl.text = suggestion.name ?? '';
+      },
+      noItemsFoundBuilder: (context) => Padding(
+          padding: EdgeInsets.all(10.w),
+          child: const Text('Không tìm thấy địa chỉ')),
+      errorBuilder: ((context, error) => Padding(
+          padding: EdgeInsets.all(10.w), child: Text(error.toString()))),
+      suggestionsBoxDecoration: SuggestionsBoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: const Color.fromARGB(255, 242, 243, 250),
+      ),
+    ));
   }
 }

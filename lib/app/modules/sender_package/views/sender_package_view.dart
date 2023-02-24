@@ -74,7 +74,7 @@ class SenderPackageView extends GetView<SenderPackageController> {
 
   Widget _btnCreate() {
     return Positioned(
-        bottom: 40.h,
+        bottom: 100.h,
         right: 16.w,
         child: ElevatedButton(
           onPressed: () {

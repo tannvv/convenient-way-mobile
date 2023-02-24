@@ -9,12 +9,15 @@ import 'package:tien_duong/app/data/repository/goong_req.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_package_model.dart';
 import 'package:tien_duong/app/modules/create_package_page/models/create_product_model.dart';
-import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 
 class CreatePackagePageController extends BaseController {
   final AuthController _authController = Get.find<AuthController>();
   final GoongReq _goongRepo = Get.find(tag: (GoongReq).toString());
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
+
+  final GlobalKey<FormState> receiverFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> pickupFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> productsFormKey = GlobalKey<FormState>();
 
   final formKey = GlobalKey<FormState>();
 
@@ -38,6 +41,8 @@ class CreatePackagePageController extends BaseController {
   String note = '';
   RxList<CreateProductModel> products = <CreateProductModel>[].obs;
 
+  final TextEditingController pickupTxtCtrl = TextEditingController();
+  final TextEditingController senderTxtCtrl = TextEditingController();
   @override
   void onInit() {
     receivedName = _authController.account?.infoUser?.firstName ?? '';
@@ -78,7 +83,14 @@ class CreatePackagePageController extends BaseController {
   }
 
   void nextStep() {
-    currentStep++;
+    switch (currentStep) {
+      case 0:
+        if (pickupFormKey.currentState!.validate()) currentStep++;
+        break;
+      case 1:
+        if (receiverFormKey.currentState!.validate()) currentStep++;
+        break;
+    }
   }
 
   void previousStep() {
@@ -94,6 +106,7 @@ class CreatePackagePageController extends BaseController {
   }
 
   void submit() {
+    if (!productsFormKey.currentState!.validate()) return;
     MaterialDialogService.showConfirmDialog(onConfirmTap: () {
       CreatePackageModel createPackageModel = CreatePackageModel(
         startAddress: startAddress,
@@ -118,14 +131,7 @@ class CreatePackagePageController extends BaseController {
       callDataService(future, onSuccess: (data) {
         ToastService.showSuccess('Tạo đơn hàng thành công');
         Get.back();
-        Get.back();
-      }, onError: (ex) {
-        if (ex is BaseException) {
-          ToastService.showError(ex.message);
-        } else {
-          ToastService.showError('Có lỗi xảy ra');
-        }
-      });
+      }, onError: showError, onStart: showOverlay, onComplete: hideOverlay);
     });
   }
 }

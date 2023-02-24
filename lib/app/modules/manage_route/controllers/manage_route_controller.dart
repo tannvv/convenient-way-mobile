@@ -117,7 +117,6 @@ class ManageRouteController extends BaseController {
       callDataService<SimpleResponseModel>(
         future,
         onSuccess: (response) {
-          Get.back(); // close dialog
           MotionToastService.showSuccess(
               response.message ?? 'Xóa lộ trình thành công');
           routes.removeWhere((element) => element.id == routeId);

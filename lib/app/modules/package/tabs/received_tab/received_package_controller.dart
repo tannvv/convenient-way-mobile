@@ -22,6 +22,7 @@ class ReceivedPackageController extends BasePagingController<Package>
   Future<void> accountConfirmPackage(String packageId) async {
     MaterialDialogService.showConfirmDialog(
         msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
+        closeOnFinish: false,
         onConfirmTap: () async {
           AccountPickUpModel model = AccountPickUpModel(
               deliverId: _authController.account!.id!, packageIds: [packageId]);
@@ -63,7 +64,6 @@ class ReceivedPackageController extends BasePagingController<Package>
         msg: 'Bạn chắc chắn muốn báo xấu và hủy gói hàng này?',
         confirmIconData: Icons.check,
         onConfirmTap: () async {
-          Get.back(); // close dialog
           dynamic result = await Get.toNamed(Routes.CANCEL_PACKAGE,
               arguments: {'packageId': packageId});
           if (result != null && result == true) {
