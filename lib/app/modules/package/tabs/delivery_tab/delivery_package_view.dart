@@ -1,65 +1,42 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:tien_duong/app/core/values/button_styles.dart';
 import 'package:tien_duong/app/core/widgets/custom_footer_smart_refresh.dart';
+import 'package:tien_duong/app/modules/package/tabs/deliver_cancel_tab/deliver_cancel_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/delivery_tab/delivery_package_controller.dart';
-import 'package:tien_duong/app/modules/package/tabs/delivery_tab/delivery_package_item.dart';
+import 'package:tien_duong/app/modules/package/tabs/received_tab/received_package_controller.dart';
+import 'delivery_package_item.dart';
 
-class DeliveryView extends GetView<DeliveryPackageController> {
-  const DeliveryView({Key? key}) : super(key: key);
+class DeliveryPackageView extends GetView<DeliveryPackageController> {
+  const DeliveryPackageView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    File? imageFile;
-
-    void _getFromCamera() async {
-      XFile? pickedFile = (await ImagePicker().pickImage(
-        source: ImageSource.camera,
-        maxHeight: 1080,
-        maxWidth: 1080,
-      )) as XFile?;
-      imageFile = File(pickedFile!.path);
-      Navigator.pop(context);
-    }
-
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Obx(() => SmartRefresher(
-              controller: controller.refreshController,
-              onRefresh: () => controller.onRefresh(),
-              onLoading: () => controller.onLoading(),
-              footer: CustomFooterSmartRefresh.defaultCustom(),
-              child: ListView.separated(
-                  itemBuilder: (_, index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        DeliveryPackageItem(
-                            package: controller.dataApis[index]),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                                style: ButtonStyles.primaryBlueSmall(),
-                                onPressed: () async {
-                                  // _getFromCamera();
-                                  controller.accountDeliveredPackage(
-                                      controller.dataApis[index].id!);
-                                },
-                                child:
-                                    const Text('Đã giao thành công cho khách')),
-                          ],
-                        )
-                      ],
-                    );
-                  },
-                  separatorBuilder: (_, index) => Gap(12.h),
-                  itemCount: controller.dataApis.length),
-            )));
+          controller: controller.refreshController,
+          onRefresh: () => controller.onRefresh(),
+          onLoading: () => controller.onLoading(),
+          footer: CustomFooterSmartRefresh.defaultCustom(),
+          child: ListView.separated(
+              itemBuilder: (_, index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DeliveryPackageItem(
+                      package: controller.dataApis[index],
+                      onCancelPackage: () => ReceivedPackageController().reportPackage(
+                          controller.dataApis[index].id!),
+                      onConfirmPackage: () => controller.accountDeliveredPackage(
+                          controller.dataApis[index].id!),
+                    ),
+                  ],
+                );
+              },
+              separatorBuilder: (_, index) => Gap(12.h),
+              itemCount: controller.dataApis.length),
+        )));
   }
 }

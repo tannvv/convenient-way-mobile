@@ -12,11 +12,6 @@ class DeliveredPackageController extends BasePagingController<Package>
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
   Future<void> fetchDataApi() async {
     PackageListModel requestModel = PackageListModel(
         deliverId: _authController.account!.id,
@@ -27,4 +22,7 @@ class DeliveredPackageController extends BasePagingController<Package>
     await callDataService<List<Package>>(future,
         onSuccess: onSuccess, onError: onError);
   }
+
+  Future<void> confirmFailed(String packageId) async {}
+  Future<void> confirmSuccess(String packageId) async {}
 }
