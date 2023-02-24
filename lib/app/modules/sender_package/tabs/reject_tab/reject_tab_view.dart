@@ -13,7 +13,7 @@ class RejectTabView extends GetView<RejectTabController> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
         child: Obx(() => SmartRefresher(
               controller: controller.refreshController,
               onRefresh: () => controller.onRefresh(),

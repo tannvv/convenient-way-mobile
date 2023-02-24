@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tien_duong/app/core/values/app_assets.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/button_styles.dart';
@@ -29,7 +28,9 @@ class FeedbackForDeliverView extends GetView<FeedbackForDeliverController> {
                     Container(
                       padding: EdgeInsets.only(left: 10.w, top: 10.h),
                       child: ElevatedButton(
-                        onPressed: () async {},
+                        onPressed: () async {
+                          Get.back();
+                        },
                         style: ElevatedButton.styleFrom(
                           shape: const CircleBorder(),
                           backgroundColor: AppColors.white,
@@ -54,7 +55,6 @@ class FeedbackForDeliverView extends GetView<FeedbackForDeliverController> {
               SizedBox(
                 height: 0.05.sh,
               ),
-              _avatarCircle(),
               SizedBox(
                 height: 20.h,
               ),
@@ -114,7 +114,8 @@ class FeedbackForDeliverView extends GetView<FeedbackForDeliverController> {
                                   loadingText: 'Đang thực hiện...',
                                   child: Text(
                                     'Gửi đánh giá',
-                                    style: buttonBold,
+                                    style: buttonBold.copyWith(
+                                        color: AppColors.white),
                                   ),
                                 ),
                               ),
@@ -180,6 +181,7 @@ class FeedbackForDeliverView extends GetView<FeedbackForDeliverController> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: TextFormField(
+            controller: controller.messageController,
             decoration: InputDecoration(
               isDense: true,
               border: OutlineInputBorder(
@@ -197,9 +199,6 @@ class FeedbackForDeliverView extends GetView<FeedbackForDeliverController> {
                 color: AppColors.description,
               ),
             ),
-            onChanged: (String text) {
-              controller.changeFeedBackMessage(text);
-            },
           ),
         ),
       ],
@@ -251,6 +250,7 @@ class FeedbackForDeliverView extends GetView<FeedbackForDeliverController> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: TextFormField(
+            controller: controller.messageController,
             decoration: InputDecoration(
               isDense: true,
               border: OutlineInputBorder(
@@ -268,9 +268,6 @@ class FeedbackForDeliverView extends GetView<FeedbackForDeliverController> {
                 color: AppColors.description,
               ),
             ),
-            onChanged: (String text) {
-              controller.changeFeedBackMessage(text);
-            },
           ),
         ),
       ],
@@ -285,12 +282,7 @@ class FeedbackForDeliverView extends GetView<FeedbackForDeliverController> {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              if (controller.feedBackEmotion.value == title) {
-                controller.changeFeedBackEmotion('');
-              } else {
-                controller.changeFeedBackEmotion(title);
-              }
-              FocusManager.instance.primaryFocus?.unfocus();
+              controller.messageController.text = title;
             },
             child: Ink(
               color: controller.feedBackEmotion.value == title
@@ -322,29 +314,6 @@ class FeedbackForDeliverView extends GetView<FeedbackForDeliverController> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _avatarCircle() {
-    return Obx(
-      () => _oval(
-        controller.photoUrl.value ?? '',
-      ),
-    );
-  }
-
-  ClipOval _oval(String url) {
-    return ClipOval(
-      child: SizedBox.fromSize(
-          size: Size.fromRadius(30.r), // Image radius
-          child: CachedNetworkImage(
-            placeholder: (context, url) => const CircularProgressIndicator(),
-            fit: BoxFit.cover,
-            imageUrl: url,
-            errorWidget: (context, url, error) {
-              return SvgPicture.asset(AppAssets.male);
-            },
-          )),
     );
   }
 }

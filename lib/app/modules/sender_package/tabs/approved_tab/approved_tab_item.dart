@@ -7,6 +7,7 @@ import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/location_start_end.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/package_info.dart';
+import 'package:tien_duong/app/modules/sender_package/widgets/wrap_item.dart';
 
 class ApprovedTabItem extends StatelessWidget {
   const ApprovedTabItem(
@@ -14,14 +15,10 @@ class ApprovedTabItem extends StatelessWidget {
       : super(key: key);
   final Package package;
   final Function() onCancelPackage;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
-      decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(6.w),
-          boxShadow: ShadowStyles.primary),
+    return WrapItem(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

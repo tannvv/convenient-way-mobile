@@ -9,6 +9,7 @@ import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/services/background_service_notification.dart';
 import 'package:tien_duong/app/core/services/firebase_messaging_service.dart';
 import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/data/constants/prefs_memory.dart';
 import 'package:tien_duong/app/data/local/preference/preference_manager.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
@@ -100,7 +101,7 @@ class AuthController extends BaseController {
             _account.value!.id!);
       }, onError: (exception) {
         if (exception is BaseException) {
-          MotionToastService.showError((exception).message);
+          ToastService.showError((exception).message);
         }
       }, onStart: onStart, onComplete: onComplete);
 

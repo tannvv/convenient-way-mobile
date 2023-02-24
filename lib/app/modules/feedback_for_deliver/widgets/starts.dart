@@ -1,3 +1,4 @@
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/modules/feedback_for_deliver/controllers/feedback_for_deliver_controller.dart';
 import 'package:flutter/material.dart';
@@ -11,53 +12,17 @@ class Stars extends GetView<FeedbackForDeliverController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _star(
-            controller.feedBackPoint.value >= 1,
-            () {
-              controller.changePoint(1);
-            },
-          ),
-          _star(
-            controller.feedBackPoint.value >= 2,
-            () {
-              controller.changePoint(2);
-            },
-          ),
-          _star(
-            controller.feedBackPoint.value >= 3,
-            () {
-              controller.changePoint(3);
-            },
-          ),
-          _star(
-            controller.feedBackPoint.value >= 4,
-            () {
-              controller.changePoint(4);
-            },
-          ),
-          _star(
-            controller.feedBackPoint.value >= 5,
-            () {
-              controller.changePoint(5);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _star(bool state, Function() onPressed) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Icon(
+    return RatingBar.builder(
+      initialRating: 0,
+      minRating: 1,
+      direction: Axis.horizontal,
+      itemCount: 5,
+      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+      itemBuilder: (context, _) => const Icon(
         Icons.star,
-        size: 40.w,
-        color: state ? AppColors.yellow : AppColors.line,
+        color: Colors.amber,
       ),
+      onRatingUpdate: controller.changePoint,
     );
   }
 }

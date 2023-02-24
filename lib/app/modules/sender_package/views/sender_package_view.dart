@@ -81,7 +81,7 @@ class SenderPackageView extends GetView<SenderPackageController> {
             Get.toNamed(Routes.CREATE_PACKAGE_PAGE);
           },
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(AppColors.primary400),
+              backgroundColor: MaterialStateProperty.all(AppColors.blue),
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.r),
               ))),
