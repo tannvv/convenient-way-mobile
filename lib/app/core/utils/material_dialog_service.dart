@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/shared/types.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
@@ -98,5 +99,14 @@ class MaterialDialogService {
         color: Colors.white,
         context: Get.context!,
         actions: actions);
+  }
+
+  static Future<void> showEmptyDialog({
+    required Widget child,
+  }) async {
+    await Dialogs.materialDialog(
+      context: Get.context!,
+      customView: child,
+    );
   }
 }

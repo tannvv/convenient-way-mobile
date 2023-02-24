@@ -101,8 +101,7 @@ class VerifyOtpView extends GetView<VerifyOtpController> {
                 WidgetSpan(
                     child: Obx(
                   () => controller.isLoadingResend.value
-                      ? Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      ? SizedBox(
                           height: 16.sp,
                           width: 16.sp,
                           child: const CircularProgressIndicator())

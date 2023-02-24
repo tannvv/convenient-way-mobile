@@ -1,5 +1,4 @@
 import 'package:tien_duong/app/core/base/base_controller.dart';
-import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/modules/package/tabs/deliver_cancel_tab/deliver_cancel_package_view.dart';
 import 'package:tien_duong/app/modules/package/tabs/delivered_tab/delivered_package_view.dart';
 import 'package:tien_duong/app/modules/package/tabs/delivery_tab/delivery_package_view.dart';
@@ -25,24 +24,16 @@ class PackageController extends BaseController
   ];
 
   final List<Widget> _screens = const [
-    ReceivedView(),
-    DeliveryView(),
-    DeliverCancelView(),
-    SenderCancelView(),
-    DeliveredView(),
-    FailedView(),
-    SuccessView()
+    ReceivedPackageView(),
+    DeliveryPackageView(),
+    DeliverCancelPackageView(),
+    SenderCancelPackageView(),
+    DeliveredPackageView(),
+    FailedPackageView(),
+    SuccessPackageView()
   ];
 
   List<Widget> get screens => _screens;
-
-  final receivedPackages = <Package>[].obs;
-  final deliveredPackages = <Package>[].obs;
-  final deliveryPackages = <Package>[].obs;
-  final failedPackages = <Package>[].obs;
-  final accountCancelPackages = <Package>[].obs;
-  final senderCancelPackages = <Package>[].obs;
-  final successPackages = <Package>[].obs;
 
   PageStorageBucket bucket = PageStorageBucket();
   final indexScreen = 0.obs;

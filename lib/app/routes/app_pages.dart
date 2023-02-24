@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:tien_duong/app/modules/create_package_page/views/create_package_page_view.dart';
 
 import '../modules/cancel_package/bindings/cancel_package_binding.dart';
 import '../modules/cancel_package/views/cancel_package_view.dart';
@@ -6,6 +7,8 @@ import '../modules/chat_message/bindings/chat_message_binding.dart';
 import '../modules/chat_message/views/chat_message_view.dart';
 import '../modules/create-route/bindings/create_route_binding.dart';
 import '../modules/create-route/views/create_route_view.dart';
+import '../modules/create_package_page/bindings/create_package_page_binding.dart';
+import '../modules/create_package_page/views/create_package_page_view.dart';
 import '../modules/feedback_for_deliver/bindings/feedback_for_deliver_binding.dart';
 import '../modules/feedback_for_deliver/views/feedback_for_deliver_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -16,6 +19,8 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/manage_route/bindings/manage_route_binding.dart';
 import '../modules/manage_route/views/manage_route_view.dart';
+import '../modules/notification_page/bindings/notification_page_binding.dart';
+import '../modules/notification_page/views/notification_page_view.dart';
 import '../modules/package/bindings/package_binding.dart';
 import '../modules/package/views/package_view.dart';
 import '../modules/payment/bindings/payment_binding.dart';
@@ -30,6 +35,8 @@ import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/suggest_package_detail/bindings/suggest_package_detail_binding.dart';
 import '../modules/suggest_package_detail/views/suggest_package_detail_view.dart';
+import '../modules/tracking_package/bindings/tracking_package_binding.dart';
+import '../modules/tracking_package/views/tracking_package_view.dart';
 import '../modules/transaction/bindings/transaction_binding.dart';
 import '../modules/transaction/views/transaction_view.dart';
 import '../modules/verify-otp/bindings/verify_otp_binding.dart';
@@ -134,6 +141,21 @@ class AppPages {
       name: _Paths.MANAGE_ROUTE,
       page: () => const ManageRouteView(),
       binding: ManageRouteBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTIFICATION_PAGE,
+      page: () => const NotificationPageView(),
+      binding: NotificationPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_PACKAGE_PAGE,
+      page: () => const CreatePackagePageView(),
+      binding: CreatePackagePageBinding(),
+    ),
+    GetPage(
+      name: _Paths.TRACKING_PACKAGE,
+      page: () => const TrackingPackageView(),
+      binding: TrackingPackageBinding(),
     ),
   ];
 }

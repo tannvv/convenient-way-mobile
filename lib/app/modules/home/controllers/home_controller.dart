@@ -11,13 +11,16 @@ import 'package:tien_duong/app/modules/package/controllers/package_controller.da
 import 'package:tien_duong/app/modules/package/views/package_view.dart';
 import 'package:tien_duong/app/modules/profile_page/controllers/profile_page_controller.dart';
 import 'package:tien_duong/app/modules/profile_page/views/profile_page_view.dart';
+import 'package:tien_duong/app/modules/sender_package/controllers/sender_package_controller.dart';
+import 'package:tien_duong/app/modules/sender_package/views/sender_package_view.dart';
 import 'package:tien_duong/app/modules/suggest_package/controllers/suggest_package_controller.dart';
 import 'package:tien_duong/app/modules/suggest_package/views/suggest_package_view.dart';
 
 class HomeController extends GetxController {
   late MessagePageController _messageController;
   late PackageController _packageController;
-  late NotifyPageController _notifyController;
+  late SenderPackageController _senderPackageController;
+  // late NotifyPageController _notifyController;
   late SuggestPackageController _suggestPackageController;
   late ProfilePageController _profileController;
   late LocationPackageController _locationPackageController;
@@ -36,7 +39,7 @@ class HomeController extends GetxController {
   final List<Widget> _widgetOptions = [
     SuggestPackageView(),
     const PackageView(),
-    const NotifyPageView(),
+    const SenderPackageView(),
     ProfilePageView(),
     const LocationPackageView()
   ];
@@ -57,8 +60,10 @@ class HomeController extends GetxController {
   Future<void> initController() async {
     Get.put(MessagePageController(), permanent: true);
     _messageController = Get.find<MessagePageController>();
-    Get.put(NotifyPageController(), permanent: true);
-    _notifyController = Get.find<NotifyPageController>();
+    // Get.put(NotifyPageController(), permanent: true);
+    // _notifyController = Get.find<NotifyPageController>();
+    Get.put(SenderPackageController(), permanent: true);
+    _senderPackageController = Get.find<SenderPackageController>();
     Get.put(SuggestPackageController(), permanent: true);
     _suggestPackageController = Get.find<SuggestPackageController>();
     Get.put(ProfilePageController(), permanent: true);

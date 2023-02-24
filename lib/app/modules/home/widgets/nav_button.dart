@@ -43,6 +43,7 @@ class NavButton extends StatelessWidget {
             ),
             Text(
               title,
+              textAlign: TextAlign.center,
               style: state
                   ? overline.copyWith(fontWeight: FontWeights.medium)
                   : overline.copyWith(color: AppColors.gray),

@@ -1,5 +1,6 @@
 import 'package:tien_duong/app/core/base/base_repository.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
+import 'package:tien_duong/app/data/models/account_rating_model.dart';
 import 'package:tien_duong/app/data/models/notification_model.dart';
 import 'package:tien_duong/app/data/models/route_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
@@ -174,6 +175,20 @@ class AccountReqImp extends BaseRepository implements AccountRep {
     try {
       return callApi(dioCall).then((response) {
         SimpleResponseModel model = SimpleResponseModel.fromJson(response.data);
+        return model;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<AccountRating> getRating(String accountId) {
+    String endpoint = '${DioProvider.baseUrl}/feedbacks/rating/$accountId';
+    var dioCall = dioClient.get(endpoint);
+    try {
+      return callApi(dioCall).then((response) {
+        AccountRating model = AccountRating.fromJson(response.data['data']);
         return model;
       });
     } catch (e) {

@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tien_duong/app/core/services/local_notification_service.dart';
+import 'package:tien_duong/app/data/constants/notification_type.dart';
 
 class FirebaseMessagingService {
   static final FirebaseMessagingService _instance =
@@ -26,17 +27,21 @@ class FirebaseMessagingService {
       RemoteMessage message) async {
     debugPrint(
         'Notification: Background message received, Title: ${message.notification?.title}, Body: ${message.notification?.body}');
-    LocalNotificationService.showCallingNotification(
-        title: 'Cuộc gọi đến', body: 'Tân Nguyễn đang gọi cho bạn');
-    // LocalNotificationService.showNotification(
-    //     title: message.notification?.title, body: message.notification?.body);
+    // LocalNotificationService.showCallingNotification(
+    //     title: 'Cuộc gọi đến', body: 'Tân Nguyễn đang gọi cho bạn');
+    if (message.notification?.title != TypeOfNotification.TRACKING) {
+      LocalNotificationService.showNotification(
+          title: message.notification?.title, body: message.notification?.body);
+    }
   }
 
   static Future<void> firebaseForegroundHandler(RemoteMessage message) async {
     debugPrint(
         'Notification: Foreground message received, Title: ${message.notification?.title}, Body: ${message.notification?.body}');
-    LocalNotificationService.showNotification(
-        title: message.notification?.title, body: message.notification?.body);
+    if (message.notification?.title != TypeOfNotification.TRACKING) {
+      LocalNotificationService.showNotification(
+          title: message.notification?.title, body: message.notification?.body);
+    }
   }
 
   static Future<void> registerNotification(String accountId) async {

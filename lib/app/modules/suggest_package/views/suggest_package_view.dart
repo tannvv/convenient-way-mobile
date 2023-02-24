@@ -127,7 +127,9 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
           state: controller.headerState.walletUiState,
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Get.toNamed(Routes.NOTIFICATION_PAGE);
+          },
           child: SizedBox(
             height: 36.r,
             width: 36.r,

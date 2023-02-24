@@ -39,7 +39,7 @@ class CreateAccountModel {
     data['email'] = email;
     data['firstName'] = firstName;
     data['lastName'] = lastName;
-    data['phone'] = phone;
+    data['phone'] = phone?.replaceFirst('+84', '0');
     data['photoUrl'] = photoUrl;
     data['gender'] = gender;
     data['role'] = role;

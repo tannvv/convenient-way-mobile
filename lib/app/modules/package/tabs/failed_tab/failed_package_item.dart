@@ -1,53 +1,35 @@
-import 'package:tien_duong/app/core/values/app_colors.dart';
-import 'package:tien_duong/app/core/values/shadow_styles.dart';
-import 'package:tien_duong/app/core/values/text_styles.dart';
-import 'package:tien_duong/app/data/models/package_model.dart';
+import 'package:tien_duong/app/data/models/package_cancel_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:tien_duong/app/modules/sender_package/widgets/user_info.dart';
+import 'package:tien_duong/app/modules/sender_package/widgets/wrap_item.dart';
+import '../../widgets/location_start_end.dart';
+import '../../widgets/package_cancel_info.dart';
 
 class FailedPackageItem extends StatelessWidget {
-  const FailedPackageItem({Key? key, required this.package}) : super(key: key);
-  final Package package;
+  const FailedPackageItem(
+      {Key? key, required this.package, required this.onShowDeliverInfo})
+      : super(key: key);
+  final PackageCancel package;
+  final Function() onShowDeliverInfo;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const Text('Tên người nhận: '),
-            Text(
-              '${package.receiverName}.',
-              style: subtitle2,
-            ),
-          ],
+    return WrapItem(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        InkWell(
+            onTap: onShowDeliverInfo,
+            child: UserInfo(info: package.sender!.infoUser!)),
+        LocationStartEnd(
+            locationStart: package.startAddress!,
+            locationEnd: package.destinationAddress!),
+        Gap(12.h),
+        PackageCancelInfo(
+          package: package,
         ),
-        Row(
-          children: [
-            const Text(
-              'Điểm đến: ',
-            ),
-            Expanded(
-              child: Text(
-                '${package.destinationAddress}.',
-                style: subtitle2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            const Text(
-              'Số điện thoại: ',
-            ),
-            Text(
-              '${package.receiverPhone}.',
-              style: subtitle2,
-            ),
-          ],
-        ),
-      ],
+        Gap(12.h),
+      ]),
     );
   }
 }

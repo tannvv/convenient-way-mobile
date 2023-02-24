@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -13,7 +12,6 @@ import 'package:tien_duong/app/config/build_config.dart';
 import 'package:tien_duong/app/config/environment.dart';
 import 'package:tien_duong/app/core/services/background_service_notification.dart';
 import 'package:tien_duong/app/core/services/firebase_messaging_service.dart';
-import 'package:tien_duong/app/core/services/local_notification_service.dart';
 
 import 'app/config/env_config.dart';
 import 'app/config/firebase_options.dart';

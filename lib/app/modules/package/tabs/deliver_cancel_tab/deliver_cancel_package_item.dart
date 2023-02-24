@@ -1,77 +1,35 @@
-import 'package:tien_duong/app/core/values/app_colors.dart';
-import 'package:tien_duong/app/core/values/shadow_styles.dart';
-import 'package:tien_duong/app/core/values/text_styles.dart';
-import 'package:tien_duong/app/data/repository/request_model/package_cancel_list_model.dart';
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:tien_duong/app/data/models/package_cancel_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tien_duong/app/modules/package/widgets/user_info.dart';
+import 'package:tien_duong/app/modules/package/widgets/wrap_item.dart';
+import '../../widgets/location_start_end.dart';
+import '../../widgets/package_cancel_info.dart';
 
 class DeliverCancelPackageItem extends StatelessWidget {
-  const DeliverCancelPackageItem({Key? key, required this.package})
+  const DeliverCancelPackageItem(
+      {Key? key, required this.package, required this.onShowDeliverInfo})
       : super(key: key);
-  final PackageCancelListModel package;
+  final PackageCancel package;
+  final Function() onShowDeliverInfo;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
-      decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(6.w),
-          boxShadow: ShadowStyles.primary
-      ),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Text('Tên người nhận: '),
-                Text(
-                  '${package.receiverName}.',
-                  style: subtitle2,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const Text('Điểm đi: ',),
-                Expanded(
-                  child: Text(
-                    '${package.startAddress}.',
-                    style: subtitle2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const Text('Điểm đến: ',),
-                Expanded(
-                  child: Text(
-                    '${package.destinationAddress}.',
-                    style: subtitle2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const Text('Số điện thoại: ',),
-                Text('${package.receiverPhone}.',
-                  style: subtitle2,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const Text('Lý do: ',),
-                Text('${package.reason}.',
-                  style: subtitle2,
-                ),
-              ],
-            ),
-          ]
-      ),
+    return WrapItem(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        InkWell(
+            onTap: onShowDeliverInfo,
+            child: UserInfo(info: package.sender!.infoUser!)),
+        LocationStartEnd(
+            locationStart: package.startAddress!,
+            locationEnd: package.destinationAddress!),
+        Gap(12.h),
+        PackageCancelInfo(
+          package: package,
+        ),
+        Gap(12.h),
+      ]),
     );
   }
 }

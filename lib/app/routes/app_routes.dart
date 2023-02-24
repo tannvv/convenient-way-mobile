@@ -23,6 +23,9 @@ abstract class Routes {
   static const FEEDBACK_FOR_DELIVER = _Paths.FEEDBACK_FOR_DELIVER;
   static const LOCATION_PACKAGE = _Paths.LOCATION_PACKAGE;
   static const MANAGE_ROUTE = _Paths.MANAGE_ROUTE;
+  static const NOTIFICATION_PAGE = _Paths.NOTIFICATION_PAGE;
+  static const CREATE_PACKAGE_PAGE = _Paths.CREATE_PACKAGE_PAGE;
+  static const TRACKING_PACKAGE = _Paths.TRACKING_PACKAGE;
 }
 
 abstract class _Paths {
@@ -45,4 +48,7 @@ abstract class _Paths {
   static const FEEDBACK_FOR_DELIVER = '/feedback-for-deliver';
   static const LOCATION_PACKAGE = '/location-package';
   static const MANAGE_ROUTE = '/manage-route';
+  static const NOTIFICATION_PAGE = '/notification-page';
+  static const CREATE_PACKAGE_PAGE = '/create-package-page';
+  static const TRACKING_PACKAGE = '/tracking-package';
 }

@@ -191,12 +191,14 @@ class ManageRouteView extends GetView<ManageRouteController> {
           onPressed: () {
             controller.createRouteApi();
           },
-          child: HyperButton.childWhite(
-            status: controller.isLoadingCreateRoute.value,
-            loadingText: 'Đang lưu...',
-            child: Text(
-              'Lưu lộ trình',
-              style: buttonBold.copyWith(color: AppColors.white),
+          child: Obx(
+            () => HyperButton.childWhite(
+              status: controller.isLoadingCreateRoute.value,
+              loadingText: 'Đang lưu...',
+              child: Text(
+                'Lưu lộ trình',
+                style: buttonBold.copyWith(color: AppColors.white),
+              ),
             ),
           ),
         ),

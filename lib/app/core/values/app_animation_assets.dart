@@ -7,6 +7,7 @@ abstract class AppAnimationAssets {
   static const String cuteDancingChickenCrop =
       'assets/lottiefiles/cute-dancing-chicken-crop.json';
   static const String avatarLoading = 'assets/lottiefiles/avatar-loading.json';
+  static const String loading = 'assets/lottiefiles/loading.json';
 
   static const String connectLoading =
       'assets/lottiefiles/connect-loading.json';
@@ -40,4 +41,6 @@ abstract class AppAnimationAssets {
   static const String register = 'assets/lottiefiles/register.json';
   static const String directionMap = 'assets/lottiefiles/direction-map.json';
   static const String inputMap = 'assets/lottiefiles/input-map.json';
+
+  static const String createPackage = 'assets/lottiefiles/create-package.json';
 }
