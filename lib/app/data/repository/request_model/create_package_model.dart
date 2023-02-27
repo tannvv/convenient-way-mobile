@@ -10,7 +10,9 @@ class CreatePackageModel {
   String? receiverName;
   String? receiverPhone;
   double? distance;
-  double? volume;
+  double? length;
+  double? width;
+  double? height;
   double? weight;
   int? priceShip;
   String? photoUrl;
@@ -28,7 +30,9 @@ class CreatePackageModel {
       this.receiverName,
       this.receiverPhone,
       this.distance,
-      this.volume,
+      this.length,
+      this.width,
+      this.height,
       this.weight,
       this.priceShip,
       this.photoUrl,
@@ -46,7 +50,9 @@ class CreatePackageModel {
     receiverName = json['receiverName'];
     receiverPhone = json['receiverPhone'];
     distance = json['distance'];
-    volume = json['volume'];
+    length = json['length'];
+    width = json['width'];
+    height = json['height'];
     weight = json['weight'];
     priceShip = json['priceShip'];
     photoUrl = json['photoUrl'];
@@ -65,7 +71,9 @@ class CreatePackageModel {
     data['receiverName'] = receiverName;
     data['receiverPhone'] = receiverPhone;
     data['distance'] = distance;
-    data['volume'] = volume;
+    data['length'] = length;
+    data['width'] = width;
+    data['height'] = height;
     data['weight'] = weight;
     data['priceShip'] = priceShip;
     data['photoUrl'] = photoUrl;

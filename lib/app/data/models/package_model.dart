@@ -1,3 +1,4 @@
+import 'package:tien_duong/app/core/utils/datetime_utils.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/models/product_model.dart';
 
@@ -12,14 +13,16 @@ class Package {
   String? receiverName;
   String? receiverPhone;
   double? distance;
-  double? volume;
+  double? length;
+  double? width;
+  double? height;
   double? weight;
   String? status;
   int? priceShip;
   String? photoUrl;
   String? note;
-  String? createdAt;
-  String? modifiedAt;
+  DateTime? createdAt;
+  DateTime? modifiedAt;
   String? senderId;
   Account? sender;
   String? deliverId;
@@ -37,7 +40,9 @@ class Package {
       this.receiverName,
       this.receiverPhone,
       this.distance,
-      this.volume,
+      this.length,
+      this.width,
+      this.height,
       this.weight,
       this.status,
       this.priceShip,
@@ -62,17 +67,22 @@ class Package {
     receiverName = json['receiverName'];
     receiverPhone = json['receiverPhone'];
     distance = json['distance'];
-    volume = json['volume'];
+    length = json['length'];
+    width = json['width'];
+    height = json['height'];
     weight = json['weight'];
     status = json['status'];
     priceShip = json['priceShip'];
     photoUrl = json['photoUrl'];
     note = json['note'];
-    createdAt = json['createdAt'];
-    modifiedAt = json['modifiedAt'];
+    createdAt = json['createdAt'] != null
+        ? DateTimeUtils.convertStringTimeZoneVN(json['createdAt'])
+        : null;
+    modifiedAt = json['modifiedAt'] != null
+        ? DateTimeUtils.convertStringTimeZoneVN(json['modifiedAt'])
+        : null;
     senderId = json['senderId'];
-    sender =
-    json['sender'] != null ? Account.fromJson(json['sender']) : null;
+    sender = json['sender'] != null ? Account.fromJson(json['sender']) : null;
     deliverId = json['deliverId'];
     deliver =
         json['deliver'] != null ? Account.fromJson(json['deliver']) : null;
@@ -96,7 +106,9 @@ class Package {
     data['receiverName'] = receiverName;
     data['receiverPhone'] = receiverPhone;
     data['distance'] = distance;
-    data['volume'] = volume;
+    data['length'] = length;
+    data['width'] = width;
+    data['height'] = height;
     data['weight'] = weight;
     data['status'] = status;
     data['priceShip'] = priceShip;

@@ -1,7 +1,7 @@
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/enum/payment_method.dart';
 import 'package:tien_duong/app/core/model/payment_result.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/data/repository/transaction_req.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,7 +68,7 @@ class VnpayController extends BaseController {
       ..addJavaScriptChannel(
         'Toaster',
         onMessageReceived: (JavaScriptMessage message) {
-          MotionToastService.showInfo(message.message);
+          ToastService.showInfo(message.message);
         },
       )
       ..loadRequest(Uri.parse(initialUrl));

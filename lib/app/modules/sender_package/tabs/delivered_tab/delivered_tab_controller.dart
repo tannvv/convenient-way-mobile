@@ -26,7 +26,21 @@ class DeliveredTabController extends SenderTabBaseController<Package>
         onSuccess: onSuccess, onError: onError);
   }
 
-  Future<void> confirmFailed(String packageId) async {}
+  Future<void> confirmFailed(String packageId) async {
+    MaterialDialogService.showConfirmDialog(onConfirmTap: () {
+      var future = _packageRepo.senderConfirmDeliveryFailed(packageId);
+      callDataService<SimpleResponseModel>(
+        future,
+        onSuccess: (_) {
+          ToastService.showSuccess('Cập nhật thành công');
+        },
+        onError: showError,
+        onStart: showOverlay,
+        onComplete: hideOverlay,
+      );
+    });
+  }
+
   Future<void> confirmSuccess(String packageId) async {
     MaterialDialogService.showConfirmDialog(onConfirmTap: () {
       var future = _packageRepo.senderConfirmDeliverySuccess(packageId);

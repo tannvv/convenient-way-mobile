@@ -281,4 +281,34 @@ abstract class InputStyles {
             borderRadius: BorderRadius.circular(12.sp),
             borderSide: BorderSide(color: AppColors.softRed, width: 1.4.sp)));
   }
+
+  static InputDecoration reasonCancel(
+      {String labelText = "", EdgeInsetsGeometry? contentPadding}) {
+    return InputDecoration(
+        labelText: labelText,
+        contentPadding: contentPadding,
+        labelStyle: subtitle1.copyWith(
+            color: AppColors.description,
+            fontWeight: FontWeights.regular,
+            fontSize: 15.sp),
+        floatingLabelStyle: subtitle1.copyWith(
+          color: AppColors.black,
+          fontWeight: FontWeights.medium,
+        ),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.sp),
+            borderSide: BorderSide(
+                color: Colors.green.withOpacity(0.6), width: 1.4.sp)),
+        focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.sp),
+            borderSide:
+                BorderSide(color: Colors.red.withOpacity(0.6), width: 1.4.sp)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.sp),
+            borderSide:
+                BorderSide(color: Colors.grey.withOpacity(0.4), width: 1.4.sp)),
+        errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.sp),
+            borderSide: BorderSide(color: AppColors.softRed, width: 1.4.sp)));
+  }
 }

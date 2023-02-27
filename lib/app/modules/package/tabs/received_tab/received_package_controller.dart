@@ -5,27 +5,18 @@ import 'package:tien_duong/app/core/base/base_paging_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/account_pickup_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
-import 'package:tien_duong/app/core/base/base_paging_controller.dart';
-import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
-import 'package:tien_duong/app/data/constants/package_status.dart';
-import 'package:tien_duong/app/data/models/package_model.dart';
-import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/cancel_package_model.dart';
-import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import '../../../../core/controllers/pickup_file_controller.dart';
@@ -51,21 +42,20 @@ class ReceivedPackageController extends BasePagingController<Package>
                   dataApis);
               Get.back();
               if (packageIdsWarning.isNotEmpty) {
-                MotionToastService.showWarning(
+                ToastService.showInfo(
                     'Còn ${packageIdsWarning.length} gói hàng cần lấy ở gần nơi này');
               } else {
-                MotionToastService.showSuccess('Đã lấy hàng để đi giao');
+                ToastService.showSuccess('Đã lấy hàng để đi giao');
               }
               onRefresh();
               _authController.reloadAccount();
             }).catchError((error) {
               Get.back();
-              MotionToastService.showError(error.messages[0]);
+              ToastService.showError(error.messages[0]);
             });
           });
     } else {
-      MotionToastService.showWarning(
-          'QR Code không đúng vui lòng kiểm tra lại!');
+      ToastService.showError('QR Code không đúng vui lòng kiểm tra lại!');
       // MaterialDialogService.showConfirmDialog(
       //   msg: 'QR Code không đúng vui lòng kiểm tra lại!',
       //   onConfirmTap: () async {
@@ -74,7 +64,7 @@ class ReceivedPackageController extends BasePagingController<Package>
       //     _authController.reloadAccount();
       //   }).catchError((error) {
       //     Get.back();
-      //     MotionToastService.showError(error.messages[0]);
+      //    ToastService.showError(error.messages[0]);
       //   }
       // );
     }

@@ -4,14 +4,13 @@ import 'package:latlong2/latlong.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/data/constants/account_status.dart';
 import 'package:tien_duong/app/data/models/response_goong_model.dart';
 import 'package:tien_duong/app/data/models/route_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
 import 'package:tien_duong/app/data/repository/goong_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_route_model.dart';
-import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
 class CreateRouteController extends BaseController {
@@ -67,7 +66,7 @@ class CreateRouteController extends BaseController {
   }
 
   void back() {
-    Get.back();
+    Get.back(result: false);
   }
 
   Future<void> registerRoute() async {
@@ -76,7 +75,7 @@ class CreateRouteController extends BaseController {
         _toCoord.value == null ||
         _fromName == '' ||
         _toName == '') {
-      MotionToastService.showError('Vui lòng chọn nhập vị trí');
+      ToastService.showError('Vui lòng chọn nhập vị trí');
       return;
     }
     CreateRoute createRouteModel = CreateRoute(
@@ -96,18 +95,10 @@ class CreateRouteController extends BaseController {
         await QuickAlertService.showSuccess(
             'Bạn đã đăng kí tuyến đường thành công',
             duration: 3);
-        Get.offAllNamed(Routes.HOME);
+        Get.back(result: true);
       } else {
-        MotionToastService.showError('Lỗi không xác định');
+        ToastService.showError('Lỗi không xác định');
       }
-    }, onError: (ex) {
-      if (ex is BaseException) {
-        MotionToastService.showError(ex.message);
-      }
-    }, onStart: () {
-      isLoading = true;
-    }, onComplete: () {
-      isLoading = false;
-    });
+    }, onError: showError);
   }
 }

@@ -1,3 +1,5 @@
+import 'package:lottie/lottie.dart';
+import 'package:tien_duong/app/core/values/app_animation_assets.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/font_weight.dart';
 import 'package:tien_duong/app/core/values/input_styles.dart';
@@ -17,6 +19,7 @@ class PlaceField extends GetWidget<CreatePackagePageController> {
       required this.hintText,
       required this.labelText,
       required this.onSelected,
+      this.initialValue,
       this.autofocus = true,
       this.validator,
       this.textController});
@@ -24,6 +27,7 @@ class PlaceField extends GetWidget<CreatePackagePageController> {
   final String hintText;
   final String labelText;
   final bool autofocus;
+  final String? initialValue;
   final Function(ResponseGoong) onSelected;
   final TextEditingController? textController;
   final String? Function(String?)? validator;
@@ -36,6 +40,15 @@ class PlaceField extends GetWidget<CreatePackagePageController> {
         child: TypeAheadFormField<ResponseGoong>(
       debounceDuration: const Duration(milliseconds: 500),
       minCharsForSuggestions: 4,
+      loadingBuilder: (context) => Container(
+        alignment: Alignment.center,
+        width: double.infinity,
+        height: 120.w,
+        child: Center(
+          child: Lottie.asset(AppAnimationAssets.cuteDancingChicken,
+              fit: BoxFit.cover),
+        ),
+      ),
       textFieldConfiguration: TextFieldConfiguration(
           enabled: enable,
           controller: realTextCtrl,

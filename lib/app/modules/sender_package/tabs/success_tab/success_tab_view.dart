@@ -26,6 +26,8 @@ class SuccessTabView extends GetView<SuccessTabController> {
                       children: [
                         SuccessTabItem(
                             package: controller.dataApis[index],
+                            onPressedDetail: () => controller
+                                .gotoDetail(controller.dataApis[index]),
                             onSendFeedbackDriver: () => {
                                   controller
                                       .sendFeedback(controller.dataApis[index])

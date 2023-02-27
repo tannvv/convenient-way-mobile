@@ -24,6 +24,7 @@ abstract class PackageReq {
   Future<SimpleResponseModel> deliverCancel(CancelPackageModel model);
   Future<SimpleResponseModel> senderCancel(CancelPackageModel model);
   Future<SimpleResponseModel> senderConfirmDeliverySuccess(String packageId);
+  Future<SimpleResponseModel> senderConfirmDeliveryFailed(String packageId);
   Future<SimpleResponseModel> refundSuccess(String packageId);
   Future<SimpleResponseModel> refundFailed(String packageId);
   Future<Feedback> createFeedback(CreateFeedbackModel model);

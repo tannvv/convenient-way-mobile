@@ -229,4 +229,18 @@ class PackageReqImp extends BaseRepository implements PackageReq {
       rethrow;
     }
   }
+
+  @override
+  Future<SimpleResponseModel> senderConfirmDeliveryFailed(String packageId) {
+    String endpoint =
+        '${DioProvider.baseUrl}/packages/sender-confirm-delivery-failed';
+    var dioCall =
+        dioClient.put(endpoint, queryParameters: {'packageId': packageId});
+    try {
+      return callApi(dioCall)
+          .then((response) => SimpleResponseModel.fromJson(response.data));
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

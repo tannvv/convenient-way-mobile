@@ -4,9 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
-import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
 
 class PickUpFileController extends GetxController {
   late PermissionStatus permission;
@@ -26,14 +25,14 @@ class PickUpFileController extends GetxController {
   }
 
   Future<String?> scanQR() async {
-    try{
+    try {
       final scannedQrCode = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666',
         'Cancel',
         true,
         ScanMode.BARCODE,
       );
-      if(scannedQrCode!="-1"){
+      if (scannedQrCode != "-1") {
         // Get.snackbar(
         //   "Result", "QR Code: "+scannedQrCode,
         //   snackPosition: SnackPosition.BOTTOM,
@@ -56,7 +55,7 @@ class PickUpFileController extends GetxController {
 
   Future<String?> uploadImageToFirebase(XFile? image, String? url) async {
     if (image == null || url == null) {
-      MotionToastService.showError('Lỗi Không thể tải ảnh lên');
+      ToastService.showError('Lỗi Không thể tải ảnh lên');
       return null;
     }
     try {
@@ -65,7 +64,7 @@ class PickUpFileController extends GetxController {
       String downloadUrl = await snapshot.ref.getDownloadURL();
       return downloadUrl;
     } catch (e) {
-      MotionToastService.showError('Lỗi Không thể tải ảnh lên');
+      ToastService.showError('Lỗi Không thể tải ảnh lên');
       return null;
     }
   }
@@ -73,7 +72,7 @@ class PickUpFileController extends GetxController {
   Future<List<String>> uploadImagesToFirebase(
       List<XFile> images, String? url) async {
     if (images.isNotEmpty || url == null) {
-      MotionToastService.showError('Chưa lấy được ảnh');
+      ToastService.showError('Chưa lấy được ảnh');
       return [];
     }
     try {
@@ -87,7 +86,7 @@ class PickUpFileController extends GetxController {
       }
       return imagesUrl;
     } catch (e) {
-      MotionToastService.showError('Lỗi Không thể tải ảnh lên');
+      ToastService.showError('Lỗi Không thể tải ảnh lên');
       return [];
     }
   }

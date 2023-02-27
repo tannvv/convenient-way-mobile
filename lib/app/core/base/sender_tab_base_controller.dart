@@ -3,22 +3,29 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tien_duong/app/core/base/base_paging_controller.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/font_weight.dart';
+import 'package:tien_duong/app/core/values/input_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/models/account_rating_model.dart';
+import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/user_info.dart';
+import 'package:tien_duong/app/routes/app_pages.dart';
 
 abstract class SenderTabBaseController<T> extends BasePagingController<T> {
   AccountRating? deliverRating;
 
   final RxBool _isLoadingInfo = false.obs;
+
+  String? reason;
 
   final AccountRep _accountRepo = Get.find(tag: (AccountRep).toString());
 
@@ -91,5 +98,57 @@ abstract class SenderTabBaseController<T> extends BasePagingController<T> {
         ],
       ),
     ));
+  }
+
+  Future<dynamic> reCreatePackage(Package package) async {
+    return await Get.toNamed(Routes.CREATE_PACKAGE_PAGE, arguments: package);
+  }
+
+  Future<void> gotoDetail(Package package) async {
+    await Get.toNamed(Routes.PACKAGE_DETAIL, arguments: package);
+  }
+
+  Future<void> cancelPackageDialog(Function() callback) async {
+    await Dialogs.materialDialog(
+        context: Get.context!,
+        customView: _cancelWidget(),
+        actions: [
+          IconsButton(
+            onPressed: () {
+              Get.back();
+            },
+            text: 'Thoát',
+            iconData: Icons.arrow_back_ios_new,
+            color: const Color.fromARGB(255, 204, 203, 203),
+            textStyle: const TextStyle(color: Colors.black38),
+            iconColor: Colors.black38,
+          ),
+          IconsButton(
+            onPressed: () {
+              callback();
+              Get.back();
+            },
+            text: 'Hủy',
+            iconData: Icons.check,
+            color: Colors.red,
+            textStyle: const TextStyle(color: Colors.white),
+            iconColor: Colors.white,
+          ),
+        ]);
+  }
+
+  Widget _cancelWidget() {
+    return Container(
+      padding: EdgeInsets.only(top: 40.h),
+      height: 100.h,
+      width: 220.w,
+      child: TextField(
+        onChanged: (value) {
+          reason = value;
+        },
+        autofocus: true,
+        decoration: InputStyles.reasonCancel(labelText: 'Lý do hủy'),
+      ),
+    );
   }
 }

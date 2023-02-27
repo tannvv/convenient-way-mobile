@@ -68,7 +68,7 @@ class CreateRouteView extends GetView<CreateRouteController> {
                     children: [
                       const RouteInfo(),
                       SizedBox(
-                        height: 15.h,
+                        height: 40.h,
                       ),
                       saveRouteButton(),
                     ],

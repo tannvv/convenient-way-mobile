@@ -1,63 +1,46 @@
+import 'package:tien_duong/app/core/utils/datetime_utils.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
+import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/models/product_model.dart';
 
-class PackageCancel {
+class PackageCancel extends Package {
   String? reason;
-  String? cancelTime;
-  String? id;
-  String? startAddress;
-  double? startLongitude;
-  double? startLatitude;
-  String? destinationAddress;
-  double? destinationLongitude;
-  double? destinationLatitude;
-  String? receiverName;
-  String? receiverPhone;
-  double? distance;
-  double? volume;
-  double? weight;
-  String? status;
-  int? priceShip;
-  String? photoUrl;
-  String? note;
-  String? createdAt;
-  String? modifiedAt;
-  String? senderId;
-  Account? sender;
-  String? deliverId;
-  Account? deliver;
-  List<Product>? products;
+  DateTime? cancelTime;
 
   PackageCancel(
       {this.reason,
       this.cancelTime,
-      this.id,
-      this.startAddress,
-      this.startLongitude,
-      this.startLatitude,
-      this.destinationAddress,
-      this.destinationLongitude,
-      this.destinationLatitude,
-      this.receiverName,
-      this.receiverPhone,
-      this.distance,
-      this.volume,
-      this.weight,
-      this.status,
-      this.priceShip,
-      this.photoUrl,
-      this.note,
-      this.createdAt,
-      this.modifiedAt,
-      this.senderId,
-      this.sender,
-      this.deliverId,
-      this.deliver,
-      this.products});
+      id,
+      startAddress,
+      startLongitude,
+      startLatitude,
+      destinationAddress,
+      destinationLongitude,
+      destinationLatitude,
+      receiverName,
+      receiverPhone,
+      distance,
+      length,
+      width,
+      height,
+      weight,
+      status,
+      priceShip,
+      photoUrl,
+      note,
+      createdAt,
+      modifiedAt,
+      senderId,
+      sender,
+      deliverId,
+      deliver,
+      products});
 
   PackageCancel.fromJson(Map<String, dynamic> json) {
     reason = json['reason'];
-    cancelTime = json['cancelTime'];
+    cancelTime = json['cancelTime'] != null
+        ? DateTimeUtils.convertStringTimeZoneVN(json['cancelTime'])
+        : null;
     id = json['id'];
     startAddress = json['startAddress'];
     startLongitude = json['startLongitude'];
@@ -68,17 +51,22 @@ class PackageCancel {
     receiverName = json['receiverName'];
     receiverPhone = json['receiverPhone'];
     distance = json['distance'];
-    volume = json['volume'];
+    width = json['width'];
+    height = json['height'];
+    length = json['length'];
     weight = json['weight'];
     status = json['status'];
     priceShip = json['priceShip'];
     photoUrl = json['photoUrl'];
     note = json['note'];
-    createdAt = json['createdAt'];
-    modifiedAt = json['modifiedAt'];
+    createdAt = json['createdAt'] != null
+        ? DateTimeUtils.convertStringTimeZoneVN(json['createdAt'])
+        : null;
+    modifiedAt = json['modifiedAt'] != null
+        ? DateTimeUtils.convertStringTimeZoneVN(json['modifiedAt'])
+        : null;
     senderId = json['senderId'];
-    sender =
-    json['sender'] != null ? Account.fromJson(json['sender']) : null;
+    sender = json['sender'] != null ? Account.fromJson(json['sender']) : null;
     deliverId = json['deliverId'];
     deliver =
         json['deliver'] != null ? Account.fromJson(json['deliver']) : null;
@@ -90,50 +78,14 @@ class PackageCancel {
     }
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['reason'] = reason;
     data['cancelTime'] = cancelTime;
-    data['id'] = id;
-    data['startAddress'] = startAddress;
-    data['startLongitude'] = startLongitude;
-    data['startLatitude'] = startLatitude;
-    data['destinationAddress'] = destinationAddress;
-    data['destinationLongitude'] = destinationLongitude;
-    data['destinationLatitude'] = destinationLatitude;
-    data['receiverName'] = receiverName;
-    data['receiverPhone'] = receiverPhone;
-    data['distance'] = distance;
-    data['volume'] = volume;
-    data['weight'] = weight;
-    data['status'] = status;
-    data['priceShip'] = priceShip;
-    data['photoUrl'] = photoUrl;
-    data['note'] = note;
-    data['createdAt'] = createdAt;
-    data['modifiedAt'] = modifiedAt;
-    data['senderId'] = senderId;
-    if (sender != null) {
-      data['sender'] = deliver?.toJson();
-    }
-    data['deliverId'] = deliverId;
-    if (deliver != null) {
-      data['deliver'] = deliver?.toJson();
-    }
-    if (products != null) {
-      data['products'] = products?.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-
-  String getProductNames() {
-    String names = '';
-    products?.forEach((element) {
-      names += '${element.name!}, ';
+    super.toJson().forEach((key, value) {
+      data[key] = value;
     });
-    if (names.length > 3) {
-      names = names.substring(0, names.length - 2);
-    }
-    return names;
+    return data;
   }
 }

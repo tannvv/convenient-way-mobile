@@ -5,7 +5,7 @@ import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/controllers/map_location_controller.dart';
 import 'package:tien_duong/app/core/services/animated_map_service.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/core/values/app_assets.dart';
 import 'package:tien_duong/app/core/values/app_values.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
@@ -63,7 +63,7 @@ class LocationPackageController extends BaseController {
       },
       onError: (exception) {
         if (exception is BaseException) {
-          MotionToastService.showError(exception.message);
+          ToastService.showError(exception.message);
         }
       },
     );

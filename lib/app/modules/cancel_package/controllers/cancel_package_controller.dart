@@ -1,5 +1,5 @@
 import 'package:tien_duong/app/core/base/base_controller.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/cancel_package_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
@@ -23,7 +23,7 @@ class CancelPackageController extends BaseController {
         Get.back(result: true);
       }, onError: ((exception) {
         if (exception is BaseException) {
-          MotionToastService.showError(exception.message);
+          ToastService.showError(exception.message);
         }
       }));
     }

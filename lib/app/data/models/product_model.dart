@@ -1,3 +1,5 @@
+import 'package:tien_duong/app/modules/create_package_page/models/create_product_model.dart';
+
 class Product {
   int? price;
   String? name;
@@ -20,5 +22,13 @@ class Product {
     data['description'] = description;
     data['packageId'] = packageId;
     return data;
+  }
+
+  CreateProductModel toCreateModel() {
+    CreateProductModel model = CreateProductModel();
+    model.price = price;
+    model.name = name;
+    model.description = description;
+    return model;
   }
 }

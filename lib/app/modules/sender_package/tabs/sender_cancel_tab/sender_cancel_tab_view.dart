@@ -25,7 +25,9 @@ class SenderCancelTabView extends GetView<SenderCancelTabController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SenderCancelTabItem(
-                            package: controller.dataApis[index]),
+                            package: controller.dataApis[index],
+                            onReCreate: () => controller
+                                .reCreate(controller.dataApis[index])),
                       ],
                     );
                   },

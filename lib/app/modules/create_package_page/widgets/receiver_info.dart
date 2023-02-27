@@ -25,6 +25,7 @@ class ReceivedInfo extends GetWidget<CreatePackagePageController> {
                 hintText: '',
                 labelText: 'Địa chỉ',
                 autofocus: true,
+                initialValue: controller.destinationAddress,
                 validator: FunctionUtils.validatorNotNull,
                 textController: controller.senderTxtCtrl,
                 onSelected: controller.selectedSendLocation),

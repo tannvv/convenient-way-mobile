@@ -28,21 +28,25 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
                 Expanded(
                     child: TextFormField(
                   validator: FunctionUtils.validatorNotNull,
+                  keyboardType: TextInputType.number,
+                  initialValue: getInitFiledData(controller.length),
                   decoration: InputStyles.createPackage(
                           labelText: 'Chiều dài',
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 12.w))
-                      .copyWith(suffixText: 'm'),
+                      .copyWith(suffixText: 'cm'),
                 )),
                 Gap(12.w),
                 Expanded(
                     child: TextFormField(
                         validator: FunctionUtils.validatorNotNull,
+                        keyboardType: TextInputType.number,
+                        initialValue: getInitFiledData(controller.width),
                         decoration: InputStyles.createPackage(
                                 labelText: 'Chiều rộng',
                                 contentPadding:
                                     EdgeInsets.symmetric(horizontal: 12.w))
-                            .copyWith(suffixText: 'm'))),
+                            .copyWith(suffixText: 'cm'))),
               ],
             ),
             Gap(12.h),
@@ -51,16 +55,22 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
                 Expanded(
                     child: TextFormField(
                   validator: FunctionUtils.validatorNotNull,
+                  keyboardType: TextInputType.number,
+                  initialValue: getInitFiledData(controller.height),
                   decoration: InputStyles.createPackage(
                           labelText: 'Chiều cao',
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 12.w))
-                      .copyWith(suffixText: 'm'),
+                      .copyWith(suffixText: 'cm'),
                 )),
                 Gap(12.w),
                 Expanded(
                     child: TextFormField(
                         validator: FunctionUtils.validatorNotNull,
+                        keyboardType: TextInputType.number,
+                        initialValue: controller.weight == null
+                            ? ''
+                            : controller.weight.toString(),
                         decoration: InputStyles.createPackage(
                                 labelText: 'Khối lượng',
                                 contentPadding:
@@ -119,6 +129,7 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
                               decoration: InputStyles.createPackageZeroPadding(
                                 labelText: 'Tên',
                               ),
+                              initialValue: controller.products[index].name,
                               validator: FunctionUtils.validatorNotNull,
                               onChanged: (data) {
                                 controller.products[index].name = data;
@@ -131,7 +142,11 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
                             child: TextFormField(
                               decoration: InputStyles.createPackageZeroPadding(
                                 labelText: 'Đơn giá',
-                              ),
+                              ).copyWith(suffixText: 'đ'),
+                              initialValue: controller.products[index].price ==
+                                      null
+                                  ? ''
+                                  : controller.products[index].price.toString(),
                               validator: FunctionUtils.validatorNotNull,
                               keyboardType: TextInputType.number,
                               onChanged: (data) {
@@ -149,6 +164,7 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
                         decoration: InputStyles.createPackageZeroPadding(
                           labelText: 'Mô tả',
                         ),
+                        initialValue: controller.products[index].description,
                         validator: FunctionUtils.validatorNotNull,
                         onChanged: (data) {
                           controller.products[index].description = data;
@@ -175,5 +191,13 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
           separatorBuilder: (context, index) => Gap(20.h),
           itemCount: controller.products.length),
     );
+  }
+
+  String? getInitFiledData(double? value) {
+    if (value == null) {
+      return null;
+    } else {
+      return value.toInt().toString();
+    }
   }
 }

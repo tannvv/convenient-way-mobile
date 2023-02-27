@@ -26,6 +26,8 @@ class SuggestPackageController extends BasePagingController<SuggestPackage> {
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
 
   void gotoDetail(SuggestPackage suggest) async {
+    bool isExistedRoute = await _authController.requireCreateRoute();
+    if (!isExistedRoute) return;
     dynamic result =
         await Get.toNamed(Routes.SUGGEST_PACKAGE_DETAIL, arguments: suggest);
     if (result == true) {

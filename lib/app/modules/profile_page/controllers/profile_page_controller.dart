@@ -18,7 +18,7 @@ class ProfilePageController extends BaseController {
       _authController.account?.balance.toVND() ?? '-';
   String get initName =>
       '${account?.infoUser?.firstName ?? '-'} ${account?.infoUser?.lastName ?? '-'}';
-  String get initPhone => '+84 ${account?.infoUser!.phone!}';
+  String get initPhone => '${account?.infoUser!.phone!}';
   String get initGender => account?.infoUser?.gender ?? 'OTHER';
   String get initEmail => account?.infoUser?.email ?? '-';
   @override
