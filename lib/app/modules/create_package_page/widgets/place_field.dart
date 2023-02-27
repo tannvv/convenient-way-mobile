@@ -1,9 +1,7 @@
 import 'package:lottie/lottie.dart';
 import 'package:tien_duong/app/core/values/app_animation_assets.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
-import 'package:tien_duong/app/core/values/font_weight.dart';
 import 'package:tien_duong/app/core/values/input_styles.dart';
-import 'package:tien_duong/app/core/values/shadow_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/data/models/response_goong_model.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +17,8 @@ class PlaceField extends GetWidget<CreatePackagePageController> {
       required this.hintText,
       required this.labelText,
       required this.onSelected,
+      this.keyField,
+      this.focusNode,
       this.initialValue,
       this.autofocus = true,
       this.validator,
@@ -27,10 +27,12 @@ class PlaceField extends GetWidget<CreatePackagePageController> {
   final String hintText;
   final String labelText;
   final bool autofocus;
+  final FocusNode? focusNode;
   final String? initialValue;
   final Function(ResponseGoong) onSelected;
   final TextEditingController? textController;
   final String? Function(String?)? validator;
+  final GlobalKey<FormFieldState>? keyField;
   final TextEditingController reserveTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -49,10 +51,12 @@ class PlaceField extends GetWidget<CreatePackagePageController> {
               fit: BoxFit.cover),
         ),
       ),
+      key: keyField,
       textFieldConfiguration: TextFieldConfiguration(
           enabled: enable,
           controller: realTextCtrl,
           autofocus: autofocus,
+          focusNode: focusNode,
           style: subtitle1.copyWith(
             color: AppColors.lightBlack,
           ),

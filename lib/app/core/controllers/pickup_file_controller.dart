@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
@@ -71,7 +72,7 @@ class PickUpFileController extends GetxController {
 
   Future<List<String>> uploadImagesToFirebase(
       List<XFile> images, String? url) async {
-    if (images.isNotEmpty || url == null) {
+    if (images.isEmpty || url == null) {
       ToastService.showError('Chưa lấy được ảnh');
       return [];
     }
@@ -88,6 +89,37 @@ class PickUpFileController extends GetxController {
     } catch (e) {
       ToastService.showError('Lỗi Không thể tải ảnh lên');
       return [];
+    }
+  }
+
+  Future<List<String>> uploadImagesToFirebase2(
+      {required Iterable<ImageFile> images,
+      String? url,
+      Function()? onStart,
+      Function()? onComplete}) async {
+    if (images.isEmpty || url == null) {
+      ToastService.showError('Chưa lấy được ảnh');
+      return [];
+    }
+    try {
+      onStart != null ? onStart() : null;
+      List<String> imagesUrl = [];
+      for (var image in images) {
+        if (image.path != null) {
+          String fileName = image.path!.substring(image.path!.lastIndexOf('/'));
+          File fileImage = File(image.path!);
+          var snapshot =
+              await _storage.ref('$url/$fileName').putFile(fileImage);
+          String downloadUrl = await snapshot.ref.getDownloadURL();
+          imagesUrl.add(downloadUrl);
+        }
+      }
+      return imagesUrl;
+    } catch (e) {
+      ToastService.showError('Lỗi Không thể tải ảnh lên');
+      return [];
+    } finally {
+      onComplete != null ? onComplete() : null;
     }
   }
 }

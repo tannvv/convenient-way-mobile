@@ -60,6 +60,9 @@ final subtitle2 = TextStyle(
   letterSpacing: 0.001.sp,
 );
 
+final header =
+    subtitle2.copyWith(fontWeight: FontWeight.bold, color: Colors.grey[500]);
+
 final body1 = TextStyle(
   color: AppColors.softBlack,
   fontSize: 16.sp,

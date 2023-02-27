@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
+import 'package:tien_duong/app/core/controllers/pickup_file_controller.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
+import 'package:tien_duong/app/core/widgets/custom_overlay.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/models/response_goong_model.dart';
 import 'package:tien_duong/app/data/repository/goong_req.dart';
@@ -17,12 +21,43 @@ class CreatePackagePageController extends BaseController {
   final Package? _package = Get.arguments as Package?;
 
   final AuthController _authController = Get.find<AuthController>();
+  final PickUpFileController _pickUpFileController =
+      Get.find<PickUpFileController>();
   final GoongReq _goongRepo = Get.find(tag: (GoongReq).toString());
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
 
   final GlobalKey<FormState> receiverFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> pickupFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> productsFormKey = GlobalKey<FormState>();
+
+  final GlobalKey<FormFieldState> startLocationKey =
+      GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> endLocationKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> receiverNameKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> receiverPhoneKey =
+      GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> lengthKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> widthKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> heightKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> weightKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> noteKey = GlobalKey<FormFieldState>();
+
+  final FocusNode focusStartLocationNode = FocusNode();
+  final FocusNode focusEndLocationNode = FocusNode();
+  final FocusNode focusReceiverPhone = FocusNode();
+  final FocusNode focusReceiverName = FocusNode();
+  final FocusNode focusLength = FocusNode();
+  final FocusNode focusWidth = FocusNode();
+  final FocusNode focusHeight = FocusNode();
+  final FocusNode focusWeight = FocusNode();
+  final FocusNode focusNote = FocusNode();
+
+  final imagesController = MultiImagePickerController(
+    maxImages: 10,
+    withReadStream: true,
+    allowedImageTypes: ['png', 'jpg', 'jpeg'],
+  );
+  Iterable<ImageFile> images = [];
 
   final formKey = GlobalKey<FormState>();
 
@@ -53,8 +88,10 @@ class CreatePackagePageController extends BaseController {
   @override
   void onInit() {
     setDataReCreate();
+    listenFocusNode();
     receivedName = _authController.account?.infoUser?.firstName ?? '';
     receivedPhone = _authController.account?.infoUser?.phone ?? '';
+
     super.onInit();
   }
 
@@ -142,35 +179,105 @@ class CreatePackagePageController extends BaseController {
     if (!productsFormKey.currentState!.validate()) return;
     MaterialDialogService.showConfirmDialog(
         msg: 'Bạn chắc chắn muốn tạo gói hàng này?',
-        onConfirmTap: () {
-          distance = Geolocator.distanceBetween(startLatitude!, startLatitude!,
-              destinationLatitude!, destinationLongitude!);
-          CreatePackageModel createPackageModel = CreatePackageModel(
-            startAddress: startAddress,
-            startLongitude: startLongitude,
-            startLatitude: startLatitude,
-            destinationAddress: destinationAddress,
-            destinationLongitude: destinationLongitude,
-            destinationLatitude: destinationLatitude,
-            receiverName: receivedName,
-            receiverPhone: receivedPhone,
-            distance: distance,
-            length: length,
-            width: width,
-            height: height,
-            weight: weight,
-            photoUrl: const Uuid().v4(),
-            priceShip: 20000,
-            note: note,
-            senderId: _authController.account?.id,
-            products: products,
-          );
-
-          var future = _packageRepo.create(createPackageModel);
-          callDataService(future, onSuccess: (data) {
-            ToastService.showSuccess('Tạo đơn hàng thành công');
-            Get.back(); // return waiting screen
-          }, onError: showError, onStart: showOverlay, onComplete: hideOverlay);
+        onConfirmTap: () async {
+          uploadImageAndCreatePackage();
         });
+  }
+
+  Future<void> uploadImageAndCreatePackage() async {
+    String packageId = const Uuid().v4();
+
+    List<String> urlsImage =
+        await _pickUpFileController.uploadImagesToFirebase2(
+      images: images,
+      url: 'packages/$packageId',
+      onComplete: Get.context!.loaderOverlay.hide,
+      onStart: () => Get.context!.loaderOverlay.show(
+          widget: const CustomOverlay(
+        content: 'Đang tải ảnh lên...',
+      )),
+    );
+    if(urlsImage.isEmpty) return;
+    Get.context!.loaderOverlay.show(
+        widget: const CustomOverlay(
+      content: 'Đang tạo gói hàng...',
+    ));
+    distance = Geolocator.distanceBetween(startLatitude!, startLatitude!,
+        destinationLatitude!, destinationLongitude!);
+    CreatePackageModel createPackageModel = CreatePackageModel(
+      id: packageId,
+      startAddress: startAddress,
+      startLongitude: startLongitude,
+      startLatitude: startLatitude,
+      destinationAddress: destinationAddress,
+      destinationLongitude: destinationLongitude,
+      destinationLatitude: destinationLatitude,
+      receiverName: receivedName,
+      receiverPhone: receivedPhone,
+      distance: distance,
+      length: length,
+      width: width,
+      height: height,
+      weight: weight,
+      photoUrl: urlsImage.first,
+      priceShip: 20000,
+      note: note,
+      senderId: _authController.account?.id,
+      products: products,
+    );
+
+    var future = _packageRepo.create(createPackageModel);
+    callDataService(future, onSuccess: (data) {
+      ToastService.showSuccess('Tạo đơn hàng thành công');
+      Get.back(); // return waiting screen
+    }, onError: showError, onComplete: hideOverlay);
+  }
+
+  void listenFocusNode() {
+    focusStartLocationNode.addListener(() {
+      if (!focusStartLocationNode.hasFocus) {
+        // startLocationKey.currentState!.validate();
+      }
+    });
+    focusEndLocationNode.addListener(() {
+      if (!focusEndLocationNode.hasFocus) {
+        // endLocationKey.currentState!.validate();
+      }
+    });
+    focusReceiverPhone.addListener(() {
+      if (!focusReceiverPhone.hasFocus) {
+        // receiverPhoneKey.currentState!.validate();
+      }
+    });
+    focusReceiverName.addListener(() {
+      if (!focusReceiverName.hasFocus) {
+        // receiverNameKey.currentState!.validate();
+      }
+    });
+    focusLength.addListener(() {
+      if (!focusLength.hasFocus) {
+        // lengthKey.currentState!.validate();
+      }
+    });
+    focusWidth.addListener(() {
+      if (!focusWidth.hasFocus) {
+        // widthKey.currentState!.validate();
+      }
+    });
+    focusHeight.addListener(() {
+      if (!focusHeight.hasFocus) {
+        // heightKey.currentState!.validate();
+      }
+    });
+    focusWeight.addListener(() {
+      if (!focusWeight.hasFocus) {
+        // weightKey.currentState!.validate();
+      }
+    });
+    focusNote.addListener(() {
+      if (!focusNote.hasFocus) {
+        // noteKey.currentState!.validate();
+      }
+    });
   }
 }

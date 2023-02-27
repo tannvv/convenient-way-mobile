@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttericon/entypo_icons.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:tien_duong/app/core/utils/function_utils.dart';
-import 'package:tien_duong/app/core/values/app_colors.dart';
-import 'package:tien_duong/app/core/values/font_weight.dart';
 import 'package:tien_duong/app/core/values/input_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/modules/create_package_page/controllers/create_package_page_controller.dart';
+import 'package:tien_duong/app/modules/create_package_page/widgets/images_view.dart';
 
 class ProductInfo extends GetWidget<CreatePackagePageController> {
   const ProductInfo({super.key});
@@ -25,88 +23,118 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
           children: [
             Row(
               children: [
-                Expanded(
-                    child: TextFormField(
-                  validator: FunctionUtils.validatorNotNull,
-                  keyboardType: TextInputType.number,
-                  initialValue: getInitFiledData(controller.length),
-                  decoration: InputStyles.createPackage(
-                          labelText: 'Chiều dài',
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 12.w))
-                      .copyWith(suffixText: 'cm'),
-                )),
+                Expanded(child: _length()),
                 Gap(12.w),
-                Expanded(
-                    child: TextFormField(
-                        validator: FunctionUtils.validatorNotNull,
-                        keyboardType: TextInputType.number,
-                        initialValue: getInitFiledData(controller.width),
-                        decoration: InputStyles.createPackage(
-                                labelText: 'Chiều rộng',
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 12.w))
-                            .copyWith(suffixText: 'cm'))),
+                Expanded(child: _width()),
               ],
             ),
             Gap(12.h),
             Row(
               children: [
-                Expanded(
-                    child: TextFormField(
-                  validator: FunctionUtils.validatorNotNull,
-                  keyboardType: TextInputType.number,
-                  initialValue: getInitFiledData(controller.height),
-                  decoration: InputStyles.createPackage(
-                          labelText: 'Chiều cao',
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 12.w))
-                      .copyWith(suffixText: 'cm'),
-                )),
+                Expanded(child: _height()),
                 Gap(12.w),
-                Expanded(
-                    child: TextFormField(
-                        validator: FunctionUtils.validatorNotNull,
-                        keyboardType: TextInputType.number,
-                        initialValue: controller.weight == null
-                            ? ''
-                            : controller.weight.toString(),
-                        decoration: InputStyles.createPackage(
-                                labelText: 'Khối lượng',
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 12.w))
-                            .copyWith(suffixText: 'kg'))),
+                Expanded(child: _weight()),
               ],
             ),
-            Gap(12.h),
-            Text('Các sản phẩm: ',
-                style: subtitle2.copyWith(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeights.medium,
-                    color: AppColors.description)),
+            Gap(16.h),
+            Text('Các sản phẩm', style: header),
             Obx(
               () => SizedBox(
                   height: controller.products.length * 150.h,
                   child: _products()),
             ),
-            ElevatedButton.icon(
-                onPressed: () {
-                  controller.createProductToList();
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(AppColors.white),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.r))),
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blue.withOpacity(0.2),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.r)),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 14.w),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.add,
+                      color: Colors.blue,
+                      size: 16.sp,
+                    ),
+                    Gap(4.w),
+                    Text(
+                      'Thêm sản phẩm',
+                      style: subtitle2.copyWith(color: Colors.blue),
+                    )
+                  ],
                 ),
-                icon:
-                    Icon(Entypo.plus, size: 16.sp, color: AppColors.primary800),
-                label: Text(
-                  'Thêm sản phẩm',
-                  style: subtitle2.copyWith(color: AppColors.primary800),
-                ))
+              ),
+              onPressed: () {
+                controller.createProductToList();
+              },
+            ),
+            Gap(16.h),
+            const ImagesView(),
+            Gap(16.h),
           ],
         ),
       ),
+    );
+  }
+
+  TextFormField _weight() {
+    return TextFormField(
+        validator: FunctionUtils.validatorNotNull,
+        keyboardType: TextInputType.number,
+        onChanged: (value) => controller.weight = double.parse(value),
+        initialValue:
+            controller.weight == null ? '' : controller.weight.toString(),
+        focusNode: controller.focusWeight,
+        decoration: InputStyles.createPackage(
+                labelText: 'Khối lượng',
+                contentPadding: EdgeInsets.symmetric(horizontal: 12.w))
+            .copyWith(suffixText: 'kg'));
+  }
+
+  TextFormField _height() {
+    return TextFormField(
+      validator: FunctionUtils.validatorNotNull,
+      keyboardType: TextInputType.number,
+      onChanged: (value) => controller.height = double.parse(value),
+      initialValue: getInitFiledData(controller.height),
+      focusNode: controller.focusHeight,
+      key: controller.heightKey,
+      decoration: InputStyles.createPackage(
+              labelText: 'Chiều cao',
+              contentPadding: EdgeInsets.symmetric(horizontal: 12.w))
+          .copyWith(suffixText: 'cm'),
+    );
+  }
+
+  TextFormField _width() {
+    return TextFormField(
+        validator: FunctionUtils.validatorNotNull,
+        keyboardType: TextInputType.number,
+        onChanged: (value) => controller.width = double.parse(value),
+        initialValue: getInitFiledData(controller.width),
+        focusNode: controller.focusWidth,
+        key: controller.widthKey,
+        decoration: InputStyles.createPackage(
+                labelText: 'Chiều rộng',
+                contentPadding: EdgeInsets.symmetric(horizontal: 12.w))
+            .copyWith(suffixText: 'cm'));
+  }
+
+  TextFormField _length() {
+    return TextFormField(
+      validator: FunctionUtils.validatorNotNull,
+      keyboardType: TextInputType.number,
+      initialValue: getInitFiledData(controller.length),
+      onChanged: (value) => controller.length = double.parse(value),
+      focusNode: controller.focusLength,
+      key: controller.lengthKey,
+      decoration: InputStyles.createPackage(
+              labelText: 'Chiều dài',
+              contentPadding: EdgeInsets.symmetric(horizontal: 12.w))
+          .copyWith(suffixText: 'cm'),
     );
   }
 

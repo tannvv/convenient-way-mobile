@@ -21,6 +21,8 @@ class LocationPickup extends GetWidget<CreatePackagePageController> {
               enable: true,
               hintText: '',
               labelText: 'Điểm đi',
+              key: controller.startLocationKey,
+              focusNode: controller.focusStartLocationNode,
               initialValue: controller.startAddress,
               onSelected: controller.selectedPickupLocation,
               validator: FunctionUtils.validatorNotNull,

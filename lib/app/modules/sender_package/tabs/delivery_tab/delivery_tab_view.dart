@@ -26,6 +26,8 @@ class DeliveryTabView extends GetView<DeliveryTabController> {
                       children: [
                         DeliveryTabItem(
                             package: controller.dataApis[index],
+                            onShowQR: () => controller
+                                .showQRCode(controller.dataApis[index].id!),
                             showInfoDeliver: () => controller.showInfoDeliver(
                                 controller.dataApis[index].deliver!)),
                       ],
