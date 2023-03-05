@@ -24,15 +24,15 @@ class SuggestPackageItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              const Text('Tên người gửi: '),
-              Text(
-                '${suggestPackage.sender?.infoUser?.firstName}',
-                style: subtitle2,
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     const Text('Tên người gửi: '),
+          //     Text(
+          //       '${suggestPackage.sender?.infoUser?.firstName}',
+          //       style: subtitle2,
+          //     ),
+          //   ],
+          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -47,39 +47,39 @@ class SuggestPackageItem extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(
-                '${suggestPackage.compoPrice?.toVND()}',
-                style: subtitle2.copyWith(
-                  color: AppColors.primary800,
-                  fontWeight: FontWeights.medium,
-                ),
-              )
+              // Text(
+              //   '${suggestPackage.compoPrice?.toVND()}',
+              //   style: subtitle2.copyWith(
+              //     color: AppColors.primary800,
+              //     fontWeight: FontWeights.medium,
+              //   ),
+              // )
             ],
           ),
-          Row(
-            children: [
-              const Text('Sản phẩm: '),
-              Expanded(
-                child: Text(
-                  products,
-                  style: subtitle2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              const Text('Điểm gửi hàng: '),
-              Expanded(
-                child: Text(
-                  '${suggestPackage.packages![0].startAddress}',
-                  style: subtitle2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     const Text('Sản phẩm: '),
+          //     Expanded(
+          //       child: Text(
+          //         products,
+          //         style: subtitle2,
+          //         overflow: TextOverflow.ellipsis,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // Row(
+          //   children: [
+          //     const Text('Điểm gửi hàng: '),
+          //     Expanded(
+          //       child: Text(
+          //         '${suggestPackage.packages![0].startAddress}',
+          //         style: subtitle2,
+          //         overflow: TextOverflow.ellipsis,
+          //       ),
+          //     ),
+          //   ],
+          // ),
           Row(
             children: [
               const Text('Tổng phí vận chuyển: '),

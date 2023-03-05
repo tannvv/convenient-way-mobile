@@ -21,8 +21,8 @@ class CreateRouteController extends BaseController {
   final Rx<LatLng?> _toCoord = Rx<LatLng?>(null);
   String _fromName = '';
   final Rx<LatLng?> _fromCoord = Rx<LatLng?>(null);
-  final TextEditingController homeController = TextEditingController();
-  final TextEditingController workController = TextEditingController();
+  final TextEditingController startLocationController = TextEditingController();
+  final TextEditingController endLocationController = TextEditingController();
 
   final AccountRep _accountRepo = Get.find(tag: (AccountRep).toString());
   final GoongReq _goongRepo = Get.find(tag: (GoongReq).toString());

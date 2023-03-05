@@ -1,3 +1,5 @@
+import 'package:lottie/lottie.dart';
+import 'package:tien_duong/app/core/values/app_animation_assets.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/input_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
@@ -52,14 +54,29 @@ class PlaceField extends GetWidget<CreateRouteController> {
           itemBuilder: (context, suggestion) {
             return ListTile(
               leading: const Icon(Icons.location_pin),
-              minLeadingWidth: 20,
-              title: Text(
-                suggestion.name ?? 'Unknown',
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
+              minLeadingWidth: 10.w,
+              title: Padding(
+                padding: EdgeInsets.symmetric(vertical: 2.h),
+                child: Text(
+                  suggestion.name ?? 'Unknown',
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: caption.copyWith(
+                    fontSize: 14.sp,
+                  ),
+                ),
               ),
             );
           },
+          loadingBuilder: (context) => Container(
+            alignment: Alignment.center,
+            width: double.infinity,
+            height: 120.w,
+            child: Center(
+              child: Lottie.asset(AppAnimationAssets.cuteDancingChicken,
+                  fit: BoxFit.cover),
+            ),
+          ),
           onSuggestionSelected: (suggestion) {
             onSelected(suggestion);
             realTextCtrl.text = suggestion.name ?? '';
@@ -68,7 +85,12 @@ class PlaceField extends GetWidget<CreateRouteController> {
               padding: EdgeInsets.all(10.w),
               child: const Text('Không tìm thấy địa chỉ')),
           errorBuilder: ((context, error) => Padding(
-              padding: EdgeInsets.all(10.w), child: Text(error.toString()))),
+              padding: EdgeInsets.all(10.w),
+              child: const Text('Không có kết quả'))),
+          suggestionsBoxDecoration: SuggestionsBoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: AppColors.white,
+          ),
         ));
   }
 }

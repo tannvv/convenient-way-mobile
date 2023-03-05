@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:tien_duong/app/core/utils/function_utils.dart';
 import 'package:tien_duong/app/modules/create_package_page/controllers/create_package_page_controller.dart';
 import 'package:tien_duong/app/modules/create_package_page/widgets/place_field.dart';
 
@@ -25,7 +24,16 @@ class LocationPickup extends GetWidget<CreatePackagePageController> {
               focusNode: controller.focusStartLocationNode,
               initialValue: controller.startAddress,
               onSelected: controller.selectedPickupLocation,
-              validator: FunctionUtils.validatorNotNull,
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return 'Vui lòng nhập địa chỉ';
+                }
+                if (controller.startLatitude == null ||
+                    controller.startLongitude == null) {
+                  return 'Không thể tìm thấy vị trí';
+                }
+                return null;
+              },
               textController: controller.pickupTxtCtrl,
             ),
             Gap(20.h),

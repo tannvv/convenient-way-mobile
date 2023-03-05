@@ -120,7 +120,7 @@ class BackgroundNotificationService {
         debugPrint('No internet connection');
       }
     } catch (e) {
-      debugPrint('Error: $e');
+      debugPrint('Error exception send tracking notification');
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/widgets/hyper_shape.dart';
+import 'package:tien_duong/app/core/widgets/place_field_default.dart';
 import 'package:tien_duong/app/modules/manage_route/controllers/manage_route_controller.dart';
 import 'package:tien_duong/app/modules/manage_route/widgets/place_field.dart';
 import 'package:flutter/material.dart';
@@ -47,18 +48,28 @@ class RouteInfo extends GetWidget<ManageRouteController> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              PlaceField(
+                              PlaceFieldDefault(
                                 enable: controller.isEditField(index),
                                 labelText: 'Điểm đi',
                                 hintText:
                                     controller.routes[index].fromName ?? '',
+                                onClear: () {
+                                  controller.routes[index].fromName = '';
+                                  controller.routes[index].fromLatitude = 0;
+                                  controller.routes[index].fromLongitude = 0;
+                                },
                                 onSelected: controller.updateFromLocation,
                               ),
-                              PlaceField(
+                              PlaceFieldDefault(
                                 labelText: 'Điểm đến',
                                 enable: controller.isEditField(index),
                                 onSelected: controller.updateToLocation,
                                 hintText: controller.routes[index].toName ?? '',
+                                onClear: () {
+                                  controller.routes[index].toName = '';
+                                  controller.routes[index].toLatitude = 0;
+                                  controller.routes[index].toLongitude = 0;
+                                },
                               ),
                             ],
                           ),
@@ -71,14 +82,14 @@ class RouteInfo extends GetWidget<ManageRouteController> {
                             backgroundColor: AppColors.blue,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             padding: const EdgeInsets.all(0),
-                            minimumSize: Size(40.r, 40.r),
+                            minimumSize: Size(24.r, 24.r),
                           ),
                           child: SizedBox(
-                            height: 40.r,
-                            width: 40.r,
+                            height: 24.r,
+                            width: 24.r,
                             child: Icon(
                               Icons.swap_vert,
-                              size: 23.r,
+                              size: 16.r,
                               color: AppColors.white,
                             ),
                           ),

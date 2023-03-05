@@ -19,6 +19,7 @@ class ReceivedInfo extends GetWidget<CreatePackagePageController> {
       child: Form(
         key: controller.receiverFormKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PlaceField(
                 enable: true,
@@ -28,7 +29,16 @@ class ReceivedInfo extends GetWidget<CreatePackagePageController> {
                 key: controller.endLocationKey,
                 focusNode: controller.focusEndLocationNode,
                 initialValue: controller.destinationAddress,
-                validator: FunctionUtils.validatorNotNull,
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Vui lòng nhập địa chỉ';
+                  }
+                  if (controller.destinationLatitude == null ||
+                      controller.destinationLongitude == null) {
+                    return 'Không thể tìm thấy vị trí';
+                  }
+                  return null;
+                },
                 textController: controller.senderTxtCtrl,
                 onSelected: controller.selectedSendLocation),
             Gap(20.h),
@@ -59,6 +69,24 @@ class ReceivedInfo extends GetWidget<CreatePackagePageController> {
                   labelText: 'Số điện thoại',
                 )),
             Gap(20.h),
+            Obx(
+              () => controller.distance.value != 0.0
+                  ? RichText(
+                      textAlign: TextAlign.start,
+                      text: TextSpan(
+                          text:
+                              'Khoảng cách: ${controller.distance.value.toStringAsFixed(2)} km',
+                          style:
+                              subtitle1.copyWith(color: AppColors.lightBlack),
+                          children: [
+                            TextSpan(
+                              text:
+                                  '\nGiá vận chuyển: ${controller.getPriceShip()} đ',
+                            )
+                          ]),
+                    )
+                  : Container(),
+            )
           ],
         ),
       ),

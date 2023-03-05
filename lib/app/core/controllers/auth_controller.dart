@@ -180,6 +180,8 @@ class AuthController extends BaseController {
           closeOnFinish: false,
           onConfirmTap: () async {
             result = await Get.toNamed(Routes.CREATE_ROUTE) as bool?;
+            Get.back();
+            return false;
           });
     } else {
       result = true;

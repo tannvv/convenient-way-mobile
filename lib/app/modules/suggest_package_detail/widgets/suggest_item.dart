@@ -42,24 +42,24 @@ class SuggestItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Địa chỉ giao: ',
-                      style: caption.copyWith(fontSize: 14),
-                    ),
-                    Expanded(
-                      child: Text(
-                        package.destinationAddress ?? '',
-                        style: subtitle2.copyWith(
-                            fontWeight: FontWeights.medium,
-                            color: AppColors.softBlack,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                    )
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   children: [
+                //     Text(
+                //       'Địa chỉ giao: ',
+                //       style: caption.copyWith(fontSize: 14),
+                //     ),
+                //     Expanded(
+                //       child: Text(
+                //         package.destinationAddress ?? '',
+                //         style: subtitle2.copyWith(
+                //             fontWeight: FontWeights.medium,
+                //             color: AppColors.softBlack,
+                //             overflow: TextOverflow.ellipsis),
+                //       ),
+                //     )
+                //   ],
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -78,24 +78,24 @@ class SuggestItem extends StatelessWidget {
                     )
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Sản phẩm: ',
-                      style: caption.copyWith(fontSize: 14),
-                    ),
-                    Expanded(
-                      child: Text(
-                        package.getProductNames(),
-                        style: subtitle2.copyWith(
-                            fontWeight: FontWeights.medium,
-                            color: AppColors.softBlack,
-                            overflow: TextOverflow.ellipsis),
-                      ),
-                    )
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   children: [
+                //     Text(
+                //       'Sản phẩm: ',
+                //       style: caption.copyWith(fontSize: 14),
+                //     ),
+                //     Expanded(
+                //       child: Text(
+                //         package.getProductNames(),
+                //         style: subtitle2.copyWith(
+                //             fontWeight: FontWeights.medium,
+                //             color: AppColors.softBlack,
+                //             overflow: TextOverflow.ellipsis),
+                //       ),
+                //     )
+                //   ],
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -120,14 +120,14 @@ class SuggestItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: Text(
-                        price.toVND(),
-                        style: subtitle2.copyWith(
-                            color: AppColors.primary900,
-                            fontWeight: FontWeights.bold),
-                      ),
-                    )
+                    // Expanded(
+                    //   child: Text(
+                    //     price.toVND(),
+                    //     style: subtitle2.copyWith(
+                    //         color: AppColors.primary900,
+                    //         fontWeight: FontWeights.bold),
+                    //   ),
+                    // )
                   ],
                 )
               ],

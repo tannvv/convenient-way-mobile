@@ -44,39 +44,39 @@ class PickupMap extends GetWidget<SuggestPackageDetailController> {
                 },
               ),
             ),
-            Obx(
-              () => MarkerLayerWidget(
-                  options: MarkerLayerOptions(markers: [
-                Marker(
-                    height: markerSize,
-                    width: markerSize,
-                    point: controller.coordSender,
-                    builder: (_) => Image.asset(
-                          AppAssets.box,
-                        )),
-                if (controller.coordAccount.isNotEmpty)
-                  Marker(
-                      height: markerSize,
-                      width: markerSize,
-                      point: controller.coordAccount[0],
-                      builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
-                if (controller.coordAccount.length > 1)
-                  Marker(
-                      height: markerSize,
-                      width: markerSize,
-                      point: controller.coordAccount[1],
-                      builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
-                for (int i = 0; i < controller.coordPackage.length; i++)
-                  if (controller.selectedPackages
-                      .contains(controller.packageIds[i]))
-                    Marker(
-                        height: markerSize,
-                        width: markerSize,
-                        point: controller.coordPackage[i],
-                        builder: (_) =>
-                            SvgPicture.asset(AppAssets.locationBlueIcon))
-              ])),
-            ),
+            // Obx(
+            //   () => MarkerLayerWidget(
+            //       options: MarkerLayerOptions(markers: [
+            //     Marker(
+            //         height: markerSize,
+            //         width: markerSize,
+            //         point: controller.coordSender,
+            //         builder: (_) => Image.asset(
+            //               AppAssets.box,
+            //             )),
+            //     if (controller.coordAccount.isNotEmpty)
+            //       Marker(
+            //           height: markerSize,
+            //           width: markerSize,
+            //           point: controller.coordAccount[0],
+            //           builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
+            //     if (controller.coordAccount.length > 1)
+            //       Marker(
+            //           height: markerSize,
+            //           width: markerSize,
+            //           point: controller.coordAccount[1],
+            //           builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
+            //     for (int i = 0; i < controller.coordPackage.length; i++)
+            //       if (controller.selectedPackages
+            //           .contains(controller.packageIds[i]))
+            //         Marker(
+            //             height: markerSize,
+            //             width: markerSize,
+            //             point: controller.coordPackage[i],
+            //             builder: (_) =>
+            //                 SvgPicture.asset(AppAssets.locationBlueIcon))
+            //   ])),
+            // ),
             LocationMarkerLayerWidget(
               options: LocationMarkerLayerOptions(
                 moveAnimationDuration: const Duration(milliseconds: 800),

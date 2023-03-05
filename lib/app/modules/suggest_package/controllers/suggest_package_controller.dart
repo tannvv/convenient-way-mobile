@@ -12,26 +12,26 @@ import 'package:tien_duong/app/routes/app_pages.dart';
 class SuggestPackageController extends BasePagingController<SuggestPackage> {
   final AuthController _authController = Get.find<AuthController>();
   final HeaderState headerState = HeaderState();
-  Account? _account;
 
-  Account? get account => _account;
+  Account? get account => _authController.account;
   String get balanceAccountVND =>
       _authController.account?.balance.toVND() ?? '-';
-  @override
-  void onInit() {
-    _account = _authController.account;
-    super.onInit();
-  }
+  String get statusAccount => _authController.account?.status ?? '';
 
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
 
   void gotoDetail(SuggestPackage suggest) async {
-    bool isExistedRoute = await _authController.requireCreateRoute();
-    if (!isExistedRoute) return;
-    dynamic result =
-        await Get.toNamed(Routes.SUGGEST_PACKAGE_DETAIL, arguments: suggest);
-    if (result == true) {
-      refreshController.requestRefresh();
+    if (account?.status == 'NO_ROUTE') {
+      bool isExistedRoute = await _authController.requireCreateRoute();
+      if (isExistedRoute) {
+        refreshController.requestRefresh();
+      }
+    } else {
+      dynamic result =
+          await Get.toNamed(Routes.SUGGEST_PACKAGE_DETAIL, arguments: suggest);
+      if (result == true) {
+        refreshController.requestRefresh();
+      }
     }
   }
 

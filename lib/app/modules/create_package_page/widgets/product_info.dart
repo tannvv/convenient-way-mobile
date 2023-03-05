@@ -84,10 +84,11 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
     return TextFormField(
         validator: FunctionUtils.validatorNotNull,
         keyboardType: TextInputType.number,
-        onChanged: (value) => controller.weight = double.parse(value),
+        onChanged: (value) => controller.weight = parseDouble(value),
         initialValue:
             controller.weight == null ? '' : controller.weight.toString(),
         focusNode: controller.focusWeight,
+        key: controller.weightKey,
         decoration: InputStyles.createPackage(
                 labelText: 'Khối lượng',
                 contentPadding: EdgeInsets.symmetric(horizontal: 12.w))
@@ -98,7 +99,7 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
     return TextFormField(
       validator: FunctionUtils.validatorNotNull,
       keyboardType: TextInputType.number,
-      onChanged: (value) => controller.height = double.parse(value),
+      onChanged: (value) => controller.height = parseDouble(value),
       initialValue: getInitFiledData(controller.height),
       focusNode: controller.focusHeight,
       key: controller.heightKey,
@@ -113,7 +114,7 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
     return TextFormField(
         validator: FunctionUtils.validatorNotNull,
         keyboardType: TextInputType.number,
-        onChanged: (value) => controller.width = double.parse(value),
+        onChanged: (value) => controller.width = parseDouble(value),
         initialValue: getInitFiledData(controller.width),
         focusNode: controller.focusWidth,
         key: controller.widthKey,
@@ -128,7 +129,7 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
       validator: FunctionUtils.validatorNotNull,
       keyboardType: TextInputType.number,
       initialValue: getInitFiledData(controller.length),
-      onChanged: (value) => controller.length = double.parse(value),
+      onChanged: (value) => controller.length = parseDouble(value),
       focusNode: controller.focusLength,
       key: controller.lengthKey,
       decoration: InputStyles.createPackage(
@@ -226,6 +227,14 @@ class ProductInfo extends GetWidget<CreatePackagePageController> {
       return null;
     } else {
       return value.toInt().toString();
+    }
+  }
+
+  double parseDouble(String? value) {
+    if (value == null || value.isEmpty) {
+      return 0;
+    } else {
+      return double.parse(value);
     }
   }
 }

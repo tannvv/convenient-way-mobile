@@ -73,7 +73,8 @@ class ManageRouteView extends GetView<ManageRouteController> {
                     ),
                   ));
             },
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            padding: EdgeInsets.only(
+                left: 20.w, right: 20.w, top: 10.h, bottom: 200.h),
             separatorBuilder: (_, __) => Gap(12.h),
             itemCount: controller.routes.length));
   }

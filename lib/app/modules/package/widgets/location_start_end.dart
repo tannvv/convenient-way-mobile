@@ -40,9 +40,9 @@ class LocationStartEnd extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Gap(2.h),
-                      _locationItem('Điểm đi', locationStart),
+                      _locationItem('Điểm nhận', locationStart),
                       Gap(2.h),
-                      _locationItem('Điểm đến', locationEnd),
+                      _locationItem('Điểm giao', locationEnd),
                     ],
                   ),
                 ),

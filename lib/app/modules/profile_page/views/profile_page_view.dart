@@ -294,7 +294,7 @@ class ProfilePageView extends GetView<ProfilePageController> {
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                           EdgeInsets.zero),
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.green)),
+                          MaterialStateProperty.all<Color>(Colors.grey)),
                   onPressed: () async {},
                   child: const Text('Lưu')),
             ),
@@ -369,15 +369,24 @@ class ProfilePageView extends GetView<ProfilePageController> {
                           child: SizedBox(
                             height: 32,
                             child: Visibility(
-                              child: ElevatedButton(
-                                  style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<
-                                          EdgeInsetsGeometry>(EdgeInsets.zero),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.green)),
-                                  onPressed: () async {},
-                                  child: const Text('Lưu')),
+                              child: Obx(
+                                () => ElevatedButton(
+                                    style: ButtonStyle(
+                                        padding: MaterialStateProperty.all<
+                                                EdgeInsetsGeometry>(
+                                            EdgeInsets.zero),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                controller.firstNameField
+                                                            .value ==
+                                                        controller.initName
+                                                    ? Colors.grey
+                                                    : Colors.green)),
+                                    onPressed: () async {
+                                      controller.updateFirstName();
+                                    },
+                                    child: const Text('Lưu')),
+                              ),
                             ),
                           ))
                     ],
@@ -403,7 +412,9 @@ class ProfilePageView extends GetView<ProfilePageController> {
             )),
       ),
       initialValue: controller.initName,
-      onChanged: (String value) {},
+      onChanged: (String value) {
+        controller.firstNameField.value = value;
+      },
     );
   }
 
@@ -427,7 +438,9 @@ class ProfilePageView extends GetView<ProfilePageController> {
         fontWeight: FontWeights.medium,
       ),
       initialValue: controller.initPhone,
-      onChanged: (String value) {},
+      onChanged: (String value) {
+        controller.phoneField.value = value;
+      },
     );
   }
 }

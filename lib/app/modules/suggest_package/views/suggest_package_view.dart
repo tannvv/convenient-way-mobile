@@ -12,7 +12,6 @@ import 'package:tien_duong/app/core/values/shadow_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/core/widgets/custom_footer_smart_refresh.dart';
-import 'package:tien_duong/app/modules/home/views/home_view.dart';
 import 'package:tien_duong/app/modules/suggest_package/widgets/show_wallet.dart';
 import 'package:tien_duong/app/modules/suggest_package/widgets/suggest_item.dart';
 import 'package:tien_duong/app/modules/suggest_package/widgets/user_avatar.dart';
@@ -33,23 +32,44 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
           AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               padding: EdgeInsets.only(top: controller.headerState.height),
-              child: SmartRefresher(
-                enablePullUp: true,
-                key: _refresherKey,
-                controller: controller.refreshController,
-                onRefresh: () => controller.onRefresh(),
-                onLoading: () => controller.onLoading(),
-                footer: CustomFooterSmartRefresh.defaultCustom(),
-                child: ListView.separated(
-                    itemBuilder: (_, index) => GestureDetector(
-                          onTap: () =>
-                              controller.gotoDetail(controller.dataApis[index]),
-                          child: SuggestPackageItem(
-                              suggestPackage: controller.dataApis[index]),
-                        ),
-                    padding: const EdgeInsets.all(20),
-                    separatorBuilder: (_, index) => Gap(15.h),
-                    itemCount: controller.dataApis.length),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                        child: Text(
+                            controller.statusAccount == 'NO_ROUTE'
+                                ? 'Các gói hàng hiện có trong hệ thống,\nvui lòng tạo lộ trình để có các gói\nhàng phù hợp'
+                                : 'Các gói hàng phù hợp',
+                            style: subtitle1.copyWith(
+                                color: AppColors.gray,
+                                fontWeight: FontWeights.bold)),
+                      )
+                    ],
+                  ),
+                  Expanded(
+                    child: SmartRefresher(
+                      enablePullUp: true,
+                      key: _refresherKey,
+                      controller: controller.refreshController,
+                      onRefresh: () => controller.onRefresh(),
+                      onLoading: () => controller.onLoading(),
+                      footer: CustomFooterSmartRefresh.defaultCustom(),
+                      child: ListView.separated(
+                          itemBuilder: (_, index) => GestureDetector(
+                                onTap: () => controller
+                                    .gotoDetail(controller.dataApis[index]),
+                                child: SuggestPackageItem(
+                                    suggestPackage: controller.dataApis[index]),
+                              ),
+                          padding: const EdgeInsets.all(20),
+                          separatorBuilder: (_, index) => Gap(15.h),
+                          itemCount: controller.dataApis.length),
+                    ),
+                  )
+                ],
               ))
         ],
       ),
@@ -119,7 +139,7 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
       children: [
         const Expanded(
           child: UserAvatar(),
-          ),
+        ),
         ShowWallet(
           onPressed: () {
             controller.toggleHeader();

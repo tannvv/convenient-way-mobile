@@ -16,6 +16,7 @@ import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_package_model.dart';
 import 'package:tien_duong/app/modules/create_package_page/models/create_product_model.dart';
 import 'package:uuid/uuid.dart';
+import 'dart:math';
 
 class CreatePackagePageController extends BaseController {
   final Package? _package = Get.arguments as Package?;
@@ -74,7 +75,7 @@ class CreatePackagePageController extends BaseController {
   double? destinationLatitude;
   String receivedName = '';
   String receivedPhone = '';
-  double distance = 0;
+  final RxDouble distance = 0.0.obs;
   double? length;
   double? width;
   double? height;
@@ -107,7 +108,7 @@ class CreatePackagePageController extends BaseController {
     destinationLatitude = _package!.destinationLatitude ?? 0;
     receivedName = _package!.receiverName ?? '';
     receivedPhone = _package!.receiverPhone ?? '';
-    distance = _package!.distance ?? 0;
+    distance.value = _package!.distance ?? 0;
     length = _package!.length ?? 0;
     width = _package!.width ?? 0;
     height = _package!.height ?? 0;
@@ -145,6 +146,11 @@ class CreatePackagePageController extends BaseController {
       destinationAddress = response.name!;
       destinationLongitude = response.longitude!;
       destinationLatitude = response.latitude!;
+      // distance.value = Geolocator.distanceBetween(startLatitude!,
+      //         startLatitude!, destinationLatitude!, destinationLongitude!) /
+      //     1000;
+      distance.value = calculateDistance(startLatitude, startLongitude,
+          destinationLatitude, destinationLongitude);
     }
   }
 
@@ -197,12 +203,12 @@ class CreatePackagePageController extends BaseController {
         content: 'Đang tải ảnh lên...',
       )),
     );
-    if(urlsImage.isEmpty) return;
+    if (urlsImage.isEmpty) return;
     Get.context!.loaderOverlay.show(
         widget: const CustomOverlay(
       content: 'Đang tạo gói hàng...',
     ));
-    distance = Geolocator.distanceBetween(startLatitude!, startLatitude!,
+    distance.value = Geolocator.distanceBetween(startLatitude!, startLatitude!,
         destinationLatitude!, destinationLongitude!);
     CreatePackageModel createPackageModel = CreatePackageModel(
       id: packageId,
@@ -214,7 +220,7 @@ class CreatePackagePageController extends BaseController {
       destinationLatitude: destinationLatitude,
       receiverName: receivedName,
       receiverPhone: receivedPhone,
-      distance: distance,
+      distance: distance.value,
       length: length,
       width: width,
       height: height,
@@ -233,51 +239,72 @@ class CreatePackagePageController extends BaseController {
     }, onError: showError, onComplete: hideOverlay);
   }
 
+  int getPriceShip() {
+    if (distance.value == 0.0) return 0;
+    if (distance.value <= 10) {
+      return 14000;
+    } else if (distance.value <= 15) {
+      return 17000;
+    } else {
+      return 20000;
+    }
+  }
+
   void listenFocusNode() {
     focusStartLocationNode.addListener(() {
       if (!focusStartLocationNode.hasFocus) {
-        // startLocationKey.currentState!.validate();
+        // startLocationKey.currentState?.validate();
+        pickupFormKey.currentState?.validate();
       }
     });
     focusEndLocationNode.addListener(() {
       if (!focusEndLocationNode.hasFocus) {
-        // endLocationKey.currentState!.validate();
+        // endLocationKey.currentState?.validate();
+        receiverFormKey.currentState?.validate();
       }
     });
     focusReceiverPhone.addListener(() {
       if (!focusReceiverPhone.hasFocus) {
-        // receiverPhoneKey.currentState!.validate();
+        receiverPhoneKey.currentState?.validate();
       }
     });
     focusReceiverName.addListener(() {
       if (!focusReceiverName.hasFocus) {
-        // receiverNameKey.currentState!.validate();
+        receiverNameKey.currentState?.validate();
       }
     });
     focusLength.addListener(() {
       if (!focusLength.hasFocus) {
-        // lengthKey.currentState!.validate();
+        lengthKey.currentState?.validate();
       }
     });
     focusWidth.addListener(() {
       if (!focusWidth.hasFocus) {
-        // widthKey.currentState!.validate();
+        widthKey.currentState?.validate();
       }
     });
     focusHeight.addListener(() {
       if (!focusHeight.hasFocus) {
-        // heightKey.currentState!.validate();
+        heightKey.currentState?.validate();
       }
     });
     focusWeight.addListener(() {
       if (!focusWeight.hasFocus) {
-        // weightKey.currentState!.validate();
+        weightKey.currentState?.validate();
       }
     });
     focusNote.addListener(() {
       if (!focusNote.hasFocus) {
-        // noteKey.currentState!.validate();
+        noteKey.currentState?.validate();
       }
     });
+  }
+
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var a = 0.5 -
+        cos((lat2 - lat1) * p) / 2 +
+        cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
   }
 }

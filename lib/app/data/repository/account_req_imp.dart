@@ -12,6 +12,7 @@ import 'package:tien_duong/app/data/repository/request_model/logout_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/notification_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/send_notification_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/send_notification_tracking_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/update_account_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/authorize_response_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import 'package:tien_duong/app/network/dio_provider.dart';
@@ -204,6 +205,20 @@ class AccountReqImp extends BaseRepository implements AccountRep {
     try {
       return callApi(dioCall).then((response) {
         SimpleResponseModel model = SimpleResponseModel.fromJson(response.data);
+        return model;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Account> updateAccount(UpdateAccount model) {
+    String endpoint = '${DioProvider.baseUrl}/accounts/info';
+    var dioCall = dioClient.put(endpoint, data: model.toJson());
+    try {
+      return callApi(dioCall).then((response) {
+        Account model = Account.fromJson(response.data['data']);
         return model;
       });
     } catch (e) {

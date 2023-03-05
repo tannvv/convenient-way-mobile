@@ -1,52 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart%20%20';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tien_duong/app/core/values/app_animation_assets.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/input_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/data/models/response_goong_model.dart';
-import 'package:tien_duong/app/modules/manage_route/controllers/manage_route_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:lottie/lottie.dart';
-import 'package:get/get.dart';
+import 'package:tien_duong/app/data/repository/goong_req.dart';
+import 'package:tien_duong/app/data/repository/goong_req_imp.dart';
 
-class PlaceField extends GetWidget<ManageRouteController> {
-  PlaceField(
+class PlaceFieldDefault extends StatefulWidget {
+  PlaceFieldDefault(
       {super.key,
       required this.enable,
       required this.hintText,
       required this.labelText,
       required this.onSelected,
+      this.onClear,
       this.textController});
   final bool enable;
   final String hintText;
   final String labelText;
   final Function(ResponseGoong) onSelected;
+  final Function()? onClear;
   final TextEditingController? textController;
   final TextEditingController reserveTextController = TextEditingController();
+
+  @override
+  State<PlaceFieldDefault> createState() => _PlaceFieldDefaultState();
+}
+
+class _PlaceFieldDefaultState extends State<PlaceFieldDefault> {
   @override
   Widget build(BuildContext context) {
-    TextEditingController realTextCtrl =
-        textController != null ? textController! : reserveTextController;
+    TextEditingController realTextCtrl = widget.textController != null
+        ? widget.textController!
+        : widget.reserveTextController;
     return Material(
         color: Colors.transparent,
         child: TypeAheadField<ResponseGoong>(
             debounceDuration: const Duration(milliseconds: 500),
             minCharsForSuggestions: 2,
             textFieldConfiguration: TextFieldConfiguration(
-                enabled: enable,
-                controller: realTextCtrl,
-                autofocus: true,
-                style: subtitle1.copyWith(color: AppColors.lightBlack),
-                decoration: InputStyles.map(
-                  hintText: hintText,
-                  labelText: labelText,
-                )),
+              enabled: widget.enable,
+              controller: realTextCtrl,
+              autofocus: true,
+              style: subtitle1.copyWith(color: AppColors.lightBlack),
+              decoration: InputStyles.map(
+                hintText: widget.hintText,
+                labelText: widget.labelText,
+              ).copyWith(
+                  suffix: widget.enable && realTextCtrl.text.isNotEmpty
+                      ? IconButton(
+                          onPressed: () {
+                            setState(() {
+                              realTextCtrl.clear();
+                              if (widget.onClear != null) widget.onClear!();
+                            });
+                          },
+                          icon: Icon(
+                            Icons.cancel_sharp,
+                            size: 20.sp,
+                            color: AppColors.lightBlack,
+                          ))
+                      : null),
+            ),
             suggestionsCallback: (pattern) async {
               if (pattern.isEmpty) {
                 return [];
               }
-              return await controller.queryLocation(pattern);
+              GoongReq repo = GoongReqImp();
+              return await repo.getList(pattern);
             },
             itemBuilder: (context, suggestion) {
               return ListTile(
@@ -75,8 +100,10 @@ class PlaceField extends GetWidget<ManageRouteController> {
                   ),
                 ),
             onSuggestionSelected: (suggestion) {
-              onSelected(suggestion);
-              realTextCtrl.text = suggestion.name ?? '';
+              setState(() {
+                widget.onSelected(suggestion);
+                realTextCtrl.text = suggestion.name ?? '';
+              });
             },
             noItemsFoundBuilder: (context) => Padding(
                 padding: EdgeInsets.all(10.w),
