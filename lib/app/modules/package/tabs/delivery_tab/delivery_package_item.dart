@@ -13,9 +13,10 @@ import 'package:tien_duong/app/modules/package/widgets/user_info.dart';
 
 class DeliveryPackageItem extends StatelessWidget {
   const DeliveryPackageItem(
-      {Key? key, required this.package, this.onCancelPackage, this.onConfirmPackage})
+      {Key? key, required this.package, this.onCancelPackage, this.onConfirmPackage, required this.onShowQR})
       : super(key: key);
   final Package package;
+  final Function()? onShowQR;
   final Function()? onCancelPackage;
   final Function()? onConfirmPackage;
   @override
@@ -40,6 +41,16 @@ class DeliveryPackageItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ColorButton(
+                'Lấy mã QR',
+                icon: Icons.qr_code,
+                onPressed: onShowQR,
+                backgroundColor: AppColors.primary800,
+                textColor: AppColors.primary800,
+                radius: 8.sp,
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
+              ),
+              Gap(8.w),
+              ColorButton(
                 'Hủy',
                 icon: Icons.delete,
                 onPressed: onCancelPackage,
@@ -50,7 +61,7 @@ class DeliveryPackageItem extends StatelessWidget {
               ),
               Gap(6.w),
               ButtonColor(
-                'Đã giao hàng thành công',
+                'Quét QR lấy hàng',
                 icon: Icons.check,
                 onPressed: onConfirmPackage,
                 backgroundColor: Colors.blue,

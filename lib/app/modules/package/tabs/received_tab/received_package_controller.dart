@@ -20,6 +20,11 @@ import 'package:tien_duong/app/data/repository/request_model/cancel_package_mode
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import '../../../../core/controllers/pickup_file_controller.dart';
+import 'package:barcode/barcode.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
+import 'package:material_dialogs/dialogs.dart';
+import '../../../../core/values/font_weight.dart';
 
 class ReceivedPackageController extends BasePagingController<Package>
     with GetSingleTickerProviderStateMixin {
@@ -27,6 +32,39 @@ class ReceivedPackageController extends BasePagingController<Package>
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
   RxList<String> packageIdsWarning = <String>[].obs;
   String? reason;
+
+  Future<void> accountScanQr(String packageId) async {
+    await showQRCode(packageId).then((value) => {
+      MaterialDialogService.showConfirmDialog(
+          msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
+          closeOnFinish: false,
+          onConfirmTap: () async {
+            AccountPickUpModel model = AccountPickUpModel(
+                deliverId: _authController.account!.id!,
+                packageIds: [packageId]);
+            _packageRepo.accountConfirmPackage(model).then((response) async {
+              packageIdsWarning.value = getPackageIdsNearPackage(
+                  dataApis.firstWhere((element) => element.id == packageId),
+                  dataApis);
+              Get.back();
+              if (packageIdsWarning.isNotEmpty) {
+                ToastService.showInfo(
+                    'Còn ${packageIdsWarning.length} gói hàng cần lấy ở gần nơi này');
+              } else {
+                ToastService.showSuccess('Đã lấy hàng để đi giao');
+              }
+              onRefresh();
+              _authController.reloadAccount();
+            }).catchError((error) {
+              Get.back();
+              ToastService.showError(error.messages[0]);
+            });
+          },
+        ),
+      },
+    );
+  }
+
   Future<void> accountConfirmPackage(String packageId) async {
     if (await PickUpFileController().scanQR() == packageId) {
       MaterialDialogService.showConfirmDialog(
@@ -194,6 +232,52 @@ class ReceivedPackageController extends BasePagingController<Package>
                 border: const OutlineInputBorder(),
                 contentPadding: EdgeInsets.symmetric(horizontal: 20.w)),
           ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> showQRCode(String packageId) async {
+    final svg = Barcode.qrCode().toSvg(packageId);
+    await Dialogs.materialDialog(
+        dialogWidth: 400.w,
+        context: Get.context!,
+        customView: _qrCodeWidget(svg));
+  }
+
+  Widget _qrCodeWidget(String svg) {
+    return Container(
+      padding: EdgeInsets.only(top: 40.h, right: 40.w, left: 40.w),
+      child: Column(
+        children: [
+          Text(
+            'Dùng mã này để xác nhận người giao hàng',
+            style: subtitle2,
+          ),
+          Gap(4.h),
+          RichText(
+              text: TextSpan(
+                  text: 'Chú ý:',
+                  style: caption.copyWith(
+                      color: Colors.red[600],
+                      fontWeight: FontWeights.medium,
+                      fontStyle: FontStyle.italic,
+                      decoration: TextDecoration.underline),
+                  children: [
+                    TextSpan(
+                        text:
+                        ' tuyệt đối không chia sẽ mã này với người không liên quan',
+                        style: caption.copyWith(decoration: TextDecoration.none))
+                  ])),
+          Gap(20.h),
+          SizedBox(
+            height: 200.h,
+            width: 200.w,
+            child: SvgPicture.string(
+              svg,
+              fit: BoxFit.cover,
+            ),
+          )
         ],
       ),
     );

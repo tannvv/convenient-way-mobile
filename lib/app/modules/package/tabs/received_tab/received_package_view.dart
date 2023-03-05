@@ -1,3 +1,4 @@
+import 'package:tien_duong/app/core/controllers/pickup_file_controller.dart';
 import 'package:tien_duong/app/core/widgets/custom_footer_smart_refresh.dart';
 import 'package:tien_duong/app/modules/package/tabs/received_tab/received_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/received_tab/received_package_item.dart';
@@ -31,6 +32,9 @@ class ReceivedPackageView extends GetView<ReceivedPackageController> {
                           controller.dataApis[index].id!),
                       onConfirmPackage: () => controller.accountConfirmPackage(
                           controller.dataApis[index].id!),
+                      onShowQR: () {
+                        controller.showQRCode(controller.dataApis[index].id!);
+                      },
                     ),
                   ],
                 );

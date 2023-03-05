@@ -12,13 +12,17 @@ import 'package:tien_duong/app/modules/sender_package/widgets/wrap_item.dart';
 class DeliveryTabItem extends StatelessWidget {
   const DeliveryTabItem(
       {Key? key,
-      required this.package,
-      required this.showInfoDeliver,
-      required this.onShowQR})
+        required this.package,
+        required this.onShowQR,
+        required this.onConfirmPackage,
+        required this.showMapTracking,
+        required this.onShowDeliverInfo})
       : super(key: key);
   final Package package;
-  final Function() showInfoDeliver;
   final Function() onShowQR;
+  final Function() onConfirmPackage;
+  final Function() showMapTracking;
+  final Function() onShowDeliverInfo;
   @override
   Widget build(BuildContext context) {
     return WrapItem(
@@ -27,7 +31,7 @@ class DeliveryTabItem extends StatelessWidget {
         children: [
           UserInfo(
             info: package.deliver!.infoUser!,
-            onTap: showInfoDeliver,
+            onTap: onShowDeliverInfo,
           ),
           LocationStartEnd(
               locationStart: package.startAddress!,

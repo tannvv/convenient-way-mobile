@@ -15,11 +15,13 @@ class DeliverPickupTabItem extends StatelessWidget {
       {Key? key,
       required this.package,
       required this.onShowQR,
+      required this.onConfirmPackage,
       required this.showMapTracking,
       required this.onShowDeliverInfo})
       : super(key: key);
   final Package package;
   final Function() onShowQR;
+  final Function() onConfirmPackage;
   final Function() showMapTracking;
   final Function() onShowDeliverInfo;
   @override
@@ -36,7 +38,7 @@ class DeliverPickupTabItem extends StatelessWidget {
           PackageInfo(package: package),
           Gap(12.h),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ColorButton(
                 'Lấy mã QR',
@@ -45,9 +47,9 @@ class DeliverPickupTabItem extends StatelessWidget {
                 backgroundColor: AppColors.primary800,
                 textColor: AppColors.primary800,
                 radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
-              Gap(8.w),
+              Gap(4.w),
               ColorButton(
                 'Theo dõi',
                 icon: Icons.location_on,
@@ -55,8 +57,23 @@ class DeliverPickupTabItem extends StatelessWidget {
                 backgroundColor: AppColors.blue,
                 textColor: AppColors.blue,
                 radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
-              )
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
+            ],
+          ),
+          Gap(12.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ColorButton(
+                'QR Xác nhận',
+                icon: Icons.verified,
+                onPressed: onConfirmPackage,
+                backgroundColor: AppColors.green,
+                textColor: AppColors.green,
+                radius: 8.sp,
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
             ],
           )
         ],

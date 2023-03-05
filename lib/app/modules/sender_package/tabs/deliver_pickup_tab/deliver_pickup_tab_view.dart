@@ -25,19 +25,15 @@ class DeliverPickupTabView extends GetView<DeliverPickupTabController> {
                       children: [
                         DeliverPickupTabItem(
                           package: controller.dataApis[index],
-                          onShowQR: () {
-                            controller
-                                .showQRCode(controller.dataApis[index].id!);
-                          },
-                          showMapTracking: () {
-                            controller
-                                .showMapTracking(controller.dataApis[index]);
-                          },
-                          onShowDeliverInfo: () {
-                            controller.showInfoDeliver(
-                                controller.dataApis[index].deliver!);
-                          },
-                        ),
+                          onConfirmPackage: () => controller.accountDeliveredPackage(
+                              controller.dataApis[index].id!),
+                          onShowQR: () => controller.showQRCode(
+                              controller.dataApis[index].id!, controller.dataApis[index].deliverId!),
+                          showMapTracking: () => controller.showMapTracking(
+                              controller.dataApis[index]),
+                          onShowDeliverInfo: () => controller.showInfoDeliver(
+                              controller.dataApis[index].deliver!)
+                        )
                       ],
                     );
                   },

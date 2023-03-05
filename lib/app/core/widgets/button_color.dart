@@ -12,10 +12,10 @@ class ColorButton extends StatelessWidget {
       this.radius = 30,
       this.backgroundColor = AppColors.primary900,
       this.opacityBg = 0.2,
-      this.height = 30,
+      this.height = 48,
       this.borderRadius,
       this.textColor = AppColors.primary500,
-      this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 5)})
+      this.padding = const EdgeInsets.all(5)})
       : super(key: key);
 
   final String text;
