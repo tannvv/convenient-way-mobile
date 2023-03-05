@@ -88,7 +88,7 @@ class ProfilePageView extends GetView<ProfilePageController> {
         ],
       ),
       width: 324.w,
-      height: 112.h,
+      height: 130.h,
       padding: EdgeInsets.symmetric(
         vertical: 12.h,
         horizontal: 14.w,

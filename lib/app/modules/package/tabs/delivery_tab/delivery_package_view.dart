@@ -4,7 +4,6 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tien_duong/app/core/widgets/custom_footer_smart_refresh.dart';
-import 'package:tien_duong/app/modules/package/tabs/deliver_cancel_tab/deliver_cancel_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/delivery_tab/delivery_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/received_tab/received_package_controller.dart';
 import 'delivery_package_item.dart';
@@ -29,8 +28,11 @@ class DeliveryPackageView extends GetView<DeliveryPackageController> {
                       package: controller.dataApis[index],
                       onCancelPackage: () => ReceivedPackageController().reportPackage(
                           controller.dataApis[index].id!),
-                      onConfirmPackage: () => controller.accountDeliveredPackage(
+                      onConfirmPackage: () => controller.accountConfirmPackage(
                           controller.dataApis[index].id!),
+                      onShowQR: () {
+                        controller.showQRCode(controller.dataApis[index].id!);
+                      },
                     ),
                   ],
                 );

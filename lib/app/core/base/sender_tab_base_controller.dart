@@ -9,6 +9,8 @@ import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tien_duong/app/core/base/base_paging_controller.dart';
+import 'package:tien_duong/app/core/controllers/auth_controller.dart';
+import 'package:tien_duong/app/core/controllers/pickup_file_controller.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
@@ -19,7 +21,10 @@ import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/models/account_rating_model.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
+import 'package:tien_duong/app/data/repository/package_req.dart';
+import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/user_info.dart';
+import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
 abstract class SenderTabBaseController<T> extends BasePagingController<T> {
@@ -28,8 +33,11 @@ abstract class SenderTabBaseController<T> extends BasePagingController<T> {
   final RxBool _isLoadingInfo = false.obs;
 
   String? reason;
+  String? code;
 
   final AccountRep _accountRepo = Get.find(tag: (AccountRep).toString());
+  final AuthController _authController = Get.find<AuthController>();
+  final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
 
   void showInfoDeliver(Account deliver) async {
     var future = _accountRepo.getRating(deliver.id!);
@@ -149,12 +157,73 @@ abstract class SenderTabBaseController<T> extends BasePagingController<T> {
           reason = value;
         },
         autofocus: true,
-        decoration: InputStyles.reasonCancel(labelText: 'Lý do hủy'),
+        decoration: InputStyles.reasonCancel(labelText: 'Nhập mã xác nhận giao hàng'),
       ),
     );
   }
 
-  Future<void> showQRCode(String packageId) async {
+  Future<void> confirmCode(Function() callback) async {
+    await Dialogs.materialDialog(
+        context: Get.context!,
+        customView: _confirmCodeWidget(),
+        actions: [
+          IconsButton(
+            onPressed: () {
+              Get.back();
+            },
+            text: 'Thoát',
+            iconData: Icons.arrow_back_ios_new,
+            color: const Color.fromARGB(255, 204, 203, 203),
+            textStyle: const TextStyle(color: Colors.black38),
+            iconColor: Colors.black38,
+          ),
+          IconsButton(
+            onPressed: () {
+              callback();
+              Get.back();
+            },
+            text: 'Xác nhận',
+            iconData: Icons.check,
+            color: Colors.blue,
+            textStyle: const TextStyle(color: Colors.white),
+            iconColor: Colors.white,
+          ),
+        ]);
+  }
+
+  Widget _confirmCodeWidget() {
+    return Container(
+      padding: EdgeInsets.only(top: 40.h),
+      height: 100.h,
+      width: 220.w,
+      child: TextField(
+        onChanged: (value) {
+          code = value;
+        },
+        autofocus: true,
+        decoration: InputStyles.reasonCancel(labelText: 'Nhập mã xác nhận'),
+      ),
+    );
+  }
+
+  Future<void> accountDeliveredPackage(String packageId) async {
+    if (await PickUpFileController().scanQR() == packageId) {
+      Future<SimpleResponseModel> future =
+      _packageRepo.deliverySuccess(packageId);
+      await callDataService<SimpleResponseModel>(future, onSuccess: (response) {
+        ToastService.showSuccess(response.message ?? 'Thành công');
+        refreshController.requestRefresh();
+      }, onError: (exception) {
+        if (exception is BaseException) {
+          ToastService.showError(exception.message);
+        }
+      });
+    } else {
+      ToastService.showError('QR Code không đúng vui lòng kiểm tra lại!');
+    }
+  }
+
+  Future<void> showQRCode(String packageId, String? deliverId) async {
     final svg = Barcode.qrCode().toSvg(packageId);
     await Dialogs.materialDialog(
         dialogWidth: 400.w,

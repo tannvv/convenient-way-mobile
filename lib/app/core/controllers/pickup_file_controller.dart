@@ -7,6 +7,8 @@ import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
+import 'package:tien_duong/app/core/values/app_colors.dart';
+import 'package:tien_duong/app/data/models/package_model.dart';
 
 class PickUpFileController extends GetxController {
   late PermissionStatus permission;
@@ -25,6 +27,8 @@ class PickUpFileController extends GetxController {
     return false;
   }
 
+  Package package = Package();
+
   Future<String?> scanQR() async {
     try {
       final scannedQrCode = await FlutterBarcodeScanner.scanBarcode(
@@ -34,13 +38,14 @@ class PickUpFileController extends GetxController {
         ScanMode.BARCODE,
       );
       if (scannedQrCode != "-1") {
-        // Get.snackbar(
-        //   "Result", "QR Code: "+scannedQrCode,
-        //   snackPosition: SnackPosition.BOTTOM,
-        //   backgroundColor: AppColors.softGreen,
-        //   colorText: AppColors.white,
-        //   duration: Duration(seconds: 10),
-        // );
+        Get.snackbar(
+          "Thông Tin",
+          "\nMã nhận hàng: "+scannedQrCode,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.softGreen,
+          colorText: AppColors.white,
+          duration: Duration(seconds: 30),
+        );
         return scannedQrCode as String;
       }
     } on PlatformException {}
