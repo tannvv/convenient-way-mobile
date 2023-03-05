@@ -64,7 +64,6 @@ abstract class BaseController extends GetxController {
     Exception? _exception;
 
     onStart == null ? showLoading() : onStart();
-
     try {
       final T response = await future;
 

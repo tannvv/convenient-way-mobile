@@ -4,17 +4,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/services/background_service_notification.dart';
 import 'package:tien_duong/app/core/services/firebase_messaging_service.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
+import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
+import 'package:tien_duong/app/core/widgets/custom_overlay.dart';
 import 'package:tien_duong/app/data/constants/prefs_memory.dart';
 import 'package:tien_duong/app/data/local/preference/preference_manager.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/login_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/logout_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/authorize_response_model.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
@@ -75,7 +78,7 @@ class AuthController extends BaseController {
           },
           onError: (exception) {
             if (exception is BaseException) {
-              MotionToastService.showError((exception).message);
+              ToastService.showError((exception).message);
             }
           },
           onStart: () => _isReload.value = true,
@@ -146,9 +149,17 @@ class AuthController extends BaseController {
   }
 
   Future<void> logout() async {
+    Get.context?.loaderOverlay.show(
+        widget: const CustomOverlay(
+      content: 'Đang đăng xuất',
+    ));
     // BackgroundNotificationService.stopService();
     await FirebaseMessagingService.unregisterNotification(_account.value!.id!);
+    var future =
+        _accountRepo.logout(LogoutModel(accountId: _account.value!.id!));
+    await callDataService(future, onError: showError);
     await clearToken();
+    Get.context?.loaderOverlay.hide();
     Get.offAllNamed(Routes.LOGIN);
   }
 
@@ -159,5 +170,20 @@ class AuthController extends BaseController {
       prefs.remove(PrefsMemory.token);
       prefs.remove(PrefsMemory.userJson);
     });
+  }
+
+  Future<bool> requireCreateRoute() async {
+    bool? result = false;
+    if (account?.status == "NO_ROUTE") {
+      await MaterialDialogService.showConfirmDialog(
+          msg: 'Bạn có muốn tạo tuyến đường để có thể nhận gói hàng?',
+          closeOnFinish: false,
+          onConfirmTap: () async {
+            result = await Get.toNamed(Routes.CREATE_ROUTE) as bool?;
+          });
+    } else {
+      result = true;
+    }
+    return result ?? false;
   }
 }

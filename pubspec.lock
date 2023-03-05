@@ -710,6 +710,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.1"
+  flutter_reorderable_grid_view:
+    dependency: transitive
+    description:
+      name: flutter_reorderable_grid_view
+      sha256: d32931c43c48ab45c58eb8a76ac03ce0f5228684d7aa777ff4d70e61fff5dbd9
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.3"
   flutter_screenutil:
     dependency: "direct main"
     description:
@@ -743,10 +751,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_typeahead
-      sha256: "73eb76fa640ea630e2d957e7b469ab2b91e4da6c4950d6032fab7009275637b7"
+      sha256: "612a9c08554d49de02106dd06a666702e02347fe31cff47d41cef2a6a88dd01f"
       url: "https://pub.dev"
     source: hosted
-    version: "4.3.3"
+    version: "3.2.7"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -1120,6 +1128,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.5"
+  multi_image_picker_view:
+    dependency: "direct main"
+    description:
+      name: multi_image_picker_view
+      sha256: "669710cca5ba98fb5b85dd8e122a6917da6965b55945c4fc340521eb96acf6da"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.15"
   nested:
     dependency: transitive
     description:

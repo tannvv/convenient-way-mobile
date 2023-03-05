@@ -5,7 +5,7 @@ import 'package:get_ip_address/get_ip_address.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/enum/payment_method.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/data/repository/request_model/vnpay_url_model.dart';
 import 'package:tien_duong/app/data/repository/vnpay_req.dart';
 import 'package:tien_duong/app/network/exceptions/base_api_exception.dart';
@@ -131,7 +131,7 @@ class PaymentController extends BaseController {
         submitIsLoading.value = false;
       }, onError: ((exception) {
         if (exception is BaseApiException) {
-          MotionToastService.showError(exception.message);
+          ToastService.showError(exception.message);
         }
       }));
     }

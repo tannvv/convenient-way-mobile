@@ -25,7 +25,7 @@ class WaitingTabView extends GetView<WaitingTabController> {
                       children: [
                         WaitingTabItem(
                           package: controller.dataApis[index],
-                          onCancelPackage: () => controller.cancelPackageDialog(
+                          onCancelPackage: () => controller.senderCancelPackage(
                               controller.dataApis[index].id!),
                         ),
                       ],

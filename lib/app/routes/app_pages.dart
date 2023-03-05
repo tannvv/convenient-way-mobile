@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:tien_duong/app/modules/create_package_page/views/create_package_page_view.dart';
 
 import '../modules/cancel_package/bindings/cancel_package_binding.dart';
 import '../modules/cancel_package/views/cancel_package_view.dart';
@@ -8,6 +7,7 @@ import '../modules/chat_message/views/chat_message_view.dart';
 import '../modules/create-route/bindings/create_route_binding.dart';
 import '../modules/create-route/views/create_route_view.dart';
 import '../modules/create_package_page/bindings/create_package_page_binding.dart';
+import '../modules/create_package_page/views/create_package_page_view.dart';
 import '../modules/create_package_page/views/create_package_page_view.dart';
 import '../modules/feedback_for_deliver/bindings/feedback_for_deliver_binding.dart';
 import '../modules/feedback_for_deliver/views/feedback_for_deliver_view.dart';
@@ -23,6 +23,8 @@ import '../modules/notification_page/bindings/notification_page_binding.dart';
 import '../modules/notification_page/views/notification_page_view.dart';
 import '../modules/package/bindings/package_binding.dart';
 import '../modules/package/views/package_view.dart';
+import '../modules/package_detail/bindings/package_detail_binding.dart';
+import '../modules/package_detail/views/package_detail_view.dart';
 import '../modules/payment/bindings/payment_binding.dart';
 import '../modules/payment/views/payment_view.dart';
 import '../modules/payment_status/bindings/payment_status_binding.dart';
@@ -156,6 +158,11 @@ class AppPages {
       name: _Paths.TRACKING_PACKAGE,
       page: () => const TrackingPackageView(),
       binding: TrackingPackageBinding(),
+    ),
+    GetPage(
+      name: _Paths.PACKAGE_DETAIL,
+      page: () => const PackageDetailView(),
+      binding: PackageDetailBinding(),
     ),
   ];
 }

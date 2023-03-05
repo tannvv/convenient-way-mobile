@@ -1,8 +1,11 @@
+import 'package:barcode/barcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:material_dialogs/dialogs.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tien_duong/app/core/base/base_paging_controller.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
@@ -91,5 +94,51 @@ abstract class DeliverTabBaseController<T> extends BasePagingController<T> {
             ],
           ),
         ));
+  }
+
+  Future<void> showQRCode(String packageId) async {
+    final svg = Barcode.qrCode().toSvg(packageId);
+    await Dialogs.materialDialog(
+        dialogWidth: 400.w,
+        context: Get.context!,
+        customView: _qrCodeWidget(svg));
+  }
+
+  Widget _qrCodeWidget(String svg) {
+    return Container(
+      padding: EdgeInsets.only(top: 40.h, right: 40.w, left: 40.w),
+      child: Column(
+        children: [
+          Text(
+            'Dùng mã này để xác nhận người giao hàng',
+            style: subtitle2,
+          ),
+          Gap(4.h),
+          RichText(
+              text: TextSpan(
+                  text: 'Chú ý:',
+                  style: caption.copyWith(
+                      color: Colors.red[600],
+                      fontWeight: FontWeights.medium,
+                      fontStyle: FontStyle.italic,
+                      decoration: TextDecoration.underline),
+                  children: [
+                    TextSpan(
+                        text:
+                        ' tuyệt đối không chia sẽ mã này với người không liên quan',
+                        style: caption.copyWith(decoration: TextDecoration.none))
+                  ])),
+          Gap(20.h),
+          SizedBox(
+            height: 200.h,
+            width: 200.w,
+            child: SvgPicture.string(
+              svg,
+              fit: BoxFit.cover,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

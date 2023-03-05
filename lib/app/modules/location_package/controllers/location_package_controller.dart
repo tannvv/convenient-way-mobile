@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
@@ -5,13 +6,15 @@ import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/controllers/map_location_controller.dart';
 import 'package:tien_duong/app/core/services/animated_map_service.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/core/values/app_assets.dart';
+import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/app_values.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
+import 'package:tien_duong/app/modules/location_package/controllers/route_data_service.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 
 class LocationPackageController extends BaseController {
@@ -21,13 +24,41 @@ class LocationPackageController extends BaseController {
       Get.find<MapLocationController>();
   final RxList<Package> packages = <Package>[].obs;
   LatLngBounds currentBounds = LatLngBounds();
+  RouteDataService routeDataService = RouteDataService();
 
   final PackageReq _packageReq = Get.find(tag: (PackageReq).toString());
 
   @override
   void onInit() {
+    routeDataService.fetchRoutes();
     fetchPackages();
     super.onInit();
+  }
+
+  Widget routesPolyline() {
+    return Obx(
+          () {
+        List<Polyline> polylines = [];
+
+        polylines.add(
+          Polyline(
+            color: AppColors.blue,
+            borderColor: AppColors.blue,
+            strokeWidth: 4,
+            borderStrokeWidth: 3,
+            points: routeDataService.routes ?? [],
+          ),
+        );
+
+        return PolylineLayerWidget(
+            options: PolylineLayerOptions(
+                polylineCulling: true,
+                saveLayers: true,
+                polylines: polylines
+            )
+        );
+      },
+    );
   }
 
   void onMapCreated(MapController controller) {
@@ -63,7 +94,7 @@ class LocationPackageController extends BaseController {
       },
       onError: (exception) {
         if (exception is BaseException) {
-          MotionToastService.showError(exception.message);
+          ToastService.showError(exception.message);
         }
       },
     );

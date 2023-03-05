@@ -45,7 +45,6 @@ class ApprovedTabController extends BasePagingController<Package>
         _packageRepo.senderCancel(requestModel);
     await callDataService<SimpleResponseModel>(future, onSuccess: (data) {
       ToastService.showSuccess('Hủy gói hàng thành công');
-      Get.back();
       refresh();
     }, onError: (error) {
       if (error is BaseException) {

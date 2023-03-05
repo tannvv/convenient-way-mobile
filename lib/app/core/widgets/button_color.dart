@@ -12,9 +12,10 @@ class ColorButton extends StatelessWidget {
       this.radius = 30,
       this.backgroundColor = AppColors.primary900,
       this.opacityBg = 0.2,
-      this.height = 30,
+      this.height = 48,
+      this.borderRadius,
       this.textColor = AppColors.primary500,
-      this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 5)})
+      this.padding = const EdgeInsets.all(5)})
       : super(key: key);
 
   final String text;
@@ -26,6 +27,7 @@ class ColorButton extends StatelessWidget {
   final Color textColor;
   final EdgeInsets padding;
   final double height;
+  final BorderRadiusGeometry? borderRadius;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -37,7 +39,7 @@ class ColorButton extends StatelessWidget {
               padding: padding,
               backgroundColor: backgroundColor.withOpacity(opacityBg),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(radius),
+                borderRadius: borderRadius ?? BorderRadius.circular(radius),
               ),
             ),
             onPressed: onPressed,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/location_start_end.dart';
@@ -38,7 +37,7 @@ class DeliveredTabItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ColorButton(
-                'Chưa nhận được',
+                'Chưa nhận',
                 icon: Icons.sms_failed,
                 onPressed: onConfirmFailed,
                 backgroundColor: Colors.red[700]!,
@@ -48,11 +47,11 @@ class DeliveredTabItem extends StatelessWidget {
               ),
               Gap(8.w),
               ColorButton(
-                'Đã nhận được',
+                'Đã nhận',
                 icon: Icons.check,
                 onPressed: onConfirmSuccess,
-                backgroundColor: AppColors.green,
-                textColor: AppColors.green,
+                backgroundColor: const Color.fromARGB(255, 7, 202, 30),
+                textColor: const Color.fromARGB(255, 7, 202, 30),
                 radius: 8.sp,
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
               )

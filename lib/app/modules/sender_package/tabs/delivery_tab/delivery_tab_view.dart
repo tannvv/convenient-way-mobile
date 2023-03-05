@@ -25,9 +25,16 @@ class DeliveryTabView extends GetView<DeliveryTabController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         DeliveryTabItem(
-                            package: controller.dataApis[index],
-                            showInfoDeliver: () => controller.showInfoDeliver(
-                                controller.dataApis[index].deliver!)),
+                          package: controller.dataApis[index],
+                          onConfirmPackage: () => controller.accountDeliveredPackage(
+                              controller.dataApis[index].id!),
+                          onShowQR: () => controller.showQRCodee(
+                              controller.dataApis[index].id!),
+                          showMapTracking: () => controller.showMapTracking(
+                              controller.dataApis[index]),
+                          onShowDeliverInfo: () => controller.showInfoDeliver(
+                              controller.dataApis[index].deliver!)
+                        )
                       ],
                     );
                   },

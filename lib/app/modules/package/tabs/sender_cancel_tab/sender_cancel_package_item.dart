@@ -15,20 +15,22 @@ class SenderCancelPackageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
-      decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(6.w),
-          boxShadow: ShadowStyles.primary),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        LocationStartEnd(
-            locationStart: package.startAddress!,
-            locationEnd: package.destinationAddress!),
-        Gap(12.h),
-        PackageCancelInfo(
-          package: package,
-        ),
-      ],
-    );
+        padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
+        decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(6.w),
+            boxShadow: ShadowStyles.primary),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            LocationStartEnd(
+                locationStart: package.startAddress!,
+                locationEnd: package.destinationAddress!),
+            Gap(12.h),
+            PackageCancelInfo(
+              package: package,
+            ),
+          ],
+        ));
   }
 }

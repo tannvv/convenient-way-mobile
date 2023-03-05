@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/data/models/response_goong_model.dart';
 import 'package:tien_duong/app/data/models/route_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
@@ -38,11 +38,7 @@ class ManageRouteController extends BaseController {
       onSuccess: (response) {
         routes(response);
       },
-      onError: (exception) {
-        if (exception is BaseException) {
-          MotionToastService.showError(exception.message);
-        }
-      },
+      onError: showError,
     );
   }
 
@@ -52,8 +48,7 @@ class ManageRouteController extends BaseController {
       routes.add(newRoute!);
       indexNewRoute.value = routes.length - 1;
     } else {
-      MotionToastService.showError(
-          'Bạn phải hoàn thành tạo mới lộ trình trước đó');
+      ToastService.showError('Bạn phải hoàn thành tạo mới lộ trình trước đó');
     }
   }
 
@@ -75,13 +70,13 @@ class ManageRouteController extends BaseController {
           routes[indexNewRoute.value] = response!;
           newRoute = null;
           indexNewRoute.value = -1;
-          MotionToastService.showSuccess('Tạo mới lộ trình thành công');
-        },
-        onError: (exception) {
-          if (exception is BaseException) {
-            MotionToastService.showError(exception.message);
+          if (routes.length == 1) {
+            _authController.account?.status == 'ACTIVE';
+            _authController.setDataPrefs();
           }
+          ToastService.showSuccess('Tạo mới lộ trình thành công');
         },
+        onError: showError,
         onStart: () => isLoadingCreateRoute.value = true,
         onComplete: () => isLoadingCreateRoute.value = false,
       );
@@ -100,13 +95,13 @@ class ManageRouteController extends BaseController {
       // set new active route
       int activeIndex = routes.indexWhere((element) => element.id == routeId);
       routes[activeIndex].isActive = true;
-      MotionToastService.showSuccess(
+      ToastService.showSuccess(
           response.message ?? 'Thay đổi lộ trình thành công');
       _authController.account?.infoUser?.routes = routes;
       _authController.setDataPrefs();
     }, onError: (exception) {
       if (exception is BaseException) {
-        MotionToastService.showError(exception.message);
+        ToastService.showError(exception.message);
       }
     });
   }
@@ -117,14 +112,13 @@ class ManageRouteController extends BaseController {
       callDataService<SimpleResponseModel>(
         future,
         onSuccess: (response) {
-          Get.back(); // close dialog
-          MotionToastService.showSuccess(
+          ToastService.showSuccess(
               response.message ?? 'Xóa lộ trình thành công');
           routes.removeWhere((element) => element.id == routeId);
         },
         onError: (exception) {
           if (exception is BaseException) {
-            MotionToastService.showError(exception.message);
+            ToastService.showError(exception.message);
           }
         },
       );

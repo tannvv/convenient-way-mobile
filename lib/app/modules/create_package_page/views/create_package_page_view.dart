@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 import 'package:get/get.dart';
+import 'package:tien_duong/app/core/values/app_colors.dart';
+import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/core/widgets/custom_body_scaffold.dart';
 import 'package:tien_duong/app/core/widgets/header_scaffold.dart';
 import 'package:tien_duong/app/modules/create_package_page/widgets/location_pickup.dart';
@@ -17,6 +19,7 @@ class CreatePackagePageView extends GetView<CreatePackagePageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       body: CustomBodyScaffold(
         header: _header(),
         body: _stepper(),
@@ -37,80 +40,97 @@ class CreatePackagePageView extends GetView<CreatePackagePageController> {
           controlsBuilder: (context, details) {
             return _actionStep(details);
           },
+          type: StepperType.horizontal,
           currentStep: controller.currentStep,
-          onStepTapped: (step) => controller.changeStep(step),
           onStepCancel: () => controller.previousStep(),
           onStepContinue: () => controller.nextStep(),
           steps: [
             Step(
-              title: const Text('Chọn địa điểm lấy hàng'),
-              content: const LocationPickup(),
-              isActive: controller.currentStep > 0,
-            ),
+                title: Text(
+                  'Địa\nđiểm lấy\nhàng',
+                  style: caption,
+                ),
+                content: const LocationPickup(),
+                isActive: controller.currentStep > 0,
+                state: controller.currentStep == 0
+                    ? StepState.editing
+                    : StepState.indexed),
             Step(
-              title: const Text('Thêm thông tin người nhận'),
-              content: const ReceivedInfo(),
-              isActive: controller.currentStep > 1,
-            ),
+                title: Text(
+                  'Thông tin\nngười\nnhận',
+                  style: caption,
+                ),
+                content: const ReceivedInfo(),
+                isActive: controller.currentStep > 1,
+                state: controller.currentStep == 1
+                    ? StepState.editing
+                    : StepState.indexed),
             Step(
-              title: const Text('Thông tin các sản phẩm'),
-              content: const ProductInfo(),
-              isActive: controller.currentStep > 2,
-            ),
+                title: Text(
+                  'Thông tin\ncác sản\nphẩm',
+                  style: caption,
+                ),
+                content: const ProductInfo(),
+                isActive: controller.currentStep > 2,
+                state: controller.currentStep == 2
+                    ? StepState.editing
+                    : StepState.indexed),
           ]),
     );
   }
 
-  Row _actionStep(ControlsDetails details) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        Obx(() => controller.currentStep > 0
-            ? ElevatedButton.icon(
-                onPressed: details.onStepCancel,
-                label: const Text('Quay lại',
-                    style: TextStyle(color: Colors.black54)),
-                icon: const Icon(Icons.next_plan, color: Colors.black54),
-                style: ButtonStyle(
-                  side: MaterialStateProperty.all(
-                      const BorderSide(color: Colors.black38)),
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0))),
-                  backgroundColor: const MaterialStatePropertyAll(Colors.white),
-                ),
-              )
-            : const SizedBox()),
-        Gap(8.w),
-        Obx(() => controller.currentStep != controller.maxStep
-            ? ElevatedButton.icon(
-                onPressed: details.onStepContinue,
-                label: const Text('Tiếp tục',
-                    style: TextStyle(color: Colors.green)),
-                icon: const Icon(Icons.next_plan, color: Colors.green),
-                style: ButtonStyle(
-                  side: MaterialStateProperty.all(const BorderSide(
-                      color: Color.fromARGB(255, 129, 207, 131))),
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0))),
-                  backgroundColor: const MaterialStatePropertyAll(Colors.white),
-                ),
-              )
-            : ElevatedButton.icon(
-                onPressed: () {
-                  controller.submit();
-                },
-                label: const Text('Hoàn thành',
-                    style: TextStyle(color: Colors.green)),
-                icon: const Icon(Icons.next_plan, color: Colors.green),
-                style: ButtonStyle(
-                  side: MaterialStateProperty.all(const BorderSide(
-                      color: Color.fromARGB(255, 129, 207, 131))),
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0))),
-                  backgroundColor: const MaterialStatePropertyAll(Colors.white),
-                ),
-              )),
-      ],
+  Container _actionStep(ControlsDetails details) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Obx(() => controller.currentStep > 0
+              ? ElevatedButton.icon(
+                  onPressed: details.onStepCancel,
+                  label: const Text('Quay lại',
+                      style: TextStyle(color: Colors.black54)),
+                  icon: const Icon(Icons.next_plan, color: Colors.black54),
+                  style: ButtonStyle(
+                    side: MaterialStateProperty.all(
+                        const BorderSide(color: Colors.black12)),
+                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0))),
+                    backgroundColor:
+                        const MaterialStatePropertyAll(Colors.white),
+                  ),
+                )
+              : const SizedBox()),
+          Gap(8.w),
+          Obx(() => controller.currentStep != controller.maxStep
+              ? ElevatedButton.icon(
+                  onPressed: details.onStepContinue,
+                  label: const Text('Tiếp tục',
+                      style: TextStyle(color: Colors.white)),
+                  icon: const Icon(Icons.next_plan, color: Colors.white),
+                  style: ButtonStyle(
+                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0))),
+                    backgroundColor:
+                        const MaterialStatePropertyAll(Colors.green),
+                  ),
+                )
+              : ElevatedButton.icon(
+                  onPressed: () {
+                    controller.submit();
+                  },
+                  label: const Text('Hoàn thành',
+                      style: TextStyle(color: Colors.white)),
+                  icon: const Icon(Icons.check, color: Colors.white),
+                  style: ButtonStyle(
+                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0))),
+                    backgroundColor:
+                        const MaterialStatePropertyAll(Colors.green),
+                  ),
+                )),
+        ],
+      ),
     );
   }
 }

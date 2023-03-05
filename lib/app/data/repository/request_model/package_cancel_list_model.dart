@@ -1,8 +1,11 @@
+import 'package:tien_duong/app/core/values/app_values.dart';
+
 class PackageCancelListModel {
   String? senderId;
   String? status;
   int? pageIndex;
   int? pageSize;
+  String? deliverId;
 
   PackageCancelListModel(
       {this.deliverId,

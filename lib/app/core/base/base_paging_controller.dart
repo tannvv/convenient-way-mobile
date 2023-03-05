@@ -1,8 +1,8 @@
+import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
 import 'package:tien_duong/app/core/values/app_values.dart';
 
 abstract class BasePagingController<T> extends BaseController {
@@ -56,7 +56,7 @@ abstract class BasePagingController<T> extends BaseController {
 
   void onError(dynamic exception) {
     if (exception is BaseException) {
-      MotionToastService.showError(exception.message);
+      ToastService.showError(exception.message);
     }
   }
 

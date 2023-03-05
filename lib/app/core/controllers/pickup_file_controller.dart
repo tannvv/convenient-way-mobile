@@ -3,10 +3,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:tien_duong/app/core/utils/motion_toast_service.dart';
-import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:tien_duong/app/core/utils/toast_service.dart';
+import 'package:tien_duong/app/core/values/app_colors.dart';
+import 'package:tien_duong/app/data/models/package_model.dart';
 
 class PickUpFileController extends GetxController {
   late PermissionStatus permission;
@@ -25,22 +27,25 @@ class PickUpFileController extends GetxController {
     return false;
   }
 
+  Package package = Package();
+
   Future<String?> scanQR() async {
-    try{
+    try {
       final scannedQrCode = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666',
         'Cancel',
         true,
         ScanMode.BARCODE,
       );
-      if(scannedQrCode!="-1"){
-        // Get.snackbar(
-        //   "Result", "QR Code: "+scannedQrCode,
-        //   snackPosition: SnackPosition.BOTTOM,
-        //   backgroundColor: AppColors.softGreen,
-        //   colorText: AppColors.white,
-        //   duration: Duration(seconds: 10),
-        // );
+      if (scannedQrCode != "-1") {
+        Get.snackbar(
+          "Thông Tin",
+          "\nMã nhận hàng: "+scannedQrCode,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.softGreen,
+          colorText: AppColors.white,
+          duration: Duration(seconds: 30),
+        );
         return scannedQrCode as String;
       }
     } on PlatformException {}
@@ -56,7 +61,7 @@ class PickUpFileController extends GetxController {
 
   Future<String?> uploadImageToFirebase(XFile? image, String? url) async {
     if (image == null || url == null) {
-      MotionToastService.showError('Lỗi Không thể tải ảnh lên');
+      ToastService.showError('Lỗi Không thể tải ảnh lên');
       return null;
     }
     try {
@@ -65,15 +70,15 @@ class PickUpFileController extends GetxController {
       String downloadUrl = await snapshot.ref.getDownloadURL();
       return downloadUrl;
     } catch (e) {
-      MotionToastService.showError('Lỗi Không thể tải ảnh lên');
+      ToastService.showError('Lỗi Không thể tải ảnh lên');
       return null;
     }
   }
 
   Future<List<String>> uploadImagesToFirebase(
       List<XFile> images, String? url) async {
-    if (images.isNotEmpty || url == null) {
-      MotionToastService.showError('Chưa lấy được ảnh');
+    if (images.isEmpty || url == null) {
+      ToastService.showError('Chưa lấy được ảnh');
       return [];
     }
     try {
@@ -87,8 +92,39 @@ class PickUpFileController extends GetxController {
       }
       return imagesUrl;
     } catch (e) {
-      MotionToastService.showError('Lỗi Không thể tải ảnh lên');
+      ToastService.showError('Lỗi Không thể tải ảnh lên');
       return [];
+    }
+  }
+
+  Future<List<String>> uploadImagesToFirebase2(
+      {required Iterable<ImageFile> images,
+      String? url,
+      Function()? onStart,
+      Function()? onComplete}) async {
+    if (images.isEmpty || url == null) {
+      ToastService.showError('Chưa lấy được ảnh');
+      return [];
+    }
+    try {
+      onStart != null ? onStart() : null;
+      List<String> imagesUrl = [];
+      for (var image in images) {
+        if (image.path != null) {
+          String fileName = image.path!.substring(image.path!.lastIndexOf('/'));
+          File fileImage = File(image.path!);
+          var snapshot =
+              await _storage.ref('$url/$fileName').putFile(fileImage);
+          String downloadUrl = await snapshot.ref.getDownloadURL();
+          imagesUrl.add(downloadUrl);
+        }
+      }
+      return imagesUrl;
+    } catch (e) {
+      ToastService.showError('Lỗi Không thể tải ảnh lên');
+      return [];
+    } finally {
+      onComplete != null ? onComplete() : null;
     }
   }
 }

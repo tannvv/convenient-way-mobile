@@ -26,6 +26,7 @@ abstract class Routes {
   static const NOTIFICATION_PAGE = _Paths.NOTIFICATION_PAGE;
   static const CREATE_PACKAGE_PAGE = _Paths.CREATE_PACKAGE_PAGE;
   static const TRACKING_PACKAGE = _Paths.TRACKING_PACKAGE;
+  static const PACKAGE_DETAIL = _Paths.PACKAGE_DETAIL;
 }
 
 abstract class _Paths {
@@ -51,4 +52,5 @@ abstract class _Paths {
   static const NOTIFICATION_PAGE = '/notification-page';
   static const CREATE_PACKAGE_PAGE = '/create-package-page';
   static const TRACKING_PACKAGE = '/tracking-package';
+  static const PACKAGE_DETAIL = '/package-detail';
 }

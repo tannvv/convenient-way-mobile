@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_dialogs/material_dialogs.dart';
-import 'package:material_dialogs/shared/types.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
@@ -15,6 +14,7 @@ class MaterialDialogService {
     String confirmText = 'Đồng ý',
     required Function() onConfirmTap,
     IconData confirmIconData = Icons.delete,
+    bool closeOnFinish = true,
     int? seconds,
   }) async {
     Timer? timer;
@@ -39,7 +39,10 @@ class MaterialDialogService {
             iconColor: Colors.grey,
           ),
           IconsButton(
-            onPressed: onConfirmTap,
+            onPressed: () {
+              onConfirmTap();
+              if (closeOnFinish) Get.back();
+            },
             text: confirmText,
             iconData: confirmIconData,
             color: Colors.red,
@@ -57,6 +60,7 @@ class MaterialDialogService {
     String title = 'Xác nhận',
     String cancelText = 'Thoát',
     String confirmText = 'Đồng ý',
+    bool closeOnFinish = true,
     required Function() onConfirmTap,
   }) async {
     await Dialogs.materialDialog(
@@ -75,7 +79,10 @@ class MaterialDialogService {
             iconColor: Colors.grey,
           ),
           IconsButton(
-            onPressed: onConfirmTap,
+            onPressed: () {
+              onConfirmTap();
+              if (closeOnFinish) Get.back();
+            },
             text: confirmText,
             iconData: Icons.check,
             color: Colors.blue[500],

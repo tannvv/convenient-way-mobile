@@ -1,6 +1,7 @@
 import 'package:tien_duong/app/modules/create_package_page/models/create_product_model.dart';
 
 class CreatePackageModel {
+  String? id;
   String? startAddress;
   double? startLongitude;
   double? startLatitude;
@@ -10,7 +11,9 @@ class CreatePackageModel {
   String? receiverName;
   String? receiverPhone;
   double? distance;
-  double? volume;
+  double? length;
+  double? width;
+  double? height;
   double? weight;
   int? priceShip;
   String? photoUrl;
@@ -19,7 +22,8 @@ class CreatePackageModel {
   List<CreateProductModel>? products;
 
   CreatePackageModel(
-      {this.startAddress,
+      {this.id,
+      this.startAddress,
       this.startLongitude,
       this.startLatitude,
       this.destinationAddress,
@@ -28,7 +32,9 @@ class CreatePackageModel {
       this.receiverName,
       this.receiverPhone,
       this.distance,
-      this.volume,
+      this.length,
+      this.width,
+      this.height,
       this.weight,
       this.priceShip,
       this.photoUrl,
@@ -37,6 +43,7 @@ class CreatePackageModel {
       this.products});
 
   CreatePackageModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     startAddress = json['startAddress'];
     startLongitude = json['startLongitude'];
     startLatitude = json['startLatitude'];
@@ -46,7 +53,9 @@ class CreatePackageModel {
     receiverName = json['receiverName'];
     receiverPhone = json['receiverPhone'];
     distance = json['distance'];
-    volume = json['volume'];
+    length = json['length'];
+    width = json['width'];
+    height = json['height'];
     weight = json['weight'];
     priceShip = json['priceShip'];
     photoUrl = json['photoUrl'];
@@ -56,6 +65,7 @@ class CreatePackageModel {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
+    data['id'] = id;
     data['startAddress'] = startAddress;
     data['startLongitude'] = startLongitude;
     data['startLatitude'] = startLatitude;
@@ -65,7 +75,9 @@ class CreatePackageModel {
     data['receiverName'] = receiverName;
     data['receiverPhone'] = receiverPhone;
     data['distance'] = distance;
-    data['volume'] = volume;
+    data['length'] = length;
+    data['width'] = width;
+    data['height'] = height;
     data['weight'] = weight;
     data['priceShip'] = priceShip;
     data['photoUrl'] = photoUrl;
