@@ -2,10 +2,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class HeaderState {
-  var fullHeight = 212.h;
+  var fullHeight = 232.h;
   var lessHeight = 83.h;
 
-  final _height = 212.h.obs;
+  final _height = 232.h.obs;
   final _walletUiState = false.obs;
 
   double get height => _height.value;

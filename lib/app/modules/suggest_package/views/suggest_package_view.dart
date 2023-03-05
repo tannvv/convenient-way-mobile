@@ -84,7 +84,7 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
         boxShadow: ShadowStyles.surface,
       ),
       width: 324.w,
-      height: 100.h,
+      height: 120.h,
       padding: EdgeInsets.symmetric(
         vertical: 10.h,
         horizontal: 14.w,
@@ -168,7 +168,7 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
       decoration: BoxDecorations.header(),
-      height: controller.headerState.height,
+      height: controller.headerState.height + 20.h,
       child: ClipRRect(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(5.r),

@@ -13,9 +13,10 @@ import 'package:tien_duong/app/modules/package/widgets/user_info.dart';
 
 class DeliveryPackageItem extends StatelessWidget {
   const DeliveryPackageItem(
-      {Key? key, required this.package, this.onCancelPackage, this.onConfirmPackage})
+      {Key? key, required this.package, this.onCancelPackage, this.onConfirmPackage, required this.onShowQR})
       : super(key: key);
   final Package package;
+  final Function()? onShowQR;
   final Function()? onCancelPackage;
   final Function()? onConfirmPackage;
   @override
@@ -40,23 +41,33 @@ class DeliveryPackageItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ColorButton(
+                'Lấy mã QR',
+                icon: Icons.qr_code,
+                onPressed: onShowQR,
+                backgroundColor: AppColors.primary800,
+                textColor: AppColors.primary800,
+                radius: 8.sp,
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
+              Gap(8.w),
+              ColorButton(
                 'Hủy',
                 icon: Icons.delete,
                 onPressed: onCancelPackage,
                 backgroundColor: Colors.red,
                 textColor: Colors.red,
                 radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
-              Gap(6.w),
-              ButtonColor(
-                'Đã giao hàng thành công',
-                icon: Icons.check,
+              Gap(8.w),
+              ColorButton(
+                'QR Xác nhận',
+                icon: Icons.verified,
                 onPressed: onConfirmPackage,
-                backgroundColor: Colors.blue,
-                textColor: Colors.white,
+                backgroundColor: AppColors.green,
+                textColor: AppColors.green,
                 radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
             ],
           )

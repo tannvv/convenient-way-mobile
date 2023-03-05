@@ -43,6 +43,7 @@ class ConvenientMap extends GetWidget<LocationPackageController> {
                 },
               ),
             ),
+            controller.routesPolyline(),
             Obx(
               () => MarkerLayerWidget(
                   options: MarkerLayerOptions(markers: [
