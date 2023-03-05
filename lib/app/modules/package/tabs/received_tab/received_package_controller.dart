@@ -93,48 +93,48 @@ class ReceivedPackageController extends BasePagingController<Package>
     );
   }
 
-  // Future<void> accountConfirmPackage(String packageId) async {
-  //   if (await PickUpFileController().scanQR() == packageId) {
-  //     MaterialDialogService.showConfirmDialog(
-  //         msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
-  //         closeOnFinish: false,
-  //         onConfirmTap: () async {
-  //           AccountPickUpModel model = AccountPickUpModel(
-  //               deliverId: _authController.account!.id!,
-  //               packageIds: [packageId]);
-  //           _packageRepo.accountConfirmPackage(model).then((response) async {
-  //             packageIdsWarning.value = getPackageIdsNearPackage(
-  //                 dataApis.firstWhere((element) => element.id == packageId),
-  //                 dataApis);
-  //             Get.back();
-  //             if (packageIdsWarning.isNotEmpty) {
-  //               ToastService.showInfo(
-  //                   'Còn ${packageIdsWarning.length} gói hàng cần lấy ở gần nơi này');
-  //             } else {
-  //               ToastService.showSuccess('Đã lấy hàng để đi giao');
-  //             }
-  //             onRefresh();
-  //             _authController.reloadAccount();
-  //           }).catchError((error) {
-  //             Get.back();
-  //             ToastService.showError(error.messages[0]);
-  //           });
-  //         });
-  //   } else {
-  //     ToastService.showError('QR Code không đúng vui lòng kiểm tra lại!');
-  //     // MaterialDialogService.showConfirmDialog(
-  //     //   msg: 'QR Code không đúng vui lòng kiểm tra lại!',
-  //     //   onConfirmTap: () async {
-  //     //     Get.back();
-  //     //     onRefresh();
-  //     //     _authController.reloadAccount();
-  //     //   }).catchError((error) {
-  //     //     Get.back();
-  //     //    ToastService.showError(error.messages[0]);
-  //     //   }
-  //     // );
-  //   }
-  // }
+  Future<void> deliverConfirmPackage(String packageId) async {
+    if (await PickUpFileController().scanQR() == packageId) {
+      MaterialDialogService.showConfirmDialog(
+          msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
+          closeOnFinish: false,
+          onConfirmTap: () async {
+            AccountPickUpModel model = AccountPickUpModel(
+                deliverId: _authController.account!.id!,
+                packageIds: [packageId]);
+            _packageRepo.accountConfirmPackage(model).then((response) async {
+              packageIdsWarning.value = getPackageIdsNearPackage(
+                  dataApis.firstWhere((element) => element.id == packageId),
+                  dataApis);
+              Get.back();
+              if (packageIdsWarning.isNotEmpty) {
+                ToastService.showInfo(
+                    'Còn ${packageIdsWarning.length} gói hàng cần lấy ở gần nơi này');
+              } else {
+                ToastService.showSuccess('Đã lấy hàng để đi giao');
+              }
+              onRefresh();
+              _authController.reloadAccount();
+            }).catchError((error) {
+              Get.back();
+              ToastService.showError(error.messages[0]);
+            });
+          });
+    } else {
+      ToastService.showError('QR Code không đúng vui lòng kiểm tra lại!');
+      // MaterialDialogService.showConfirmDialog(
+      //   msg: 'QR Code không đúng vui lòng kiểm tra lại!',
+      //   onConfirmTap: () async {
+      //     Get.back();
+      //     onRefresh();
+      //     _authController.reloadAccount();
+      //   }).catchError((error) {
+      //     Get.back();
+      //    ToastService.showError(error.messages[0]);
+      //   }
+      // );
+    }
+  }
 
   @override
   Future<void> fetchDataApi() async {
