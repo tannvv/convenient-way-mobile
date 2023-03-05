@@ -31,9 +31,12 @@ class ReceivedPackageView extends GetView<ReceivedPackageController> {
                       onCancelPackage: () => controller.cancelPackageDialog(
                           controller.dataApis[index].id!),
                       onConfirmPackage: () => controller.accountConfirmPackage(
-                          controller.dataApis[index].id!),
+                          controller.dataApis[index].id!, controller.dataApis[index].deliverId!),
                       onShowQR: () {
-                        controller.showQRCode(controller.dataApis[index].id!);
+                        controller.showQRCode(
+                            controller.dataApis[index].id!,
+                            controller.dataApis[index].deliverId!
+                        );
                       },
                     ),
                   ],

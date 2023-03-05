@@ -18,6 +18,7 @@ import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/check_code_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
+import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import '../../../../core/values/font_weight.dart';
 import '../../../../core/values/text_styles.dart';
 
@@ -70,9 +71,16 @@ class DeliveryPackageController extends BasePagingController<Package>
       code: code!,
     );
     if(code == packageId.split('-')[0]) {
-      accountConfirmPackage(packageId);
-      ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');
-      refresh();
+      Future<SimpleResponseModel> future = _packageRepo.deliverySuccess(packageId);
+      await callDataService<SimpleResponseModel>(future,
+        onSuccess: (respones) {
+          ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');
+          refresh();
+        },
+        onError: onError,
+        onStart: showOverlay,
+        onComplete: hideOverlay,
+      );
     };
     await Duration(seconds: 3);
   }
@@ -125,7 +133,7 @@ class DeliveryPackageController extends BasePagingController<Package>
                 ColorButton(
                   'Xác nhận Mã',
                   icon: Icons.verified,
-                  onPressed: () =>  _packageRepo.deliverySuccess(packageId),
+                  onPressed: () =>  confirmCodeFromQR(packageId),
                   backgroundColor: AppColors.green,
                   textColor: AppColors.green,
                   radius: 8.sp,

@@ -5,10 +5,14 @@ import 'package:tien_duong/app/core/base/base_paging_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
+import 'package:tien_duong/app/core/values/app_colors.dart';
+import 'package:tien_duong/app/core/values/input_styles.dart';
+import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/account_pickup_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/check_code_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,9 +36,33 @@ class ReceivedPackageController extends BasePagingController<Package>
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
   RxList<String> packageIdsWarning = <String>[].obs;
   String? reason;
+  String? code;
 
-  Future<void> accountScanQr(String packageId) async {
-    await showQRCode(packageId).then((value) => {
+  Future<void> acceptDeliveryPackage(String packageId) async {
+    AccountPickUpModel model = AccountPickUpModel(
+        deliverId: _authController.account!.id!,
+        packageIds: [packageId]);
+    _packageRepo.accountConfirmPackage(model).then((response) async {
+      packageIdsWarning.value = getPackageIdsNearPackage(
+          dataApis.firstWhere((element) => element.id == packageId),
+          dataApis);
+      Get.back();
+      if (packageIdsWarning.isNotEmpty) {
+        ToastService.showInfo(
+            'Còn ${packageIdsWarning.length} gói hàng cần lấy ở gần nơi này');
+      } else {
+        ToastService.showSuccess('Đã lấy hàng để đi giao');
+      }
+      onRefresh();
+      _authController.reloadAccount();
+    }).catchError((error) {
+      Get.back();
+      ToastService.showError(error.messages[0]);
+    });
+  }
+
+  Future<void> accountScanQr(String packageId, deliverId) async {
+    await showQRCode(packageId, deliverId).then((value) => {
       MaterialDialogService.showConfirmDialog(
           msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
           closeOnFinish: false,
@@ -65,48 +93,48 @@ class ReceivedPackageController extends BasePagingController<Package>
     );
   }
 
-  Future<void> accountConfirmPackage(String packageId) async {
-    if (await PickUpFileController().scanQR() == packageId) {
-      MaterialDialogService.showConfirmDialog(
-          msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
-          closeOnFinish: false,
-          onConfirmTap: () async {
-            AccountPickUpModel model = AccountPickUpModel(
-                deliverId: _authController.account!.id!,
-                packageIds: [packageId]);
-            _packageRepo.accountConfirmPackage(model).then((response) async {
-              packageIdsWarning.value = getPackageIdsNearPackage(
-                  dataApis.firstWhere((element) => element.id == packageId),
-                  dataApis);
-              Get.back();
-              if (packageIdsWarning.isNotEmpty) {
-                ToastService.showInfo(
-                    'Còn ${packageIdsWarning.length} gói hàng cần lấy ở gần nơi này');
-              } else {
-                ToastService.showSuccess('Đã lấy hàng để đi giao');
-              }
-              onRefresh();
-              _authController.reloadAccount();
-            }).catchError((error) {
-              Get.back();
-              ToastService.showError(error.messages[0]);
-            });
-          });
-    } else {
-      ToastService.showError('QR Code không đúng vui lòng kiểm tra lại!');
-      // MaterialDialogService.showConfirmDialog(
-      //   msg: 'QR Code không đúng vui lòng kiểm tra lại!',
-      //   onConfirmTap: () async {
-      //     Get.back();
-      //     onRefresh();
-      //     _authController.reloadAccount();
-      //   }).catchError((error) {
-      //     Get.back();
-      //    ToastService.showError(error.messages[0]);
-      //   }
-      // );
-    }
-  }
+  // Future<void> accountConfirmPackage(String packageId) async {
+  //   if (await PickUpFileController().scanQR() == packageId) {
+  //     MaterialDialogService.showConfirmDialog(
+  //         msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
+  //         closeOnFinish: false,
+  //         onConfirmTap: () async {
+  //           AccountPickUpModel model = AccountPickUpModel(
+  //               deliverId: _authController.account!.id!,
+  //               packageIds: [packageId]);
+  //           _packageRepo.accountConfirmPackage(model).then((response) async {
+  //             packageIdsWarning.value = getPackageIdsNearPackage(
+  //                 dataApis.firstWhere((element) => element.id == packageId),
+  //                 dataApis);
+  //             Get.back();
+  //             if (packageIdsWarning.isNotEmpty) {
+  //               ToastService.showInfo(
+  //                   'Còn ${packageIdsWarning.length} gói hàng cần lấy ở gần nơi này');
+  //             } else {
+  //               ToastService.showSuccess('Đã lấy hàng để đi giao');
+  //             }
+  //             onRefresh();
+  //             _authController.reloadAccount();
+  //           }).catchError((error) {
+  //             Get.back();
+  //             ToastService.showError(error.messages[0]);
+  //           });
+  //         });
+  //   } else {
+  //     ToastService.showError('QR Code không đúng vui lòng kiểm tra lại!');
+  //     // MaterialDialogService.showConfirmDialog(
+  //     //   msg: 'QR Code không đúng vui lòng kiểm tra lại!',
+  //     //   onConfirmTap: () async {
+  //     //     Get.back();
+  //     //     onRefresh();
+  //     //     _authController.reloadAccount();
+  //     //   }).catchError((error) {
+  //     //     Get.back();
+  //     //    ToastService.showError(error.messages[0]);
+  //     //   }
+  //     // );
+  //   }
+  // }
 
   @override
   Future<void> fetchDataApi() async {
@@ -237,15 +265,97 @@ class ReceivedPackageController extends BasePagingController<Package>
     );
   }
 
-  Future<void> showQRCode(String packageId) async {
-    final svg = Barcode.qrCode().toSvg(packageId);
+  Future<void> deliverConfirmCode(String packageId, String deliverId) async {
+    confirmCode(() => {
+      confirmCodeFromQR(packageId, deliverId)
+    });
+  }
+
+  Widget _confirmCodeWidget() {
+    return Container(
+      padding: EdgeInsets.only(top: 40.h),
+      height: 100.h,
+      width: 220.w,
+      child: TextField(
+        onChanged: (value) {
+          code = value;
+        },
+        autofocus: true,
+        decoration: InputStyles.reasonCancel(labelText: 'Nhập mã xác nhận'),
+      ),
+    );
+  }
+
+  Future<void> confirmCode(Function() callback) async {
+    await Dialogs.materialDialog(
+        context: Get.context!,
+        customView: _confirmCodeWidget(),
+        actions: [
+          IconsButton(
+            onPressed: () {
+              Get.back();
+            },
+            text: 'Thoát',
+            iconData: Icons.arrow_back_ios_new,
+            color: const Color.fromARGB(255, 204, 203, 203),
+            textStyle: const TextStyle(color: Colors.black38),
+            iconColor: Colors.black38,
+          ),
+          IconsButton(
+            onPressed: () {
+              callback();
+              Get.back();
+            },
+            text: 'Xác nhận',
+            iconData: Icons.check,
+            color: Colors.blue,
+            textStyle: const TextStyle(color: Colors.white),
+            iconColor: Colors.white,
+          ),
+        ]);
+  }
+
+  Future<void> accountConfirmPackage(String packageId, String deliverId) async {
+    AccountPickUpModel model = AccountPickUpModel(
+        deliverId: deliverId,
+        packageIds: [packageId]
+    );
+    _packageRepo.accountConfirmPackage(model).then((response) async {
+      Get.back();
+      onRefresh();
+      _authController.reloadAccount();
+    }).catchError((error) {
+      Get.back();
+      ToastService.showError(error.messages[0]);
+    });
+  }
+
+  Future<void> confirmCodeFromQR(String packageId, String deliverId) async {
+    if (code == null || code != packageId.split('-')[0]) {
+      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
+      return;
+    }
+    CodeModel requestModel = CodeModel(
+      packageId: packageId,
+      code: code!,
+    );
+    if(code == packageId.split('-')[0]) {
+      accountConfirmPackage(packageId, deliverId);
+      ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');
+      refresh();
+    };
+    await Duration(seconds: 3);
+  }
+
+  Future<void> showQRCode(String packageId, String? deliverId) async {
+    final svg = Barcode.qrCode().toSvg(packageId.split('-')[0]);
     await Dialogs.materialDialog(
         dialogWidth: 400.w,
         context: Get.context!,
-        customView: _qrCodeWidget(svg));
+        customView: _qrCodeWidget(svg, packageId, deliverId));
   }
 
-  Widget _qrCodeWidget(String svg) {
+  Widget _qrCodeWidget(String svg, String packageId, String? deliverId) {
     return Container(
       padding: EdgeInsets.only(top: 40.h, right: 40.w, left: 40.w),
       child: Column(
@@ -277,7 +387,22 @@ class ReceivedPackageController extends BasePagingController<Package>
               svg,
               fit: BoxFit.cover,
             ),
-          )
+          ),
+          Gap(20.h),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ColorButton(
+                  'Xác nhận Mã',
+                  icon: Icons.verified,
+                  onPressed: () => deliverConfirmCode(packageId, deliverId!),
+                  backgroundColor: AppColors.green,
+                  textColor: AppColors.green,
+                  radius: 8.sp,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+                ),
+              ]
+          ),
         ],
       ),
     );

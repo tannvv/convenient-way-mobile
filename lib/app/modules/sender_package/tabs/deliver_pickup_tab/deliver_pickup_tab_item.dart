@@ -38,7 +38,7 @@ class DeliverPickupTabItem extends StatelessWidget {
           PackageInfo(package: package),
           Gap(12.h),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ColorButton(
                 'Lấy mã QR',
@@ -49,7 +49,7 @@ class DeliverPickupTabItem extends StatelessWidget {
                 radius: 8.sp,
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
-              Gap(4.w),
+              Gap(8.w),
               ColorButton(
                 'Theo dõi',
                 icon: Icons.location_on,
@@ -61,9 +61,8 @@ class DeliverPickupTabItem extends StatelessWidget {
               ),
             ],
           ),
-          Gap(12.h),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ColorButton(
                 'QR Xác nhận',
