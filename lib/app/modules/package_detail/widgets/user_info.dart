@@ -18,7 +18,7 @@ class UserInfo extends GetWidget<PackageDetailController> {
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 20.w,
-          vertical: 12.h,
+          vertical: 8.h,
         ),
         child: Row(
           children: [
@@ -53,8 +53,8 @@ class UserInfo extends GetWidget<PackageDetailController> {
             Text(
               '${controller.deliver?.firstName} ${controller.deliver?.lastName}',
               style: subtitle1.copyWith(
-                fontWeight: FontWeights.medium,
-                color: Colors.black54,
+                fontWeight: FontWeights.bold,
+                color: Colors.black,
               ),
             )
           ],

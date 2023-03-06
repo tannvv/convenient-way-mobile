@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:tien_duong/app/core/base/sender_tab_base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
+import 'package:tien_duong/app/core/controllers/pickup_file_controller.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/font_weight.dart';
@@ -15,8 +16,9 @@ import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
-import 'package:tien_duong/app/data/repository/request_model/check_code_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
+import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
+import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
 class DeliveryTabController extends SenderTabBaseController<Package>
@@ -47,6 +49,24 @@ class DeliveryTabController extends SenderTabBaseController<Package>
     });
   }
 
+  Future<void> accountDeliveredPackage(String packageId) async {
+    String? acceptCode = await PickUpFileController().scanQR();
+    if (senderConfirmCode(packageId) == packageId.split('-')[0]) {
+      Future<SimpleResponseModel> future =
+      _packageRepo.deliverySuccess(packageId);
+      await callDataService<SimpleResponseModel>(future, onSuccess: (response) {
+        ToastService.showSuccess(response.message ?? 'Thành công');
+        refreshController.requestRefresh();
+      }, onError: (exception) {
+        if (exception is BaseException) {
+          ToastService.showError(exception.message);
+        }
+      });
+    } else {
+      ToastService.showError('QR Code không đúng vui lòng kiểm tra lại!');
+    }
+  }
+
   Future<void> confirmPackage(String packageId) async {
     _packageRepo.senderConfirmDeliverySuccess(packageId).then((response) async {
       Get.back();
@@ -63,10 +83,6 @@ class DeliveryTabController extends SenderTabBaseController<Package>
       ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
       return;
     }
-    CodeModel requestModel = CodeModel(
-      packageId: packageId,
-      code: code!,
-    );
     if(code == packageId.split('-')[0]) {
       confirmPackage(packageId);
       ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');

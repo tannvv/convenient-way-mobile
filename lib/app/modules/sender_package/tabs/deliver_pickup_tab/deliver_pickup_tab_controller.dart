@@ -37,11 +37,6 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
         onSuccess: onSuccess, onError: onError);
   }
 
-
-  Future<void> showMapTracking(Package package) async {
-    await Get.toNamed(Routes.TRACKING_PACKAGE, arguments: package);
-  }
-
   Future<void> senderConfirmCode(String packageId, String deliverId) async {
     confirmCode(() => {
       confirmCodeFromQR(packageId, deliverId)

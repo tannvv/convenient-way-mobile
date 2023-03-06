@@ -14,16 +14,17 @@ class NoteInfo extends GetWidget<PackageDetailController> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: controller.horizontalPadding, vertical: 12.h),
+          horizontal: controller.horizontalPadding, vertical: 8.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const TitleItem(title: 'Ghi chú'),
-          Gap(12.h),
+          Gap(8.h),
           Text(
             controller.package.note ?? 'Không có',
             style: subtitle2.copyWith(
                 fontWeight: FontWeight.w500, color: AppColors.description),
+            overflow: TextOverflow.ellipsis,
           )
         ],
       ),
