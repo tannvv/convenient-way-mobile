@@ -47,7 +47,7 @@ class CreatePackagePageView extends GetView<CreatePackagePageController> {
           steps: [
             Step(
                 title: Text(
-                  'Địa\nđiểm lấy\nhàng',
+                  'Điểm\nlấy\nhàng',
                   style: caption,
                 ),
                 content: const LocationPickup(),
@@ -57,7 +57,7 @@ class CreatePackagePageView extends GetView<CreatePackagePageController> {
                     : StepState.indexed),
             Step(
                 title: Text(
-                  'Thông tin\nngười\nnhận',
+                  'Điểm\ngiao\nhàng',
                   style: caption,
                 ),
                 content: const ReceivedInfo(),

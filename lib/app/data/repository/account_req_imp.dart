@@ -225,4 +225,19 @@ class AccountReqImp extends BaseRepository implements AccountRep {
       rethrow;
     }
   }
+
+  @override
+  Future<int> getAvailableBalance(String accountId) {
+    String endpoint = '${DioProvider.baseUrl}/accounts/available-balance';
+    var dioCall =
+        dioClient.get(endpoint, queryParameters: {'accountId': accountId});
+    try {
+      return callApi(dioCall).then((response) {
+        int model = response.data['data'];
+        return model;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

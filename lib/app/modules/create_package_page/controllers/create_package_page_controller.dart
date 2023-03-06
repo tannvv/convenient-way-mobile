@@ -34,6 +34,8 @@ class CreatePackagePageController extends BaseController {
   final GlobalKey<FormFieldState> startLocationKey =
       GlobalKey<FormFieldState>();
   final GlobalKey<FormFieldState> endLocationKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> pickupNameKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> pickupPhoneKey = GlobalKey<FormFieldState>();
   final GlobalKey<FormFieldState> receiverNameKey = GlobalKey<FormFieldState>();
   final GlobalKey<FormFieldState> receiverPhoneKey =
       GlobalKey<FormFieldState>();
@@ -45,6 +47,8 @@ class CreatePackagePageController extends BaseController {
 
   final FocusNode focusStartLocationNode = FocusNode();
   final FocusNode focusEndLocationNode = FocusNode();
+  final FocusNode focusPickupName = FocusNode();
+  final FocusNode focusPickupPhone = FocusNode();
   final FocusNode focusReceiverPhone = FocusNode();
   final FocusNode focusReceiverName = FocusNode();
   final FocusNode focusLength = FocusNode();
@@ -73,6 +77,8 @@ class CreatePackagePageController extends BaseController {
   String? destinationAddress;
   double? destinationLongitude;
   double? destinationLatitude;
+  String pickupName = '';
+  String pickupPhone = '';
   String receivedName = '';
   String receivedPhone = '';
   final RxDouble distance = 0.0.obs;
@@ -218,6 +224,8 @@ class CreatePackagePageController extends BaseController {
       destinationAddress: destinationAddress,
       destinationLongitude: destinationLongitude,
       destinationLatitude: destinationLatitude,
+      pickupName: pickupName,
+      pickupPhone: pickupPhone,
       receiverName: receivedName,
       receiverPhone: receivedPhone,
       distance: distance.value,
@@ -255,6 +263,16 @@ class CreatePackagePageController extends BaseController {
       if (!focusStartLocationNode.hasFocus) {
         // startLocationKey.currentState?.validate();
         pickupFormKey.currentState?.validate();
+      }
+    });
+    focusPickupPhone.addListener(() {
+      if (!focusPickupPhone.hasFocus) {
+        pickupPhoneKey.currentState?.validate();
+      }
+    });
+    focusPickupName.addListener(() {
+      if (!focusPickupName.hasFocus) {
+        pickupNameKey.currentState?.validate();
       }
     });
     focusEndLocationNode.addListener(() {

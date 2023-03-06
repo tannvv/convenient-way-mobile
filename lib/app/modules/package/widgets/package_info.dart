@@ -6,8 +6,10 @@ import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 
 class PackageInfo extends StatelessWidget {
-  const PackageInfo({super.key, required this.package});
+  const PackageInfo(
+      {super.key, required this.package, this.isShowPrice = false});
   final Package package;
+  final bool isShowPrice;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -44,6 +46,23 @@ class PackageInfo extends StatelessWidget {
             ),
           ],
         ),
+        isShowPrice
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gap(4.h),
+                  Row(
+                    children: [
+                      const Text('Số tiền cọc: '),
+                      Text(
+                        package.getTotalPrice().toVND(),
+                        style: subtitle2,
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            : const SizedBox()
       ],
     );
   }

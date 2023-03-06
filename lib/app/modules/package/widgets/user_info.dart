@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
 import 'package:tien_duong/app/core/values/app_assets.dart';
 import 'package:tien_duong/app/core/values/font_weight.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
@@ -40,12 +41,25 @@ class UserInfo extends StatelessWidget {
         SizedBox(
           width: 20.w,
         ),
-        Text(
-          '$fname $lname',
-          style: subtitle1.copyWith(
-            fontWeight: FontWeights.medium,
-            color: Colors.black54,
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '$fname $lname',
+              style: subtitle1.copyWith(
+                fontWeight: FontWeights.medium,
+                color: Colors.black54,
+              ),
+            ),
+            Gap(2.h),
+            Text(
+              info.phone ?? '-',
+              style: subtitle2.copyWith(
+                fontWeight: FontWeights.regular ,
+                color: Colors.black54,
+              ),
+            ),
+          ],
         )
       ],
     );

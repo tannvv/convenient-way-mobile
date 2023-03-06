@@ -21,6 +21,33 @@ class ReceivedInfo extends GetWidget<CreatePackagePageController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            TextFormField(
+                style: subtitle1.copyWith(
+                  color: AppColors.lightBlack,
+                ),
+                key: controller.receiverNameKey,
+                onChanged: (value) => controller.receivedName = value,
+                validator: FunctionUtils.validatorNotNull,
+                initialValue: controller.receivedName,
+                focusNode: controller.focusReceiverName,
+                autofocus: true,
+                decoration:
+                    InputStyles.createPackage(labelText: 'Tên người nhận')),
+            Gap(20.h),
+            TextFormField(
+                style: subtitle1.copyWith(
+                  color: AppColors.lightBlack,
+                ),
+                key: controller.receiverPhoneKey,
+                validator: FunctionUtils.validatorPhone,
+                initialValue: controller.receivedPhone,
+                focusNode: controller.focusReceiverPhone,
+                autofocus: false,
+                onChanged: (value) => controller.receivedPhone = value,
+                decoration: InputStyles.createPackage(
+                  labelText: 'Số điện thoại',
+                )),
+            Gap(20.h),
             PlaceField(
                 enable: true,
                 hintText: '',
@@ -41,33 +68,6 @@ class ReceivedInfo extends GetWidget<CreatePackagePageController> {
                 },
                 textController: controller.senderTxtCtrl,
                 onSelected: controller.selectedSendLocation),
-            Gap(20.h),
-            TextFormField(
-                style: subtitle1.copyWith(
-                  color: AppColors.lightBlack,
-                ),
-                key: controller.receiverNameKey,
-                onChanged: (value) => controller.receivedName = value,
-                validator: FunctionUtils.validatorNotNull,
-                initialValue: controller.receivedName,
-                focusNode: controller.focusReceiverName,
-                autofocus: false,
-                decoration:
-                    InputStyles.createPackage(labelText: 'Tên người nhận')),
-            Gap(20.h),
-            TextFormField(
-                style: subtitle1.copyWith(
-                  color: AppColors.lightBlack,
-                ),
-                key: controller.receiverPhoneKey,
-                validator: FunctionUtils.validatorNotNull,
-                initialValue: controller.receivedPhone,
-                focusNode: controller.focusReceiverPhone,
-                autofocus: false,
-                onChanged: (value) => controller.receivedPhone = value,
-                decoration: InputStyles.createPackage(
-                  labelText: 'Số điện thoại',
-                )),
             Gap(20.h),
             Obx(
               () => controller.distance.value != 0.0

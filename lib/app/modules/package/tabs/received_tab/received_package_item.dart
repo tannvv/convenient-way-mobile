@@ -12,7 +12,11 @@ import 'package:tien_duong/app/modules/package/widgets/user_info.dart';
 
 class ReceivedPackageItem extends StatelessWidget {
   const ReceivedPackageItem(
-      {Key? key, required this.package, this.onCancelPackage, this.onConfirmPackage, required this.onShowQR})
+      {Key? key,
+      required this.package,
+      this.onCancelPackage,
+      this.onConfirmPackage,
+      required this.onShowQR})
       : super(key: key);
   final Package package;
   final Function()? onCancelPackage;
@@ -34,7 +38,7 @@ class ReceivedPackageItem extends StatelessWidget {
               locationStart: package.startAddress!,
               locationEnd: package.destinationAddress!),
           Gap(12.h),
-          PackageInfo(package: package),
+          PackageInfo(package: package, isShowPrice: true),
           Gap(12.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,

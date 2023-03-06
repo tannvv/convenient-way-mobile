@@ -30,8 +30,12 @@ class AuthController extends BaseController {
 
   String? _token;
   final Rx<Account?> _account = Rx<Account?>(null);
+  final RxInt _availableBalance = RxInt(0);
+  final RxBool _isLoadingAvailableBalance = false.obs;
 
   Account? get account => _account.value;
+  int get availableBalance => _availableBalance.value;
+  bool get isLoadingAvailableBalance => _isLoadingAvailableBalance.value;
   set setAccount(Account value) {
     _account.value = value;
   }
@@ -74,6 +78,7 @@ class AuthController extends BaseController {
             PreferenceManager prefs =
                 Get.find(tag: (PreferenceManager).toString());
             prefs.setString(PrefsMemory.userJson, jsonEncode(response));
+            loadBalance();
             // BackgroundNotificationService.initializeService();
           },
           onError: (exception) {
@@ -102,6 +107,7 @@ class AuthController extends BaseController {
         await BackgroundNotificationService.initializeService();
         await FirebaseMessagingService.registerNotification(
             _account.value!.id!);
+        loadBalance();
       }, onError: (exception) {
         if (exception is BaseException) {
           ToastService.showError((exception).message);
@@ -142,6 +148,7 @@ class AuthController extends BaseController {
       String? userJson = await prefs.getString(PrefsMemory.userJson);
       if (userJson.isNotEmpty) {
         _account.value = Account.fromJson(jsonDecode(userJson));
+        loadBalance();
         return _account.value;
       }
     }
@@ -161,6 +168,23 @@ class AuthController extends BaseController {
     await clearToken();
     Get.context?.loaderOverlay.hide();
     Get.offAllNamed(Routes.LOGIN);
+  }
+
+  Future<void> loadBalance() async {
+    if (_account.value != null) {
+      var future = _accountRepo.getAvailableBalance(_account.value!.id!);
+      await callDataService(future,
+          onSuccess: (int response) {
+            _availableBalance.value = response;
+          },
+          onError: showError,
+          onStart: () {
+            _isLoadingAvailableBalance.value = true;
+          },
+          onComplete: () {
+            _isLoadingAvailableBalance.value = false;
+          });
+    }
   }
 
   Future<void> clearToken() async {

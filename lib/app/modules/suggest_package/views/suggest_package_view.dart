@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tien_duong/app/core/values/app_assets.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/box_decorations.dart';
@@ -38,7 +40,7 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 20.w, top: 20.h),
+                        padding: EdgeInsets.only(left: 20.w, top: 28.h),
                         child: Text(
                             controller.statusAccount == 'NO_ROUTE'
                                 ? 'Các gói hàng hiện có trong hệ thống,\nvui lòng tạo lộ trình để có các gói\nhàng phù hợp'
@@ -92,7 +94,14 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Số dư', style: body2.copyWith(color: AppColors.floatLabel)),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text('Số dư', style: body2.copyWith(color: AppColors.floatLabel)),
+              Gap(6.w),
+              _balanceAvailable(),
+            ],
+          ),
           SizedBox(
             height: 2.h,
           ),
@@ -211,5 +220,30 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
         ),
       ),
     );
+  }
+
+  Obx _balanceAvailable() {
+    return Obx(() => controller.isLoadingBalance
+        ? Shimmer.fromColors(
+            baseColor: AppColors.shimmerBaseColor,
+            highlightColor: AppColors.shimmerHighlightColor,
+            child: Container(
+              width: 50.w,
+              height: 14.h,
+              decoration: const BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+            ),
+          )
+        : Text(
+            '(khả dụng: ${controller.availableBalance.toVND()})',
+            style: caption.copyWith(
+              color: AppColors.softBlack,
+              fontWeight: FontWeights.medium,
+            ),
+          ));
   }
 }

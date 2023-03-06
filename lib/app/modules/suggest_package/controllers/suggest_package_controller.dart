@@ -14,6 +14,8 @@ class SuggestPackageController extends BasePagingController<SuggestPackage> {
   final HeaderState headerState = HeaderState();
 
   Account? get account => _authController.account;
+  bool get isLoadingBalance => _authController.isLoadingAvailableBalance;
+  int get availableBalance => _authController.availableBalance;
   String get balanceAccountVND =>
       _authController.account?.balance.toVND() ?? '-';
   String get statusAccount => _authController.account?.status ?? '';

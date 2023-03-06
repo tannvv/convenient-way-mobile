@@ -30,4 +30,5 @@ abstract class AccountRep {
   Future<SimpleResponseModel> isValidAccount(IsValidAccountModel model);
   Future<AccountRating> getRating(String accountId);
   Future<Account> updateAccount(UpdateAccount model);
+  Future<int> getAvailableBalance(String accountId);
 }

@@ -10,6 +10,8 @@ class Package {
   String? destinationAddress;
   double? destinationLongitude;
   double? destinationLatitude;
+  String? pickupName;
+  String? pickupPhone;
   String? receiverName;
   String? receiverPhone;
   double? distance;
@@ -37,6 +39,8 @@ class Package {
       this.destinationAddress,
       this.destinationLongitude,
       this.destinationLatitude,
+      this.pickupName,
+      this.pickupPhone,
       this.receiverName,
       this.receiverPhone,
       this.distance,
@@ -64,6 +68,8 @@ class Package {
     destinationAddress = json['destinationAddress'];
     destinationLongitude = json['destinationLongitude'];
     destinationLatitude = json['destinationLatitude'];
+    pickupName = json['pickupName'];
+    pickupPhone = json['pickupPhone'];
     receiverName = json['receiverName'];
     receiverPhone = json['receiverPhone'];
     distance = json['distance'];
@@ -103,6 +109,8 @@ class Package {
     data['destinationAddress'] = destinationAddress;
     data['destinationLongitude'] = destinationLongitude;
     data['destinationLatitude'] = destinationLatitude;
+    data['pickupName'] = pickupName;
+    data['pickupPhone'] = pickupPhone;
     data['receiverName'] = receiverName;
     data['receiverPhone'] = receiverPhone;
     data['distance'] = distance;
@@ -139,5 +147,13 @@ class Package {
       names = names.substring(0, names.length - 2);
     }
     return names;
+  }
+
+  int getTotalPrice() {
+    int total = 0;
+    products?.forEach((element) {
+      total += element.price!;
+    });
+    return total;
   }
 }

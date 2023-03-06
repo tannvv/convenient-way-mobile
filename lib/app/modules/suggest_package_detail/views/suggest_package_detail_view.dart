@@ -1,6 +1,4 @@
 import 'package:tien_duong/app/modules/suggest_package_detail/widgets/bottom.dart';
-import 'package:tien_duong/app/modules/suggest_package_detail/widgets/center_right.dart';
-import 'package:tien_duong/app/modules/suggest_package_detail/widgets/pickup_map.dart';
 import 'package:tien_duong/app/modules/suggest_package_detail/widgets/top.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,9 +12,9 @@ class SuggestPackageDetailView extends GetView<SuggestPackageDetailController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: const [
-        PickupMap(),
+        // PickupMap(),
         Top(),
-        CenterRight(),
+        // CenterRight(),
         Bottom(),
       ]),
     );
