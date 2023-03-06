@@ -1,6 +1,7 @@
 import 'package:tien_duong/app/core/base/base_repository.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/models/account_rating_model.dart';
+import 'package:tien_duong/app/data/models/balance_model.dart';
 import 'package:tien_duong/app/data/models/notification_model.dart';
 import 'package:tien_duong/app/data/models/route_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
@@ -227,13 +228,13 @@ class AccountReqImp extends BaseRepository implements AccountRep {
   }
 
   @override
-  Future<int> getAvailableBalance(String accountId) {
+  Future<BalanceModel> getAvailableBalance(String accountId) {
     String endpoint = '${DioProvider.baseUrl}/accounts/available-balance';
     var dioCall =
         dioClient.get(endpoint, queryParameters: {'accountId': accountId});
     try {
       return callApi(dioCall).then((response) {
-        int model = response.data['data'];
+        BalanceModel model = BalanceModel.fromJson(response.data['data']);
         return model;
       });
     } catch (e) {

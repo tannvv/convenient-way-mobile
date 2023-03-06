@@ -15,6 +15,7 @@ import 'package:tien_duong/app/core/widgets/custom_overlay.dart';
 import 'package:tien_duong/app/data/constants/prefs_memory.dart';
 import 'package:tien_duong/app/data/local/preference/preference_manager.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
+import 'package:tien_duong/app/data/models/balance_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/login_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/logout_model.dart';
@@ -30,11 +31,12 @@ class AuthController extends BaseController {
 
   String? _token;
   final Rx<Account?> _account = Rx<Account?>(null);
-  final RxInt _availableBalance = RxInt(0);
+  final Rx<BalanceModel?> _balanceAvailable = Rx<BalanceModel?>(null);
   final RxBool _isLoadingAvailableBalance = false.obs;
 
   Account? get account => _account.value;
-  int get availableBalance => _availableBalance.value;
+  int get availableBalance => _balanceAvailable.value?.balance ?? 0;
+  bool get isNewAccount => _balanceAvailable.value?.isNewAccount ?? false;
   bool get isLoadingAvailableBalance => _isLoadingAvailableBalance.value;
   set setAccount(Account value) {
     _account.value = value;
@@ -174,8 +176,8 @@ class AuthController extends BaseController {
     if (_account.value != null) {
       var future = _accountRepo.getAvailableBalance(_account.value!.id!);
       await callDataService(future,
-          onSuccess: (int response) {
-            _availableBalance.value = response;
+          onSuccess: (BalanceModel response) {
+            _balanceAvailable.value = response;
           },
           onError: showError,
           onStart: () {

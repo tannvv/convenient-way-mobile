@@ -16,6 +16,7 @@ class SuggestPackageController extends BasePagingController<SuggestPackage> {
   Account? get account => _authController.account;
   bool get isLoadingBalance => _authController.isLoadingAvailableBalance;
   int get availableBalance => _authController.availableBalance;
+  bool get isNewAccount => _authController.isNewAccount;
   String get balanceAccountVND =>
       _authController.account?.balance.toVND() ?? '-';
   String get statusAccount => _authController.account?.status ?? '';

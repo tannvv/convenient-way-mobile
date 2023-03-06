@@ -238,12 +238,14 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
               ),
             ),
           )
-        : Text(
-            '(khả dụng: ${controller.availableBalance.toVND()})',
-            style: caption.copyWith(
-              color: AppColors.softBlack,
-              fontWeight: FontWeights.medium,
-            ),
-          ));
+        : controller.isNewAccount
+            ? Container()
+            : Text(
+                '(khả dụng: ${controller.availableBalance.toVND()})',
+                style: caption.copyWith(
+                  color: AppColors.softBlack,
+                  fontWeight: FontWeights.medium,
+                ),
+              ));
   }
 }
