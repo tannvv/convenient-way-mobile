@@ -224,7 +224,7 @@ abstract class SenderTabBaseController<T> extends BasePagingController<T> {
     }
   }
 
-  Future<void> showQRCode(String packageId, String? deliverId) async {
+  Future<void> showQRCode(String packageId) async {
     final svg = Barcode.qrCode().toSvg(packageId.split('-')[0]);
     await Dialogs.materialDialog(
         dialogWidth: 400.w,
