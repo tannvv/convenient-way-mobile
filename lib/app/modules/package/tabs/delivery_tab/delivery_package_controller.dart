@@ -33,10 +33,9 @@ class DeliveryPackageController extends BasePagingController<Package>
   }
 
   Future<void> accountConfirmPackage(String packageId) async {
-    if (await PickUpFileController().scanQR() == packageId) {
+    if (await PickUpFileController().scanQR() == packageId.split('-')[0]) {
       MaterialDialogService.showConfirmDialog(
           msg: 'Xác nhận gói hàng đã giao thành công?',
-          closeOnFinish: false,
           onConfirmTap: () async {
             _packageRepo.deliverySuccess(packageId).then((response) async {
               Get.back();
@@ -48,7 +47,8 @@ class DeliveryPackageController extends BasePagingController<Package>
             });
           });
     } else {
-      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
+      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',
+          seconds: 5);
     }
   }
 
@@ -63,17 +63,20 @@ class DeliveryPackageController extends BasePagingController<Package>
 
   Future<void> confirmCodeFromQR(String packageId) async {
     if (code == null || code != packageId.split('-')[0]) {
-      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
+      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',
+          seconds: 5);
       return;
     }
     CodeModel requestModel = CodeModel(
       packageId: packageId,
       code: code!,
     );
-    if(code == packageId.split('-')[0]) {
-      Future<SimpleResponseModel> future = _packageRepo.deliverySuccess(packageId);
-      await callDataService<SimpleResponseModel>(future,
-        onSuccess: (respones) {
+    if (code == packageId.split('-')[0]) {
+      Future<SimpleResponseModel> future =
+          _packageRepo.deliverySuccess(packageId);
+      await callDataService<SimpleResponseModel>(
+        future,
+        onSuccess: (response) {
           ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');
           refresh();
         },
@@ -81,8 +84,7 @@ class DeliveryPackageController extends BasePagingController<Package>
         onStart: showOverlay,
         onComplete: hideOverlay,
       );
-    };
-    await Duration(seconds: 3);
+    }
   }
 
   Future<void> showQRCode(String packageId) async {
@@ -112,11 +114,11 @@ class DeliveryPackageController extends BasePagingController<Package>
                       fontStyle: FontStyle.italic,
                       decoration: TextDecoration.underline),
                   children: [
-                    TextSpan(
-                        text:
+                TextSpan(
+                    text:
                         ' tuyệt đối không chia sẽ mã này với người không liên quan',
-                        style: caption.copyWith(decoration: TextDecoration.none))
-                  ])),
+                    style: caption.copyWith(decoration: TextDecoration.none))
+              ])),
           Gap(20.h),
           SizedBox(
             height: 200.h,
@@ -127,20 +129,17 @@ class DeliveryPackageController extends BasePagingController<Package>
             ),
           ),
           Gap(20.h),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ColorButton(
-                  'Xác nhận Mã',
-                  icon: Icons.verified,
-                  onPressed: () =>  confirmCodeFromQR(packageId),
-                  backgroundColor: AppColors.green,
-                  textColor: AppColors.green,
-                  radius: 8.sp,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-                ),
-              ]
-          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            ColorButton(
+              'Xác nhận Mã',
+              icon: Icons.verified,
+              onPressed: () => confirmCodeFromQR(packageId),
+              backgroundColor: AppColors.green,
+              textColor: AppColors.green,
+              radius: 8.sp,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+            ),
+          ]),
         ],
       ),
     );

@@ -214,8 +214,10 @@ class CreatePackagePageController extends BaseController {
         widget: const CustomOverlay(
       content: 'Đang tạo gói hàng...',
     ));
-    distance.value = Geolocator.distanceBetween(startLatitude!, startLatitude!,
-        destinationLatitude!, destinationLongitude!);
+    // distance.value = Geolocator.distanceBetween(startLatitude!, startLatitude!,
+    //     destinationLatitude!, destinationLongitude!);
+    distance.value = calculateDistance(startLatitude, startLongitude,
+        destinationLatitude, destinationLongitude);
     CreatePackageModel createPackageModel = CreatePackageModel(
       id: packageId,
       startAddress: startAddress,

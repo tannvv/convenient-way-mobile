@@ -145,6 +145,7 @@ class SuggestPackageDetailController extends BaseController
                 Get.back(); // close dialog
                 await QuickAlertService.showSuccess('Chọn gói hàng thành công',
                     duration: 3);
+                _authController.reloadAccount();
                 Get.back(result: true);
               },
               onError: (error) {

@@ -28,7 +28,7 @@ class SuggestItem extends StatelessWidget {
             style: subtitle2,
           ),
           Text(
-            'Khoảng cách: ${package.distance!.toInt()}m',
+            'Khoảng cách: ${package.distance!.toInt()}km',
             style: subtitle2,
           ),
           Text(

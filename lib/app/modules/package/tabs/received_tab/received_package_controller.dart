@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tien_duong/app/core/base/base_paging_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
@@ -40,12 +41,10 @@ class ReceivedPackageController extends BasePagingController<Package>
 
   Future<void> acceptDeliveryPackage(String packageId) async {
     AccountPickUpModel model = AccountPickUpModel(
-        deliverId: _authController.account!.id!,
-        packageIds: [packageId]);
+        deliverId: _authController.account!.id!, packageIds: [packageId]);
     _packageRepo.accountConfirmPackage(model).then((response) async {
       packageIdsWarning.value = getPackageIdsNearPackage(
-          dataApis.firstWhere((element) => element.id == packageId),
-          dataApis);
+          dataApis.firstWhere((element) => element.id == packageId), dataApis);
       Get.back();
       if (packageIdsWarning.isNotEmpty) {
         ToastService.showInfo(
@@ -62,8 +61,9 @@ class ReceivedPackageController extends BasePagingController<Package>
   }
 
   Future<void> accountScanQr(String packageId, deliverId) async {
-    await showQRCode(packageId, deliverId).then((value) => {
-      MaterialDialogService.showConfirmDialog(
+    await showQRCode(packageId, deliverId).then(
+      (value) => {
+        MaterialDialogService.showConfirmDialog(
           msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
           closeOnFinish: false,
           onConfirmTap: () async {
@@ -94,11 +94,12 @@ class ReceivedPackageController extends BasePagingController<Package>
   }
 
   Future<void> deliverConfirmPackage(String packageId) async {
-    if (await PickUpFileController().scanQR() == packageId) {
+    if (await PickUpFileController().scanQR() == packageId.split('-')[0]) {
       MaterialDialogService.showConfirmDialog(
           msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
           closeOnFinish: false,
           onConfirmTap: () async {
+            showOverlay();
             AccountPickUpModel model = AccountPickUpModel(
                 deliverId: _authController.account!.id!,
                 packageIds: [packageId]);
@@ -107,15 +108,19 @@ class ReceivedPackageController extends BasePagingController<Package>
                   dataApis.firstWhere((element) => element.id == packageId),
                   dataApis);
               Get.back();
+              Get.back();
               if (packageIdsWarning.isNotEmpty) {
                 ToastService.showInfo(
                     'Còn ${packageIdsWarning.length} gói hàng cần lấy ở gần nơi này');
               } else {
                 ToastService.showSuccess('Đã lấy hàng để đi giao');
+                Get.back();
               }
+              hideOverlay();
               onRefresh();
               _authController.reloadAccount();
             }).catchError((error) {
+              hideOverlay();
               Get.back();
               ToastService.showError(error.messages[0]);
             });
@@ -266,9 +271,7 @@ class ReceivedPackageController extends BasePagingController<Package>
   }
 
   Future<void> deliverConfirmCode(String packageId, String deliverId) async {
-    confirmCode(() => {
-      confirmCodeFromQR(packageId, deliverId)
-    });
+    confirmCode(() => {confirmCodeFromQR(packageId, deliverId)});
   }
 
   Widget _confirmCodeWidget() {
@@ -316,10 +319,8 @@ class ReceivedPackageController extends BasePagingController<Package>
   }
 
   Future<void> accountConfirmPackage(String packageId, String deliverId) async {
-    AccountPickUpModel model = AccountPickUpModel(
-        deliverId: deliverId,
-        packageIds: [packageId]
-    );
+    AccountPickUpModel model =
+        AccountPickUpModel(deliverId: deliverId, packageIds: [packageId]);
     _packageRepo.accountConfirmPackage(model).then((response) async {
       Get.back();
       onRefresh();
@@ -332,18 +333,20 @@ class ReceivedPackageController extends BasePagingController<Package>
 
   Future<void> confirmCodeFromQR(String packageId, String deliverId) async {
     if (code == null || code != packageId.split('-')[0]) {
-      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
+      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',
+          seconds: 5);
       return;
     }
     CodeModel requestModel = CodeModel(
       packageId: packageId,
       code: code!,
     );
-    if(code == packageId.split('-')[0]) {
+    if (code == packageId.split('-')[0]) {
       accountConfirmPackage(packageId, deliverId);
       ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');
       refresh();
-    };
+    }
+    ;
     await Duration(seconds: 3);
   }
 
@@ -374,11 +377,11 @@ class ReceivedPackageController extends BasePagingController<Package>
                       fontStyle: FontStyle.italic,
                       decoration: TextDecoration.underline),
                   children: [
-                    TextSpan(
-                        text:
+                TextSpan(
+                    text:
                         ' tuyệt đối không chia sẽ mã này với người không liên quan',
-                        style: caption.copyWith(decoration: TextDecoration.none))
-                  ])),
+                    style: caption.copyWith(decoration: TextDecoration.none))
+              ])),
           Gap(20.h),
           SizedBox(
             height: 200.h,
@@ -389,20 +392,17 @@ class ReceivedPackageController extends BasePagingController<Package>
             ),
           ),
           Gap(20.h),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ColorButton(
-                  'Xác nhận Mã',
-                  icon: Icons.verified,
-                  onPressed: () => deliverConfirmCode(packageId, deliverId!),
-                  backgroundColor: AppColors.green,
-                  textColor: AppColors.green,
-                  radius: 8.sp,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-                ),
-              ]
-          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            ColorButton(
+              'Xác nhận Mã',
+              icon: Icons.verified,
+              onPressed: () => deliverConfirmCode(packageId, deliverId!),
+              backgroundColor: AppColors.green,
+              textColor: AppColors.green,
+              radius: 8.sp,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+            ),
+          ]),
         ],
       ),
     );
