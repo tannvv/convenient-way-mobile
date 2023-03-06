@@ -31,7 +31,7 @@ class Header extends GetWidget<PackageDetailController> {
                       ),
                       Gap(8.w),
                       Text(
-                        'Tiện đường',
+                        'Tiện Đường',
                         style: h6.copyWith(fontWeight: FontWeight.bold),
                       )
                     ],
