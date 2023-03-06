@@ -15,13 +15,13 @@ class LocationStartEnd extends GetWidget<PackageDetailController> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: controller.horizontalPadding, vertical: 12.h),
+          horizontal: controller.horizontalPadding, vertical: 8.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const TitleItem(title: 'Điểm đi - Điểm đến: '),
+              const TitleItem(title: 'Chặng đường: '),
               Text(
                 '  (${controller.package.distance?.ceil()} m)',
                 style: subtitle2.copyWith(
@@ -32,12 +32,13 @@ class LocationStartEnd extends GetWidget<PackageDetailController> {
           Row(
             children: [
               Container(
-                padding: EdgeInsets.only(top: 11.5.h),
+                padding: EdgeInsets.only(top: 11.h),
                 height: 80.h,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     HyperShape.startCircle(),
+                    HyperShape.dot(),
                     HyperShape.dot(),
                     HyperShape.dot(),
                     HyperShape.dot(),
@@ -55,10 +56,10 @@ class LocationStartEnd extends GetWidget<PackageDetailController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Gap(2.h),
+                          //Gap(2.h),
                           _locationItem(
                               'Điểm đi', controller.package.startAddress ?? ''),
-                          Gap(2.h),
+                          //Gap(2.h),
                           _locationItem('Điểm đến',
                               controller.package.destinationAddress ?? ''),
                         ],

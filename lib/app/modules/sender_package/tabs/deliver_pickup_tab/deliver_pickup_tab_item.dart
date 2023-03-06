@@ -16,13 +16,11 @@ class DeliverPickupTabItem extends StatelessWidget {
       required this.package,
       required this.onShowQR,
       required this.onConfirmPackage,
-      required this.showMapTracking,
       required this.onShowDeliverInfo})
       : super(key: key);
   final Package package;
   final Function() onShowQR;
   final Function() onConfirmPackage;
-  final Function() showMapTracking;
   final Function() onShowDeliverInfo;
   @override
   Widget build(BuildContext context) {
@@ -51,20 +49,6 @@ class DeliverPickupTabItem extends StatelessWidget {
               ),
               Gap(8.w),
               ColorButton(
-                'Theo dõi',
-                icon: Icons.location_on,
-                onPressed: showMapTracking,
-                backgroundColor: AppColors.blue,
-                textColor: AppColors.blue,
-                radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ColorButton(
                 'QR Xác nhận',
                 icon: Icons.verified,
                 onPressed: onConfirmPackage,
@@ -74,7 +58,7 @@ class DeliverPickupTabItem extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

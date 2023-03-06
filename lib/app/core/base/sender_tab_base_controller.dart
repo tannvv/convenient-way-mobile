@@ -207,7 +207,8 @@ abstract class SenderTabBaseController<T> extends BasePagingController<T> {
   }
 
   Future<void> accountDeliveredPackage(String packageId) async {
-    if (await PickUpFileController().scanQR() == packageId) {
+    String? acceptCode = await PickUpFileController().scanQR();
+    if (acceptCode == packageId.split('-')[0]) {
       Future<SimpleResponseModel> future =
       _packageRepo.deliverySuccess(packageId);
       await callDataService<SimpleResponseModel>(future, onSuccess: (response) {
@@ -224,14 +225,14 @@ abstract class SenderTabBaseController<T> extends BasePagingController<T> {
   }
 
   Future<void> showQRCode(String packageId, String? deliverId) async {
-    final svg = Barcode.qrCode().toSvg(packageId);
+    final svg = Barcode.qrCode().toSvg(packageId.split('-')[0]);
     await Dialogs.materialDialog(
         dialogWidth: 400.w,
         context: Get.context!,
-        customView: _qrCodeWidget(svg));
+        customView: _qrCodeWidget(svg, packageId));
   }
 
-  Widget _qrCodeWidget(String svg) {
+  Widget _qrCodeWidget(String svg, String packageId) {
     return Container(
       padding: EdgeInsets.only(top: 40.h, right: 40.w, left: 40.w),
       child: Column(

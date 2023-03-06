@@ -15,7 +15,7 @@ class ProductInfo extends GetWidget<PackageDetailController> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: controller.horizontalPadding, vertical: 12.h),
+          horizontal: controller.horizontalPadding, vertical: 8.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -28,7 +28,7 @@ class ProductInfo extends GetWidget<PackageDetailController> {
                 final product = controller.products[index];
                 return _productItem(product);
               },
-              separatorBuilder: (_, __) => Gap(10.h),
+              separatorBuilder: (_, __) => Gap(8.h),
               itemCount: controller.products.length)
         ],
       ),
@@ -47,12 +47,14 @@ class ProductInfo extends GetWidget<PackageDetailController> {
                 '${product.name}',
                 style: subtitle2.copyWith(
                     fontWeight: FontWeight.w500, color: AppColors.description),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             Text(
               product.price.toVND(),
               style: subtitle2.copyWith(
                   fontWeight: FontWeight.w500, color: AppColors.description),
+              overflow: TextOverflow.ellipsis,
             )
           ],
         ),
@@ -60,6 +62,7 @@ class ProductInfo extends GetWidget<PackageDetailController> {
           '${product.description}',
           style: subtitle2.copyWith(
               fontWeight: FontWeight.w500, color: AppColors.description),
+          overflow: TextOverflow.ellipsis,
         ),
         Gap(4.h),
       ],

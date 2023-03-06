@@ -14,7 +14,7 @@ class WrapItem extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
+          padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
           decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.circular(borderRadius),
@@ -23,7 +23,7 @@ class WrapItem extends StatelessWidget {
         ),
         onPressedDetail != null
             ? Positioned(
-                top: 0.h,
+                top: -5.2.h,
                 right: 0.w,
                 child: ColorButton(
                   'Xem chi tiết',

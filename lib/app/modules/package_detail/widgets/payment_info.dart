@@ -15,12 +15,12 @@ class PaymentInfo extends GetWidget<PackageDetailController> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-          horizontal: controller.horizontalPadding, vertical: 12.h),
+          horizontal: controller.horizontalPadding, vertical: 8.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const TitleItem(title: 'Chi tiết thanh toán'),
-          Gap(12.h),
+          Gap(8.h),
           Row(
             children: [
               Expanded(
