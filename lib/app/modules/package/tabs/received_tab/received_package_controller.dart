@@ -39,10 +39,7 @@ class ReceivedPackageController extends BasePagingController<Package>
   String? code;
 
   Future<void> acceptDeliveryPackage(String packageId) async {
-    AccountPickUpModel model = AccountPickUpModel(
-        deliverId: _authController.account!.id!,
-        packageIds: [packageId]);
-    _packageRepo.accountConfirmPackage(model).then((response) async {
+    _packageRepo.confirmPackage(packageId).then((response) async {
       packageIdsWarning.value = getPackageIdsNearPackage(
           dataApis.firstWhere((element) => element.id == packageId),
           dataApis);
@@ -61,16 +58,13 @@ class ReceivedPackageController extends BasePagingController<Package>
     });
   }
 
-  Future<void> accountScanQr(String packageId, deliverId) async {
-    await showQRCode(packageId, deliverId).then((value) => {
+  Future<void> accountScanQr(String packageId) async {
+    await showQRCode(packageId).then((value) => {
       MaterialDialogService.showConfirmDialog(
           msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
           closeOnFinish: false,
           onConfirmTap: () async {
-            AccountPickUpModel model = AccountPickUpModel(
-                deliverId: _authController.account!.id!,
-                packageIds: [packageId]);
-            _packageRepo.accountConfirmPackage(model).then((response) async {
+            _packageRepo.confirmPackage(packageId).then((response) async {
               packageIdsWarning.value = getPackageIdsNearPackage(
                   dataApis.firstWhere((element) => element.id == packageId),
                   dataApis);
@@ -99,10 +93,7 @@ class ReceivedPackageController extends BasePagingController<Package>
           msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
           closeOnFinish: false,
           onConfirmTap: () async {
-            AccountPickUpModel model = AccountPickUpModel(
-                deliverId: _authController.account!.id!,
-                packageIds: [packageId]);
-            _packageRepo.accountConfirmPackage(model).then((response) async {
+            _packageRepo.confirmPackage(packageId).then((response) async {
               packageIdsWarning.value = getPackageIdsNearPackage(
                   dataApis.firstWhere((element) => element.id == packageId),
                   dataApis);
@@ -265,9 +256,9 @@ class ReceivedPackageController extends BasePagingController<Package>
     );
   }
 
-  Future<void> deliverConfirmCode(String packageId, String deliverId) async {
+  Future<void> deliverConfirmCode(String packageId) async {
     confirmCode(() => {
-      confirmCodeFromQR(packageId, deliverId)
+      confirmCodeFromQR(packageId)
     });
   }
 
@@ -315,12 +306,8 @@ class ReceivedPackageController extends BasePagingController<Package>
         ]);
   }
 
-  Future<void> accountConfirmPackage(String packageId, String deliverId) async {
-    AccountPickUpModel model = AccountPickUpModel(
-        deliverId: deliverId,
-        packageIds: [packageId]
-    );
-    _packageRepo.accountConfirmPackage(model).then((response) async {
+  Future<void> accountConfirmPackage(String packageId) async {
+    _packageRepo.confirmPackage(packageId).then((response) async {
       Get.back();
       onRefresh();
       _authController.reloadAccount();
@@ -330,7 +317,7 @@ class ReceivedPackageController extends BasePagingController<Package>
     });
   }
 
-  Future<void> confirmCodeFromQR(String packageId, String deliverId) async {
+  Future<void> confirmCodeFromQR(String packageId) async {
     if (code == null || code != packageId.split('-')[0]) {
       ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
       return;
@@ -340,22 +327,22 @@ class ReceivedPackageController extends BasePagingController<Package>
       code: code!,
     );
     if(code == packageId.split('-')[0]) {
-      accountConfirmPackage(packageId, deliverId);
+      accountConfirmPackage(packageId);
       ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');
       refresh();
     };
     await Duration(seconds: 3);
   }
 
-  Future<void> showQRCode(String packageId, String? deliverId) async {
+  Future<void> showQRCode(String packageId) async {
     final svg = Barcode.qrCode().toSvg(packageId.split('-')[0]);
     await Dialogs.materialDialog(
         dialogWidth: 400.w,
         context: Get.context!,
-        customView: _qrCodeWidget(svg, packageId, deliverId));
+        customView: _qrCodeWidget(svg, packageId));
   }
 
-  Widget _qrCodeWidget(String svg, String packageId, String? deliverId) {
+  Widget _qrCodeWidget(String svg, String packageId) {
     return Container(
       padding: EdgeInsets.only(top: 40.h, right: 40.w, left: 40.w),
       child: Column(
@@ -395,7 +382,7 @@ class ReceivedPackageController extends BasePagingController<Package>
                 ColorButton(
                   'Xác nhận Mã',
                   icon: Icons.verified,
-                  onPressed: () => deliverConfirmCode(packageId, deliverId!),
+                  onPressed: () => deliverConfirmCode(packageId),
                   backgroundColor: AppColors.green,
                   textColor: AppColors.green,
                   radius: 8.sp,

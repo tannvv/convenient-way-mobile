@@ -72,12 +72,13 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
   Future<void> showQRCode(String packageId) async {
     final svg = Barcode.qrCode().toSvg(packageId.split('-')[0]);
     await Dialogs.materialDialog(
-        dialogWidth: 400.w,
-        context: Get.context!,
-        customView: _qrCodeWidget(svg, packageId));
+      dialogWidth: 400.w,
+      context: Get.context!,
+      customView: _qrCodeWidget(svg, packageId)
+    );
   }
 
-  Widget _qrCodeWidget(String svg, String packageId, String? deliverId) {
+  Widget _qrCodeWidget(String svg, String packageId) {
     return Container(
       padding: EdgeInsets.only(top: 40.h, right: 40.w, left: 40.w),
       child: Column(
