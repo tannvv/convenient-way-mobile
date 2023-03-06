@@ -59,7 +59,12 @@ class DeliveryPackageItem extends StatelessWidget {
                 radius: 8.sp,
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
-              Gap(8.w),
+            ],
+          ),
+          Gap(12.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
               ColorButton(
                 'QR Xác nhận',
                 icon: Icons.verified,

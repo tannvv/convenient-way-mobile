@@ -38,14 +38,14 @@ class PickUpFileController extends GetxController {
         ScanMode.BARCODE,
       );
       if (scannedQrCode != "-1") {
-        Get.snackbar(
-          "Thông Tin",
-          "\nMã nhận hàng: "+scannedQrCode,
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: AppColors.softGreen,
-          colorText: AppColors.white,
-          duration: Duration(seconds: 30),
-        );
+        // Get.snackbar(
+        //   "Thông Tin",
+        //   "\nMã nhận hàng: "+scannedQrCode,
+        //   snackPosition: SnackPosition.BOTTOM,
+        //   backgroundColor: AppColors.softGreen,
+        //   colorText: AppColors.white,
+        //   duration: Duration(seconds: 30),
+        // );
         return scannedQrCode as String;
       }
     } on PlatformException {}

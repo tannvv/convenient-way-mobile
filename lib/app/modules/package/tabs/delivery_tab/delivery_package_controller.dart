@@ -33,7 +33,7 @@ class DeliveryPackageController extends BasePagingController<Package>
   }
 
   Future<void> accountConfirmPackage(String packageId) async {
-    if (await PickUpFileController().scanQR() == packageId) {
+    if (await PickUpFileController().scanQR() == packageId.split('-')[0]) {
       MaterialDialogService.showConfirmDialog(
           msg: 'Xác nhận gói hàng đã giao thành công?',
           closeOnFinish: false,
@@ -73,7 +73,7 @@ class DeliveryPackageController extends BasePagingController<Package>
     if(code == packageId.split('-')[0]) {
       Future<SimpleResponseModel> future = _packageRepo.deliverySuccess(packageId);
       await callDataService<SimpleResponseModel>(future,
-        onSuccess: (respones) {
+        onSuccess: (response) {
           ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');
           refresh();
         },

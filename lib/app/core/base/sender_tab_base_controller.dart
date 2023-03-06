@@ -210,7 +210,7 @@ abstract class SenderTabBaseController<T> extends BasePagingController<T> {
     String? acceptCode = await PickUpFileController().scanQR();
     if (acceptCode == packageId.split('-')[0]) {
       Future<SimpleResponseModel> future =
-      _packageRepo.deliverySuccess(packageId);
+      _packageRepo.confirmPackage(packageId);
       await callDataService<SimpleResponseModel>(future, onSuccess: (response) {
         ToastService.showSuccess(response.message ?? 'Thành công');
         refreshController.requestRefresh();
@@ -224,7 +224,7 @@ abstract class SenderTabBaseController<T> extends BasePagingController<T> {
     }
   }
 
-  Future<void> showQRCode(String packageId, String? deliverId) async {
+  Future<void> showQRCode(String packageId) async {
     final svg = Barcode.qrCode().toSvg(packageId.split('-')[0]);
     await Dialogs.materialDialog(
         dialogWidth: 400.w,
