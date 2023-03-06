@@ -210,7 +210,7 @@ abstract class SenderTabBaseController<T> extends BasePagingController<T> {
     String? acceptCode = await PickUpFileController().scanQR();
     if (acceptCode == packageId.split('-')[0]) {
       Future<SimpleResponseModel> future =
-      _packageRepo.deliverySuccess(packageId);
+      _packageRepo.confirmPackage(packageId);
       await callDataService<SimpleResponseModel>(future, onSuccess: (response) {
         ToastService.showSuccess(response.message ?? 'Thành công');
         refreshController.requestRefresh();

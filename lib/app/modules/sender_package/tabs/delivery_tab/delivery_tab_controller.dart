@@ -50,8 +50,7 @@ class DeliveryTabController extends SenderTabBaseController<Package>
   }
 
   Future<void> accountDeliveredPackage(String packageId) async {
-    String? acceptCode = await PickUpFileController().scanQR();
-    if (senderConfirmCode(packageId) == packageId.split('-')[0]) {
+    if (await PickUpFileController().scanQR() == packageId.split('-')[0]) {
       Future<SimpleResponseModel> future =
       _packageRepo.deliverySuccess(packageId);
       await callDataService<SimpleResponseModel>(future, onSuccess: (response) {

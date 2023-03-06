@@ -129,7 +129,7 @@ class PackageReqImp extends BaseRepository implements PackageReq {
   Future<SimpleResponseModel> confirmPackage(String packageId) {
     String endpoint =
         '${DioProvider.baseUrl}/packages/confirm-packages';
-    var dioCall = dioClient.put(endpoint, data: packageId);
+    var dioCall = dioClient.put(endpoint, queryParameters: {'packageId': packageId});
     try {
       return callApi(dioCall)
           .then((response) => SimpleResponseModel.fromJson(response.data));
