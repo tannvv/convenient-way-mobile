@@ -81,7 +81,7 @@ class PaymentStatusView extends GetView<PaymentStatusController> {
                               },
                               style: ButtonStyles.primary(),
                               child: Text(
-                                'Trở về trang cá nhân',
+                                'Trở về',
                                 style: buttonBold,
                               ),
                             ),

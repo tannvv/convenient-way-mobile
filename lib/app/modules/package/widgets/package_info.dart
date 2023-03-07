@@ -7,9 +7,13 @@ import 'package:tien_duong/app/data/models/package_model.dart';
 
 class PackageInfo extends StatelessWidget {
   const PackageInfo(
-      {super.key, required this.package, this.isShowPrice = false});
+      {super.key,
+      required this.package,
+      this.isShowPrice = false,
+      this.isShowProduct = false});
   final Package package;
   final bool isShowPrice;
+  final bool isShowProduct;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,19 +27,26 @@ class PackageInfo extends StatelessWidget {
             ),
           ],
         ),
-        Gap(4.h),
-        Row(
-          children: [
-            const Text('Sản phẩm: '),
-            Expanded(
-              child: Text(
-                package.getProductNames(),
-                style: subtitle2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
+        isShowProduct
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gap(4.h),
+                  Row(
+                    children: [
+                      const Text('Sản phẩm: '),
+                      Expanded(
+                        child: Text(
+                          package.getProductNames(),
+                          style: subtitle2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            : Container(),
         Gap(4.h),
         Row(
           children: [

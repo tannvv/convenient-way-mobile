@@ -44,25 +44,49 @@ class ConvenientMap extends GetWidget<LocationPackageController> {
               ),
             ),
             controller.routesPolyline(),
-            Obx(
-              () => MarkerLayerWidget(
-                  options: MarkerLayerOptions(markers: [
-                for (int i = 0; i < controller.packages.length; i++)
-                  Marker(
-                    height: 30.h,
-                    width: 30.h,
-                    point:
-                        controller.getLatLngWithStatus(controller.packages[i]),
-                    builder: (_) => SvgPicture.asset(
-                        controller.getAssetsWithStatus(controller.packages[i])),
-                  ),
-              ])),
-            ),
+            // Obx(
+            //   () => MarkerLayerWidget(
+            //       options: MarkerLayerOptions(markers: [
+            //     for (int i = 0; i < controller.packages.length; i++)
+            //       Marker(
+            //         height: 30.h,
+            //         width: 30.h,
+            //         point:
+            //             controller.getLatLngWithStatus(controller.packages[i]),
+            //         builder: (_) => SvgPicture.asset(
+            //             controller.getAssetsWithStatus(controller.packages[i])),
+            //       ),
+            //   ])),
+            // ),
+            Obx(() => controller.pointPackages.isNotEmpty
+                ? MarkerLayerWidget(
+                    options: MarkerLayerOptions(markers: [
+                      for (int i = 0; i < controller.pointPackages.length; i++)
+                        Marker(
+                          height: 30.h,
+                          width: 30.h,
+                          point: controller.pointPackages[i].latLng!,
+                          builder: (_) => Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(
+                                controller.getAssetsWithType(
+                                    controller.pointPackages[i].type!),
+                                width: 30.w,
+                                height: 30.h,
+                              ),
+                              Text((i + 1).toString())
+                            ],
+                          ),
+                        ),
+                    ]),
+                  )
+                : MarkerLayerWidget(options: MarkerLayerOptions(markers: []))),
             LocationMarkerLayerWidget(
               options: LocationMarkerLayerOptions(
                 moveAnimationDuration: const Duration(milliseconds: 800),
                 showHeadingSector: false,
-                markerSize: Size(60.r, 60.r),
+                markerSize: Size(40.r, 40.r),
                 markerDirection: MarkerDirection.heading,
                 marker: Stack(
                   children: [

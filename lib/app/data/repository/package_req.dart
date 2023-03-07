@@ -18,7 +18,7 @@ abstract class PackageReq {
   Future<Package> create(CreatePackageModel model);
   Future<List<PackageCancel>> getListCancelReason(PackageCancelListModel model);
   Future<SimpleResponseModel> pickUpPackage(AccountPickUpModel model);
-  Future<SimpleResponseModel> accountConfirmPackage(AccountPickUpModel model);
+  Future<SimpleResponseModel> confirmPackage(String packageId);
   Future<SimpleResponseModel> deliverySuccess(String packageId);
   Future<SimpleResponseModel> deliveryFailed(String packageId);
   Future<SimpleResponseModel> deliverCancel(CancelPackageModel model);

@@ -11,6 +11,7 @@ import 'package:tien_duong/app/config/build_config.dart';
 import 'package:tien_duong/app/config/environment.dart';
 import 'package:tien_duong/app/core/services/background_service_notification.dart';
 import 'package:tien_duong/app/core/services/firebase_messaging_service.dart';
+import 'package:tien_duong/app/core/services/local_notification_service.dart';
 import 'app/config/env_config.dart';
 import 'app/config/firebase_options.dart';
 import 'app/config/map_config.dart';
@@ -45,6 +46,7 @@ Future<void> main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   Intl.defaultLocale = 'vi_VN';
   initializeDateFormatting();
+  LocalNotificationService.init();
   FirebaseMessagingService.init();
   BackgroundNotificationService.initializeService();
   runApp(const App());

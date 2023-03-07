@@ -38,7 +38,7 @@ class ReceivedPackageItem extends StatelessWidget {
               locationStart: package.startAddress!,
               locationEnd: package.destinationAddress!),
           Gap(12.h),
-          PackageInfo(package: package, isShowPrice: true),
+          PackageInfo(package: package),
           Gap(12.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,

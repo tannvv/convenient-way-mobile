@@ -15,11 +15,8 @@ import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
-import 'package:tien_duong/app/data/repository/request_model/account_pickup_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/check_code_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
-import 'package:tien_duong/app/routes/app_pages.dart';
-
 class DeliverPickupTabController extends SenderTabBaseController<Package>
     with GetSingleTickerProviderStateMixin {
   final AuthController _authController = Get.find<AuthController>();
@@ -37,18 +34,14 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
         onSuccess: onSuccess, onError: onError);
   }
 
-  Future<void> senderConfirmCode(String packageId, String deliverId) async {
+  Future<void> senderConfirmCode(String packageId) async {
     confirmCode(() => {
-      confirmCodeFromQR(packageId, deliverId)
+      confirmCodeFromQR(packageId)
     });
   }
 
-  Future<void> accountConfirmPackage(String packageId, String deliverId) async {
-    AccountPickUpModel model = AccountPickUpModel(
-      deliverId: deliverId,
-      packageIds: [packageId]
-    );
-    _packageRepo.accountConfirmPackage(model).then((response) async {
+  Future<void> accountConfirmPackage(String packageId) async {
+    _packageRepo.confirmPackage(packageId).then((response) async {
       Get.back();
       onRefresh();
       _authController.reloadAccount();
@@ -58,7 +51,7 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
     });
   }
 
-  Future<void> confirmCodeFromQR(String packageId, String deliverId) async {
+  Future<void> confirmCodeFromQR(String packageId) async {
     if (code == null || code != packageId.split('-')[0]) {
       ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
       return;
@@ -68,22 +61,24 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
       code: code!,
     );
     if(code == packageId.split('-')[0]) {
-      accountConfirmPackage(packageId, deliverId);
+      accountConfirmPackage(packageId);
       ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');
       refresh();
     };
     await Duration(seconds: 3);
   }
 
-  Future<void> showQRCode(String packageId, String? deliverId) async {
+  @override
+  Future<void> showQRCode(String packageId) async {
     final svg = Barcode.qrCode().toSvg(packageId.split('-')[0]);
     await Dialogs.materialDialog(
-        dialogWidth: 400.w,
-        context: Get.context!,
-        customView: _qrCodeWidget(svg, packageId, deliverId));
+      dialogWidth: 400.w,
+      context: Get.context!,
+      customView: _qrCodeWidget(svg, packageId)
+    );
   }
 
-  Widget _qrCodeWidget(String svg, String packageId, String? deliverId) {
+  Widget _qrCodeWidget(String svg, String packageId) {
     return Container(
       padding: EdgeInsets.only(top: 40.h, right: 40.w, left: 40.w),
       child: Column(
@@ -123,7 +118,7 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
               ColorButton(
                 'Xác nhận Mã',
                 icon: Icons.verified,
-                onPressed: () => senderConfirmCode(packageId, deliverId!),
+                onPressed: () => senderConfirmCode(packageId),
                 backgroundColor: AppColors.green,
                 textColor: AppColors.green,
                 radius: 8.sp,

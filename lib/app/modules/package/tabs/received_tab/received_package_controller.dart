@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tien_duong/app/core/base/base_paging_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
@@ -12,9 +11,9 @@ import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
-import 'package:tien_duong/app/data/repository/request_model/account_pickup_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/check_code_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
+import 'package:tien_duong/app/modules/location_package/controllers/location_package_controller.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_dialogs/material_dialogs.dart';
@@ -34,15 +33,15 @@ import '../../../../core/values/font_weight.dart';
 class ReceivedPackageController extends BasePagingController<Package>
     with GetSingleTickerProviderStateMixin {
   final AuthController _authController = Get.find<AuthController>();
+  final LocationPackageController _locationPackageController =
+      Get.find<LocationPackageController>();
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
   RxList<String> packageIdsWarning = <String>[].obs;
   String? reason;
   String? code;
 
   Future<void> acceptDeliveryPackage(String packageId) async {
-    AccountPickUpModel model = AccountPickUpModel(
-        deliverId: _authController.account!.id!, packageIds: [packageId]);
-    _packageRepo.accountConfirmPackage(model).then((response) async {
+    _packageRepo.confirmPackage(packageId).then((response) async {
       packageIdsWarning.value = getPackageIdsNearPackage(
           dataApis.firstWhere((element) => element.id == packageId), dataApis);
       Get.back();
@@ -60,17 +59,14 @@ class ReceivedPackageController extends BasePagingController<Package>
     });
   }
 
-  Future<void> accountScanQr(String packageId, deliverId) async {
-    await showQRCode(packageId, deliverId).then(
+  Future<void> accountScanQr(String packageId) async {
+    await showQRCode(packageId).then(
       (value) => {
         MaterialDialogService.showConfirmDialog(
           msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
           closeOnFinish: false,
           onConfirmTap: () async {
-            AccountPickUpModel model = AccountPickUpModel(
-                deliverId: _authController.account!.id!,
-                packageIds: [packageId]);
-            _packageRepo.accountConfirmPackage(model).then((response) async {
+            _packageRepo.confirmPackage(packageId).then((response) async {
               packageIdsWarning.value = getPackageIdsNearPackage(
                   dataApis.firstWhere((element) => element.id == packageId),
                   dataApis);
@@ -99,11 +95,31 @@ class ReceivedPackageController extends BasePagingController<Package>
           msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
           closeOnFinish: false,
           onConfirmTap: () async {
-            showOverlay();
-            AccountPickUpModel model = AccountPickUpModel(
-                deliverId: _authController.account!.id!,
-                packageIds: [packageId]);
-            _packageRepo.accountConfirmPackage(model).then((response) async {
+            // _packageRepo.confirmPackage(packageId).then((response) async {
+            //   packageIdsWarning.value = getPackageIdsNearPackage(
+            //       dataApis.firstWhere((element) => element.id == packageId),
+            //       dataApis);
+            //   Get.back();
+            //   Get.back();
+            //   if (packageIdsWarning.isNotEmpty) {
+            //     ToastService.showInfo(
+            //         'Còn ${packageIdsWarning.length} gói hàng cần lấy ở gần nơi này');
+            //   } else {
+            //     ToastService.showSuccess('Đã lấy hàng để đi giao');
+            //     Get.back();
+            //   }
+            //   hideOverlay();
+            //   onRefresh();
+            //   _authController.reloadAccount();
+            // }).catchError((error) {
+            //   hideOverlay();
+            //   Get.back();
+            //   ToastService.showError(error.messages[0]);
+            // });
+            var future = _packageRepo.confirmPackage(packageId);
+            await callDataService(future,
+                onStart: showOverlay,
+                onComplete: hideOverlay, onSuccess: (response) {
               packageIdsWarning.value = getPackageIdsNearPackage(
                   dataApis.firstWhere((element) => element.id == packageId),
                   dataApis);
@@ -119,11 +135,11 @@ class ReceivedPackageController extends BasePagingController<Package>
               hideOverlay();
               onRefresh();
               _authController.reloadAccount();
-            }).catchError((error) {
-              hideOverlay();
+              _locationPackageController.fetchPackages();
+            }, onError: ((exception) {
+              showError(exception);
               Get.back();
-              ToastService.showError(error.messages[0]);
-            });
+            }));
           });
     } else {
       ToastService.showError('QR Code không đúng vui lòng kiểm tra lại!');
@@ -270,8 +286,8 @@ class ReceivedPackageController extends BasePagingController<Package>
     );
   }
 
-  Future<void> deliverConfirmCode(String packageId, String deliverId) async {
-    confirmCode(() => {confirmCodeFromQR(packageId, deliverId)});
+  Future<void> deliverConfirmCode(String packageId) async {
+    confirmCode(() => {confirmCodeFromQR(packageId)});
   }
 
   Widget _confirmCodeWidget() {
@@ -318,10 +334,8 @@ class ReceivedPackageController extends BasePagingController<Package>
         ]);
   }
 
-  Future<void> accountConfirmPackage(String packageId, String deliverId) async {
-    AccountPickUpModel model =
-        AccountPickUpModel(deliverId: deliverId, packageIds: [packageId]);
-    _packageRepo.accountConfirmPackage(model).then((response) async {
+  Future<void> accountConfirmPackage(String packageId) async {
+    _packageRepo.confirmPackage(packageId).then((response) async {
       Get.back();
       onRefresh();
       _authController.reloadAccount();
@@ -331,7 +345,7 @@ class ReceivedPackageController extends BasePagingController<Package>
     });
   }
 
-  Future<void> confirmCodeFromQR(String packageId, String deliverId) async {
+  Future<void> confirmCodeFromQR(String packageId) async {
     if (code == null || code != packageId.split('-')[0]) {
       ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',
           seconds: 5);
@@ -342,7 +356,7 @@ class ReceivedPackageController extends BasePagingController<Package>
       code: code!,
     );
     if (code == packageId.split('-')[0]) {
-      accountConfirmPackage(packageId, deliverId);
+      accountConfirmPackage(packageId);
       ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');
       refresh();
     }
@@ -350,15 +364,15 @@ class ReceivedPackageController extends BasePagingController<Package>
     await Duration(seconds: 3);
   }
 
-  Future<void> showQRCode(String packageId, String? deliverId) async {
+  Future<void> showQRCode(String packageId) async {
     final svg = Barcode.qrCode().toSvg(packageId.split('-')[0]);
     await Dialogs.materialDialog(
         dialogWidth: 400.w,
         context: Get.context!,
-        customView: _qrCodeWidget(svg, packageId, deliverId));
+        customView: _qrCodeWidget(svg, packageId));
   }
 
-  Widget _qrCodeWidget(String svg, String packageId, String? deliverId) {
+  Widget _qrCodeWidget(String svg, String packageId) {
     return Container(
       padding: EdgeInsets.only(top: 40.h, right: 40.w, left: 40.w),
       child: Column(
@@ -396,7 +410,7 @@ class ReceivedPackageController extends BasePagingController<Package>
             ColorButton(
               'Xác nhận Mã',
               icon: Icons.verified,
-              onPressed: () => deliverConfirmCode(packageId, deliverId!),
+              onPressed: () => deliverConfirmCode(packageId),
               backgroundColor: AppColors.green,
               textColor: AppColors.green,
               radius: 8.sp,

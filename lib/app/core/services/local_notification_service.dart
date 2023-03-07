@@ -8,6 +8,7 @@ class LocalNotificationService {
       'default_cw_chanel', // id
       'Kênh mặc định', // title
       importance: Importance.max,
+      enableVibration: true,
       sound: RawResourceAndroidNotificationSound('sound_notification'),
       playSound: true);
 
@@ -45,7 +46,6 @@ class LocalNotificationService {
             importance: Importance.defaultImportance,
             playSound: true,
             category: AndroidNotificationCategory.message,
-            sound: RawResourceAndroidNotificationSound('sound_notification'),
             styleInformation: BigTextStyleInformation(''));
 
     var notify = const NotificationDetails(android: androidNotificationDetails);
