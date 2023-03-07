@@ -1,5 +1,9 @@
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/app_values.dart';
+import 'package:tien_duong/app/core/values/box_decorations.dart';
+import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/modules/location_package/controllers/location_package_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,14 +16,68 @@ class Bottom extends GetWidget<LocationPackageController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.bottomRight,
-      padding: EdgeInsets.only(bottom: AppValues.bottomAppBarHeight),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _goToCurrentLocation(),
-        ],
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        padding: EdgeInsets.only(bottom: 10.h, left: 10.w, right: 10.w),
+        child: Container(
+          height: 300.h,
+          decoration: BoxDecorations.map(),
+          padding: EdgeInsets.symmetric(horizontal: 18.w),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(flex: 2, child: _header()),
+              Expanded(
+                  flex: 16,
+                  child: ListView.separated(
+                    padding: EdgeInsets.symmetric(vertical: 8.h),
+                    itemBuilder: (_, index) {
+                      return Row(
+                        children: [
+                          Text(
+                            '${index + 1}',
+                            style: subtitle1.copyWith(
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.softBlack),
+                          ),
+                          Gap(8.w),
+                          SvgPicture.asset(
+                            controller.getAssetsWithType(
+                                controller.pointPackages[index].type!),
+                            width: 20.h,
+                            height: 20.h,
+                          ),
+                          Gap(8.w),
+                          Expanded(
+                              child: Text(
+                                  controller.pointPackages[index].name ?? '',
+                                  style: subtitle1.copyWith(
+                                      fontWeight: FontWeight.normal,
+                                      overflow: TextOverflow.ellipsis,
+                                      color:
+                                          AppColors.softBlack))), // 'Điểm đón')
+                        ],
+                      );
+                    },
+                    separatorBuilder: (context, index) => Gap(8.h),
+                    itemCount: controller.pointPackages.length,
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _header() {
+    return Padding(
+      padding: EdgeInsets.only(top: 14.h),
+      child: Text(
+        'Gợi ý thứ tự lộ trình',
+        style: subtitle1.copyWith(
+            fontWeight: FontWeight.bold, color: AppColors.softBlack),
       ),
     );
   }

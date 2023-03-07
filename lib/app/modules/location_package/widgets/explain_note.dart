@@ -18,7 +18,7 @@ class ExplainNote extends StatelessWidget {
         top: 120.h,
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.r),
+              borderRadius: BorderRadius.circular(8.r),
               border: Border.all(color: AppColors.primary400.withOpacity(0.5)),
               boxShadow: [
                 BoxShadow(
@@ -54,19 +54,19 @@ class ExplainNote extends StatelessWidget {
               expanded: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
                 width: 190.w,
-                height: 120.h,
+                height: 100.h,
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SvgPicture.asset(
-                          AppAssets.locationIcon,
+                          AppAssets.locationBlueIcon2,
                           height: 22.h,
                           width: 18.h,
                         ),
                         Gap(6.w),
-                        Text('Địa điểm lấy hàng', style: subtitle2.copyWith()),
+                        Text('Điểm nhận hàng', style: subtitle2.copyWith()),
                       ],
                     ),
                     Gap(4.h),
@@ -79,22 +79,22 @@ class ExplainNote extends StatelessWidget {
                           width: 18.h,
                         ),
                         Gap(6.w),
-                        Text('Địa điểm giao hàng', style: subtitle2.copyWith()),
+                        Text('Điểm giao hàng', style: subtitle2.copyWith()),
                       ],
                     ),
                     Gap(4.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset(
-                          AppAssets.locationBlueIcon2,
-                          height: 22.h,
-                          width: 18.h,
-                        ),
-                        Gap(6.w),
-                        Text('Địa điểm hoàn trả', style: subtitle2.copyWith()),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.start,
+                    //   children: [
+                    //     SvgPicture.asset(
+                    //       AppAssets.locationBlueIcon2,
+                    //       height: 22.h,
+                    //       width: 18.h,
+                    //     ),
+                    //     Gap(6.w),
+                    //     Text('Địa điểm hoàn trả', style: subtitle2.copyWith()),
+                    //   ],
+                    // ),
                     ExpandableButton(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,

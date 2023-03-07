@@ -18,11 +18,14 @@ import 'package:tien_duong/app/data/models/suggest_package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/account_pickup_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
+import 'package:tien_duong/app/modules/location_package/controllers/location_package_controller.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 
 class SuggestPackageDetailController extends BaseController
     with GetTickerProviderStateMixin {
   final AuthController _authController = Get.find<AuthController>();
+  final LocationPackageController _locationPackageController =
+      Get.find<LocationPackageController>();
   final suggestPackage = Get.arguments as SuggestPackage;
   final suggest = Rx<SuggestPackage?>(null);
   LatLngBounds currentBounds = LatLngBounds();
@@ -145,6 +148,8 @@ class SuggestPackageDetailController extends BaseController
                 Get.back(); // close dialog
                 await QuickAlertService.showSuccess('Chọn gói hàng thành công',
                     duration: 3);
+                _authController.reloadAccount();
+                _locationPackageController.fetchPackages();
                 Get.back(result: true);
               },
               onError: (error) {

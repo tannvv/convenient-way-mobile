@@ -38,7 +38,6 @@ class DeliveryPackageController extends BasePagingController<Package>
     if (await PickUpFileController().scanQR() == packageId.split('-')[0]) {
       MaterialDialogService.showConfirmDialog(
           msg: 'Xác nhận gói hàng đã giao thành công?',
-          closeOnFinish: false,
           onConfirmTap: () async {
             _packageRepo.deliverySuccess(packageId).then((response) async {
               Get.back();
@@ -50,7 +49,8 @@ class DeliveryPackageController extends BasePagingController<Package>
             });
           });
     } else {
-      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
+      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',
+          seconds: 5);
     }
   }
 
@@ -71,7 +71,8 @@ class DeliveryPackageController extends BasePagingController<Package>
 
   Future<void> confirmCodeFromQR(String packageId) async {
     if (code == null || code != packageId.split('-')[0]) {
-      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
+      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',
+          seconds: 5);
       return;
     }
     if(code == packageId.split('-')[0]) {
