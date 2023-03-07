@@ -15,12 +15,14 @@ class DeliveryTabItem extends StatelessWidget {
         required this.package,
         required this.onShowQR,
         required this.onConfirmPackage,
+        required this.onCodeConfirm,
         required this.showMapTracking,
         required this.onShowDeliverInfo})
       : super(key: key);
   final Package package;
   final Function() onShowQR;
   final Function() onConfirmPackage;
+  final Function() onCodeConfirm;
   final Function() showMapTracking;
   final Function() onShowDeliverInfo;
   @override
@@ -49,17 +51,17 @@ class DeliveryTabItem extends StatelessWidget {
                 backgroundColor: AppColors.primary800,
                 textColor: AppColors.primary800,
                 radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
-              Gap(8.w),
+              Gap(12.h),
               ColorButton(
-                'Theo dõi',
+                'Theo dõi đơn hàng',
                 icon: Icons.location_on,
                 onPressed: showMapTracking,
-                backgroundColor: AppColors.blue,
-                textColor: AppColors.blue,
+                backgroundColor: Colors.lightBlueAccent,
+                textColor: Colors.blueAccent,
                 radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
             ],
           ),
@@ -67,13 +69,23 @@ class DeliveryTabItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ColorButton(
-                'QR Xác nhận',
-                icon: Icons.verified,
-                onPressed: onConfirmPackage,
-                backgroundColor: AppColors.green,
-                textColor: AppColors.green,
+                'Xác nhận bằng Mã',
+                icon: Icons.onetwothree,
+                onPressed: onCodeConfirm,
+                backgroundColor: AppColors.primary800,
+                textColor: AppColors.primary800,
                 radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
+              Gap(12.w),
+              ColorButton(
+                'Quét QR lấy hàng',
+                icon: Icons.qr_code_scanner,
+                onPressed: onConfirmPackage,
+                backgroundColor: AppColors.primary800,
+                textColor: AppColors.primary800,
+                radius: 8.sp,
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
             ],
           )

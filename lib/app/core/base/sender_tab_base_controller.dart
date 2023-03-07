@@ -36,7 +36,6 @@ abstract class SenderTabBaseController<T> extends BasePagingController<T> {
   String? code;
 
   final AccountRep _accountRepo = Get.find(tag: (AccountRep).toString());
-  final AuthController _authController = Get.find<AuthController>();
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
 
   void showInfoDeliver(Account deliver) async {

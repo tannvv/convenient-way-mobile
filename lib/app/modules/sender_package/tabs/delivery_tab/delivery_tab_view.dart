@@ -28,7 +28,9 @@ class DeliveryTabView extends GetView<DeliveryTabController> {
                           package: controller.dataApis[index],
                           onConfirmPackage: () => controller.accountDeliveredPackage(
                               controller.dataApis[index].id!),
-                          onShowQR: () => controller.showQRCodee(
+                          onCodeConfirm: () => controller.senderConfirmCode(
+                              controller.dataApis[index].id!),
+                          onShowQR: () => controller.showQRCode(
                               controller.dataApis[index].id!),
                           showMapTracking: () => controller.showMapTracking(
                               controller.dataApis[index]),

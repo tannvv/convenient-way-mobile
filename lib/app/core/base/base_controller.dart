@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:logger/logger.dart';
 import 'package:tien_duong/app/config/build_config.dart';
+import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/core/widgets/custom_overlay.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
@@ -22,7 +23,6 @@ abstract class BaseController extends GetxController {
   final Logger logger = BuildConfig.instance.config.logger;
 
   final logoutController = false.obs;
-
   final RxBool _isLoading = false.obs;
   bool get isLoading => _isLoading.value;
   set isLoading(bool value) => _isLoading.value = value;

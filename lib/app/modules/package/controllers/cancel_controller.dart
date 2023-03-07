@@ -64,7 +64,7 @@ class CancelController extends BasePagingController<Package>
 
   Future<void> deliverCancelPackage(String packageId) async {
     if (reason == null || reason!.isEmpty) {
-      ToastService.showError('Vui lòng nhập lý do hủy đơn hàng');
+      ToastService.showError('Vui lòng nhập lý do hủy đơn hàng!');
       return;
     }
 
@@ -95,7 +95,7 @@ class CancelController extends BasePagingController<Package>
       child: Column(
         children: [
           Text(
-            'Lý do hủy',
+            'Lý do hủy đơn hàng:',
             style: subtitle2.copyWith(fontSize: 16.sp),
           ),
           const SizedBox(height: 10),

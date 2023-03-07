@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:scroll_navigation/misc/navigation_helpers.dart';
 import 'package:scroll_navigation/navigation/title_scroll_navigation.dart';
-import 'package:tien_duong/app/core/values/app_animation_assets.dart';
+import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/font_weight.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
@@ -12,8 +11,10 @@ import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/modules/sender_package/controllers/sender_package_controller.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
+import '../../../core/utils/material_dialog_service.dart';
+
 class SenderPackageView extends GetView<SenderPackageController> {
-  const SenderPackageView({Key? key}) : super(key: key);
+  SenderPackageView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,20 +99,31 @@ class SenderPackageView extends GetView<SenderPackageController> {
   //         ),
   //       ));
   // }
+
   Widget _btnCreate() {
     return Positioned(
         bottom: 0.h,
         right: 0.w,
         child: ColorButton('Thêm gói hàng',
-            height: 40.h,
-            backgroundColor: AppColors.primary900,
-            textColor: AppColors.primary900,
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.r),
-                bottomLeft: Radius.circular(20.r)),
-            icon: Icons.folder, onPressed: () {
-          Get.toNamed(Routes.CREATE_PACKAGE_PAGE);
+          height: 40.h,
+          backgroundColor: AppColors.primary900,
+          textColor: AppColors.primary900,
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              bottomLeft: Radius.circular(20.r)),
+          icon: Icons.folder, onPressed: () {
+            if(controller.authController.isNewAccount || (controller.authController.availableBalance < 50000)) {
+              MaterialDialogService.showConfirmDialog(
+                  msg: 'Cần có tối thiểu 50.000 VNĐ trong tài khoản\nVui lòng nạp thêm tiền!',
+                  closeOnFinish: false,
+                  onConfirmTap: () async {
+                    Get.toNamed(Routes.PAYMENT);
+                  }
+              );
+            } else {
+              Get.toNamed(Routes.CREATE_PACKAGE_PAGE);
+            }
         }));
   }
 }

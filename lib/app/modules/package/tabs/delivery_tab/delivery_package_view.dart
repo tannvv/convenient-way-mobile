@@ -30,9 +30,10 @@ class DeliveryPackageView extends GetView<DeliveryPackageController> {
                           controller.dataApis[index].id!),
                       onConfirmPackage: () => controller.accountConfirmPackage(
                           controller.dataApis[index].id!),
-                      onShowQR: () {
-                        controller.showQRCode(controller.dataApis[index].id!);
-                      },
+                      onShowQR: () =>
+                        controller.showQRCode(controller.dataApis[index].id!),
+                      onCodeConfirm: () =>
+                        controller.deliverConfirmCode(controller.dataApis[index].id!)
                     ),
                   ],
                 );

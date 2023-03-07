@@ -73,7 +73,7 @@ class RegisterView extends GetView<RegisterController> {
                       // _verifyOtpButton(),
                       _registerButton(),
                       Gap(12.h),
-                      _loginRow(),
+                      _loginColumn(),
                     ],
                   ),
                 ),
@@ -91,8 +91,8 @@ class RegisterView extends GetView<RegisterController> {
     );
   }
 
-  Row _loginRow() {
-    return Row(
+  Column _loginColumn() {
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text('Bạn đã có tài khoản?',

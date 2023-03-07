@@ -16,11 +16,13 @@ class DeliverPickupTabItem extends StatelessWidget {
       required this.package,
       required this.onShowQR,
       required this.onConfirmPackage,
+      required this.onCodeConfirm,
       required this.onShowDeliverInfo})
       : super(key: key);
   final Package package;
   final Function() onShowQR;
   final Function() onConfirmPackage;
+  final Function() onCodeConfirm;
   final Function() onShowDeliverInfo;
   @override
   Widget build(BuildContext context) {
@@ -45,20 +47,34 @@ class DeliverPickupTabItem extends StatelessWidget {
                 backgroundColor: AppColors.primary800,
                 textColor: AppColors.primary800,
                 radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-              ),
-              Gap(8.w),
-              ColorButton(
-                'QR Xác nhận',
-                icon: Icons.verified,
-                onPressed: onConfirmPackage,
-                backgroundColor: AppColors.green,
-                textColor: AppColors.green,
-                radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ColorButton(
+                'Xác nhận bằng Mã',
+                icon: Icons.onetwothree,
+                onPressed: onCodeConfirm,
+                backgroundColor: AppColors.primary800,
+                textColor: AppColors.primary800,
+                radius: 8.sp,
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
+              Gap(12.w),
+              ColorButton(
+                'Quét QR lấy hàng',
+                icon: Icons.qr_code_scanner,
+                onPressed: onConfirmPackage,
+                backgroundColor: AppColors.primary800,
+                textColor: AppColors.primary800,
+                radius: 8.sp,
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
+            ],
+          )
         ],
       ),
     );

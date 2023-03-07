@@ -5,11 +5,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:tien_duong/app/core/base/sender_tab_base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
+import 'package:tien_duong/app/core/controllers/pickup_file_controller.dart';
+import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/font_weight.dart';
+import 'package:tien_duong/app/core/values/input_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
@@ -34,13 +38,25 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
         onSuccess: onSuccess, onError: onError);
   }
 
-  Future<void> senderConfirmCode(String packageId) async {
-    confirmCode(() => {
-      confirmCodeFromQR(packageId)
-    });
+  Future<void> accountConfirmPackage(String packageId) async {
+    if(await PickUpFileController().scanQR() == packageId.split('-')[0]){
+      MaterialDialogService.showConfirmDialog(
+        msg: 'Xác nhân đã đưa hàng cho đúng người lấy hàng giùm?',
+        closeOnFinish: false,
+        onConfirmTap: () async {
+          _packageRepo.confirmPackage(packageId).then((response) async {
+            Get.back();
+            onRefresh();
+            _authController.reloadAccount();
+          }).catchError((error) {
+            Get.back();
+            ToastService.showError(error.messages[0]);
+          });
+        },);
+    }
   }
 
-  Future<void> accountConfirmPackage(String packageId) async {
+  Future<void> confirmPackage(String packageId) async {
     _packageRepo.confirmPackage(packageId).then((response) async {
       Get.back();
       onRefresh();
@@ -51,31 +67,82 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
     });
   }
 
+  Future<void> senderConfirmCode(String packageId) async {
+    confirmCode(() => {
+      confirmCodeFromQR(packageId)
+    });
+  }
+
   Future<void> confirmCodeFromQR(String packageId) async {
     if (code == null || code != packageId.split('-')[0]) {
       ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
       return;
     }
-    CodeModel requestModel = CodeModel(
-      packageId: packageId,
-      code: code!,
-    );
     if(code == packageId.split('-')[0]) {
-      accountConfirmPackage(packageId);
-      ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');
+      await _packageRepo.deliverySuccess(packageId).then((response) async {
+        Get.back();
+        onRefresh();
+        _authController.reloadAccount();
+      }).catchError((error) {
+        Get.back();
+        ToastService.showError(error.messages[0]);
+      });
+      ToastService.showSuccess('Xác nhận đã đưa gói hàng cho người lấy hàng giùm!');
       refresh();
     };
     await Duration(seconds: 3);
   }
 
-  @override
+  Widget _confirmCodeWidget() {
+    return Container(
+      padding: EdgeInsets.only(top: 40.h),
+      height: 100.h,
+      width: 220.w,
+      child: TextField(
+        onChanged: (value) {
+          code = value;
+        },
+        autofocus: true,
+        decoration: InputStyles.reasonCancel(labelText: 'Nhập mã xác nhận'),
+      ),
+    );
+  }
+
+  Future<void> confirmCode(Function() callback) async {
+    await Dialogs.materialDialog(
+        context: Get.context!,
+        customView: _confirmCodeWidget(),
+        actions: [
+          IconsButton(
+            onPressed: () {
+              Get.back();
+            },
+            text: 'Thoát',
+            iconData: Icons.arrow_back_ios_new,
+            color: const Color.fromARGB(255, 204, 203, 203),
+            textStyle: const TextStyle(color: Colors.black38),
+            iconColor: Colors.black38,
+          ),
+          IconsButton(
+            onPressed: () {
+              callback();
+              Get.back();
+            },
+            text: 'Xác nhận',
+            iconData: Icons.check,
+            color: Colors.blue,
+            textStyle: const TextStyle(color: Colors.white),
+            iconColor: Colors.white,
+          ),
+        ]);
+  }
+
   Future<void> showQRCode(String packageId) async {
     final svg = Barcode.qrCode().toSvg(packageId.split('-')[0]);
     await Dialogs.materialDialog(
-      dialogWidth: 400.w,
-      context: Get.context!,
-      customView: _qrCodeWidget(svg, packageId)
-    );
+        dialogWidth: 400.w,
+        context: Get.context!,
+        customView: _qrCodeWidget(svg, packageId));
   }
 
   Widget _qrCodeWidget(String svg, String packageId) {
@@ -84,7 +151,7 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
       child: Column(
         children: [
           Text(
-            'Dùng mã này để xác nhận người giao hàng',
+            'Dùng mã này để xác nhận người lấy hàng giùm.',
             style: subtitle2,
           ),
           Gap(4.h),
@@ -99,7 +166,7 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
                   children: [
                     TextSpan(
                         text:
-                        ' tuyệt đối không chia sẽ mã này với người không liên quan',
+                        ' Tuyệt đối không chia sẽ mã này với người không liên quan.',
                         style: caption.copyWith(decoration: TextDecoration.none))
                   ])),
           Gap(20.h),
@@ -112,19 +179,35 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
             ),
           ),
           Gap(20.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ColorButton(
-                'Xác nhận Mã',
-                icon: Icons.verified,
-                onPressed: () => senderConfirmCode(packageId),
-                backgroundColor: AppColors.green,
-                textColor: AppColors.green,
-                radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-              ),
-            ]
+          Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ColorButton(
+                  'Mã xác nhận: '+packageId.split('-')[0],
+                  icon: Icons.verified,
+                  onPressed: () {
+
+                  },
+                  backgroundColor: AppColors.green,
+                  textColor: AppColors.green,
+                  radius: 8.sp,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+                ),
+                RichText(
+                    text: TextSpan(
+                        text: 'Chú ý:',
+                        style: caption.copyWith(
+                            color: Colors.red[600],
+                            fontWeight: FontWeights.medium,
+                            fontStyle: FontStyle.italic,
+                            decoration: TextDecoration.underline),
+                        children: [
+                          TextSpan(
+                              text:
+                              ' Dùng mã này để xác nhận với người nhận lấy hàng giùm.',
+                              style: caption.copyWith(decoration: TextDecoration.none))
+                        ])),
+              ]
           ),
         ],
       ),

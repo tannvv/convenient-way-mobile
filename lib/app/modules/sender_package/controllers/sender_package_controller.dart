@@ -1,6 +1,7 @@
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/modules/sender_package/tabs/approved_tab/approved_tab_view.dart';
 import 'package:tien_duong/app/modules/sender_package/tabs/deliver_cancel_tab/deliver_cancel_tab_view.dart';
 import 'package:tien_duong/app/modules/sender_package/tabs/deliver_pickup_tab/deliver_pickup_tab_view.dart';
@@ -14,18 +15,18 @@ import 'package:tien_duong/app/modules/sender_package/tabs/waiting_tab/waiting_t
 
 class SenderPackageController extends BaseController
     with GetSingleTickerProviderStateMixin {
+  final AuthController authController = Get.find<AuthController>();
   late TabController tabController;
-
   List<String> tabsTitle = const [
     'Chờ xác nhận',
     'Đã xác nhận',
     'Đã được nhận',
     'Đang giao hàng',
-    'Đã giao hàng',
-    'Giao hàng thành công',
-    'Giao hàng thất bại',
+    'Lấy hàng thành công',
+    'Lấy hàng thành công',
+    'Lấy hàng thất bại',
     'Quản trị viên hủy',
-    'Người giao hủy',
+    'Người lấy hàng giùm hủy',
     'Đã hủy',
   ];
 
