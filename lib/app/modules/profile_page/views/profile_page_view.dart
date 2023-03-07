@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/font_weight.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
@@ -13,7 +15,6 @@ import 'package:tien_duong/app/core/widgets/header_scaffold.dart';
 import 'package:tien_duong/app/data/options/gender_option.dart';
 import 'package:tien_duong/app/modules/profile_page/widgets/card_item.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
-
 import '../controllers/profile_page_controller.dart';
 
 class ProfilePageView extends GetView<ProfilePageController> {
@@ -96,7 +97,14 @@ class ProfilePageView extends GetView<ProfilePageController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Số dư', style: body2.copyWith(color: AppColors.floatLabel)),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text('Số dư', style: body2.copyWith(color: AppColors.floatLabel)),
+              Gap(6.w),
+              _balanceAvailable(),
+            ],
+          ),
           SizedBox(
             height: 5.h,
           ),
@@ -443,4 +451,32 @@ class ProfilePageView extends GetView<ProfilePageController> {
       },
     );
   }
+
+  Obx _balanceAvailable() {
+    return Obx(() => controller.isLoadingBalance
+        ? Shimmer.fromColors(
+      baseColor: AppColors.shimmerBaseColor,
+      highlightColor: AppColors.shimmerHighlightColor,
+      child: Container(
+        width: 50.w,
+        height: 14.h,
+        decoration: const BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.all(
+            Radius.circular(20),
+          ),
+        ),
+      ),
+    )
+        : controller.isNewAccount
+        ? Container()
+        : Text(
+      '(khả dụng: ${controller.availableBalance.toVND()})',
+      style: caption.copyWith(
+        color: AppColors.softBlack,
+        fontWeight: FontWeights.medium,
+      ),
+    ));
+  }
+
 }

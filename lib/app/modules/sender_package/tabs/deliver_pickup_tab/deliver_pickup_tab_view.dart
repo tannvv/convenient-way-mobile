@@ -25,8 +25,10 @@ class DeliverPickupTabView extends GetView<DeliverPickupTabController> {
                       children: [
                         DeliverPickupTabItem(
                           package: controller.dataApis[index],
-                          onConfirmPackage: () => controller.accountDeliveredPackage(
+                          onConfirmPackage: () => controller.accountConfirmPackage(
                               controller.dataApis[index].id!),
+                          onCodeConfirm: () => controller.senderConfirmCode(
+                                controller.dataApis[index].id!),
                           onShowQR: () => controller.showQRCode(
                               controller.dataApis[index].id!),
                           onShowDeliverInfo: () => controller.showInfoDeliver(

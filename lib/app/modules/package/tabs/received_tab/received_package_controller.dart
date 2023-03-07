@@ -269,7 +269,7 @@ class ReceivedPackageController extends BasePagingController<Package>
       child: Column(
         children: [
           Text(
-            'Lý do hủy',
+            'Lý do hủy đơn hàng:',
             style: subtitle2.copyWith(fontSize: 16.sp),
           ),
           const SizedBox(height: 10),
@@ -351,11 +351,11 @@ class ReceivedPackageController extends BasePagingController<Package>
           seconds: 5);
       return;
     }
-    CodeModel requestModel = CodeModel(
-      packageId: packageId,
-      code: code!,
-    );
-    if (code == packageId.split('-')[0]) {
+    // CodeModel requestModel = CodeModel(
+    //   packageId: packageId,
+    //   code: code!,
+    // );
+    if(code == packageId.split('-')[0]) {
       accountConfirmPackage(packageId);
       ToastService.showSuccess('Xác nhận gói hàng đã đến tay!');
       refresh();
@@ -378,7 +378,7 @@ class ReceivedPackageController extends BasePagingController<Package>
       child: Column(
         children: [
           Text(
-            'Dùng mã này để xác nhận người giao hàng',
+            'Dùng mã này để xác nhận người nhờ lấy hàng giùm.',
             style: subtitle2,
           ),
           Gap(4.h),
@@ -391,11 +391,11 @@ class ReceivedPackageController extends BasePagingController<Package>
                       fontStyle: FontStyle.italic,
                       decoration: TextDecoration.underline),
                   children: [
-                TextSpan(
-                    text:
-                        ' tuyệt đối không chia sẽ mã này với người không liên quan',
-                    style: caption.copyWith(decoration: TextDecoration.none))
-              ])),
+                    TextSpan(
+                        text:
+                        ' Tuyệt đối không chia sẽ mã này với người không liên quan.',
+                        style: caption.copyWith(decoration: TextDecoration.none))
+                  ])),
           Gap(20.h),
           SizedBox(
             height: 200.h,
@@ -406,17 +406,36 @@ class ReceivedPackageController extends BasePagingController<Package>
             ),
           ),
           Gap(20.h),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            ColorButton(
-              'Xác nhận Mã',
-              icon: Icons.verified,
-              onPressed: () => deliverConfirmCode(packageId),
-              backgroundColor: AppColors.green,
-              textColor: AppColors.green,
-              radius: 8.sp,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-            ),
-          ]),
+          Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ColorButton(
+                  'Mã xác nhận: '+packageId.split('-')[0],
+                  icon: Icons.verified,
+                  onPressed: () {
+
+                  },
+                  backgroundColor: AppColors.green,
+                  textColor: AppColors.green,
+                  radius: 8.sp,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+                ),
+                RichText(
+                    text: TextSpan(
+                        text: 'Chú ý:',
+                        style: caption.copyWith(
+                            color: Colors.red[600],
+                            fontWeight: FontWeights.medium,
+                            fontStyle: FontStyle.italic,
+                            decoration: TextDecoration.underline),
+                        children: [
+                          TextSpan(
+                              text:
+                              ' Dùng mã này để xác nhận với người nhờ lấy hàng giùm.',
+                              style: caption.copyWith(decoration: TextDecoration.none))
+                        ])),
+              ]
+          ),
         ],
       ),
     );

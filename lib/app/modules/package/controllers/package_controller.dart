@@ -15,18 +15,18 @@ class PackageController extends BaseController
   List<String> tabsTitle = const [
     'Đã nhận',
     'Đang giao',
+    'Giao hàng thành công',
+    'Giao hàng thất bại',
     'Người gửi hủy',
-    'Đã giao hàng',
-    'Giao thất bại',
-    'Đã hủy',
+    'Đã hủy'
   ];
 
   final List<Widget> _screens = const [
     ReceivedPackageView(),
     DeliveryPackageView(),
-    SenderCancelPackageView(),
     DeliveredPackageView(),
     FailedPackageView(),
+    SenderCancelPackageView(),
     DeliverCancelPackageView(),
   ];
 

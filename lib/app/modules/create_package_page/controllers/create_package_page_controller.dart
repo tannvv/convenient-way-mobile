@@ -15,6 +15,7 @@ import 'package:tien_duong/app/data/repository/goong_req.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_package_model.dart';
 import 'package:tien_duong/app/modules/create_package_page/models/create_product_model.dart';
+import 'package:tien_duong/app/routes/app_pages.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:math';
 
@@ -192,7 +193,16 @@ class CreatePackagePageController extends BaseController {
     MaterialDialogService.showConfirmDialog(
         msg: 'Bạn chắc chắn muốn tạo gói hàng này?',
         onConfirmTap: () async {
-          uploadImageAndCreatePackage();
+          if(_authController.isNewAccount || (_authController.availableBalance < 50000)) {
+            MaterialDialogService.showConfirmDialog(
+              msg: 'Cần có tối thiểu 50.000 VNĐ trong tài khoản\nVui lòng nạp thêm tiền!',
+              onConfirmTap: () async {
+                Get.toNamed(Routes.PAYMENT);
+              }
+            );
+          } else {
+            uploadImageAndCreatePackage();
+          }
         });
   }
 

@@ -25,17 +25,18 @@ class DeliveryPackageView extends GetView<DeliveryPackageController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         DeliveryPackageItem(
-                          package: controller.dataApis[index],
-                          onConfirmPackage: () =>
-                              controller.accountConfirmPackage(
-                                  controller.dataApis[index].id!),
-                          onDeliveryFailedPackage: () => controller
-                              .deliveryFailed(controller.dataApis[index].id!),
-                          onShowQR: () {
-                            controller
-                                .showQRCode(controller.dataApis[index].id!);
-                          },
-                        ),
+                            package: controller.dataApis[index],
+                            onCancelPackage: () => ReceivedPackageController()
+                                .reportPackage(controller.dataApis[index].id!),
+                            onConfirmPackage: () =>
+                                controller.accountConfirmPackage(
+                                    controller.dataApis[index].id!),
+                            onDeliveryFailedPackage: () => controller
+                                .deliveryFailed(controller.dataApis[index].id!),
+                            onShowQR: () => controller
+                                .showQRCode(controller.dataApis[index].id!),
+                            onCodeConfirm: () => controller.deliverConfirmCode(
+                                controller.dataApis[index].id!)),
                       ],
                     );
                   },
