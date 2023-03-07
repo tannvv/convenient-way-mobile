@@ -73,7 +73,7 @@ class CancelController extends BasePagingController<Package>
       reason: reason!,
     );
     Future<SimpleResponseModel> future =
-    _packageRepo.senderCancel(requestModel);
+        _packageRepo.senderCancel(requestModel);
     await callDataService<SimpleResponseModel>(future, onSuccess: (data) {
       ToastService.showSuccess('Hủy gói hàng thành công!');
       Get.back();

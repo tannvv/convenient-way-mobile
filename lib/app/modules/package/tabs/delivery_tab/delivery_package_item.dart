@@ -13,12 +13,18 @@ import 'package:tien_duong/app/modules/package/widgets/user_info.dart';
 
 class DeliveryPackageItem extends StatelessWidget {
   const DeliveryPackageItem(
-      {Key? key, required this.package, this.onCancelPackage, this.onConfirmPackage, required this.onShowQR})
+      {Key? key,
+      required this.package,
+      this.onCancelPackage,
+      this.onConfirmPackage,
+      required this.onShowQR,
+      required this.onDeliveryFailedPackage})
       : super(key: key);
   final Package package;
   final Function()? onShowQR;
   final Function()? onCancelPackage;
   final Function()? onConfirmPackage;
+  final Function()? onDeliveryFailedPackage;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +41,10 @@ class DeliveryPackageItem extends StatelessWidget {
               locationStart: package.startAddress!,
               locationEnd: package.destinationAddress!),
           Gap(12.h),
-          PackageInfo(package: package),
+          PackageInfo(
+            package: package,
+            isShowProduct: false,
+          ),
           Gap(12.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -61,7 +70,6 @@ class DeliveryPackageItem extends StatelessWidget {
               ),
             ],
           ),
-          Gap(12.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -71,6 +79,16 @@ class DeliveryPackageItem extends StatelessWidget {
                 onPressed: onConfirmPackage,
                 backgroundColor: AppColors.green,
                 textColor: AppColors.green,
+                radius: 8.sp,
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
+              Gap(8.w),
+              ColorButton(
+                'Giao hàng thất bại',
+                icon: Icons.delete,
+                onPressed: onDeliveryFailedPackage,
+                backgroundColor: Colors.red,
+                textColor: Colors.red,
                 radius: 8.sp,
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),

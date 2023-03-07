@@ -144,4 +144,17 @@ class DeliveryPackageController extends BasePagingController<Package>
       ),
     );
   }
+
+  Future<void> deliveryFailed(String packageId) async {
+    MaterialDialogService.showConfirmDialog(
+        msg: 'Xác nhận gói hàng đã giao thất bại?',
+        onConfirmTap: () async {
+          Future<SimpleResponseModel> future =
+              _packageRepo.deliveryFailed(packageId);
+          callDataService<SimpleResponseModel>(future, onSuccess: (response) {
+            ToastService.showSuccess('Xác nhận gói hàng đã giao thất bại!');
+            refresh();
+          }, onError: showError, onStart: showOverlay, onComplete: hideOverlay);
+        });
+  }
 }

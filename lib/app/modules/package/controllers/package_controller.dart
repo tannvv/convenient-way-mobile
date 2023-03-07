@@ -5,7 +5,6 @@ import 'package:tien_duong/app/modules/package/tabs/delivery_tab/delivery_packag
 import 'package:tien_duong/app/modules/package/tabs/failed_tab/failed_package_view.dart';
 import 'package:tien_duong/app/modules/package/tabs/received_tab/received_package_view.dart';
 import 'package:tien_duong/app/modules/package/tabs/sender_cancel_tab/sender_cancel_package_view.dart';
-import 'package:tien_duong/app/modules/package/tabs/success_tab/success_package_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,21 +15,19 @@ class PackageController extends BaseController
   List<String> tabsTitle = const [
     'Đã nhận',
     'Đang giao',
-    'Đã hủy',
     'Người gửi hủy',
     'Đã giao hàng',
-    'Thất bại',
-    'Thành công',
+    'Giao thất bại',
+    'Đã hủy',
   ];
 
   final List<Widget> _screens = const [
     ReceivedPackageView(),
     DeliveryPackageView(),
-    DeliverCancelPackageView(),
     SenderCancelPackageView(),
     DeliveredPackageView(),
     FailedPackageView(),
-    SuccessPackageView()
+    DeliverCancelPackageView(),
   ];
 
   List<Widget> get screens => _screens;
