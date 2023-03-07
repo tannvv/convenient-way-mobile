@@ -18,9 +18,9 @@ class PackageController extends BaseController
     'Đang giao',
     'Đã hủy',
     'Người gửi hủy',
-    'Đã giao hàng',
-    'Thất bại',
-    'Thành công',
+    'Giao hàng thành công',
+    'Giao hàng thất bại',
+    'Term'
   ];
 
   final List<Widget> _screens = const [

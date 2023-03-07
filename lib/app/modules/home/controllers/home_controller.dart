@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:tien_duong/app/modules/location_package/controllers/location_package_controller.dart';
 import 'package:tien_duong/app/modules/location_package/views/location_package_view.dart';
 import 'package:tien_duong/app/modules/message_page/controllers/message_page_controller.dart';
-import 'package:tien_duong/app/modules/notify_page/controllers/notify_page_controller.dart';
-import 'package:tien_duong/app/modules/notify_page/views/notify_page_view.dart';
 import 'package:tien_duong/app/modules/package/controllers/package_controller.dart';
 import 'package:tien_duong/app/modules/package/views/package_view.dart';
 import 'package:tien_duong/app/modules/profile_page/controllers/profile_page_controller.dart';
@@ -39,7 +37,7 @@ class HomeController extends GetxController {
   final List<Widget> _widgetOptions = [
     SuggestPackageView(),
     const PackageView(),
-    const SenderPackageView(),
+    SenderPackageView(),
     ProfilePageView(),
     const LocationPackageView()
   ];

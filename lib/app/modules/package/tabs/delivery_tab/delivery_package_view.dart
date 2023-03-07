@@ -15,30 +15,31 @@ class DeliveryPackageView extends GetView<DeliveryPackageController> {
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Obx(() => SmartRefresher(
-              controller: controller.refreshController,
-              onRefresh: () => controller.onRefresh(),
-              onLoading: () => controller.onLoading(),
-              footer: CustomFooterSmartRefresh.defaultCustom(),
-              child: ListView.separated(
-                  itemBuilder: (_, index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        DeliveryPackageItem(
-                          package: controller.dataApis[index],
-                          onConfirmPackage: () =>
-                              controller.accountConfirmPackage(
-                                  controller.dataApis[index].id!),
-                          onShowQR: () {
-                            controller
-                                .showQRCode(controller.dataApis[index].id!);
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                  separatorBuilder: (_, index) => Gap(12.h),
-                  itemCount: controller.dataApis.length),
-            )));
+          controller: controller.refreshController,
+          onRefresh: () => controller.onRefresh(),
+          onLoading: () => controller.onLoading(),
+          footer: CustomFooterSmartRefresh.defaultCustom(),
+          child: ListView.separated(
+              itemBuilder: (_, index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DeliveryPackageItem(
+                      package: controller.dataApis[index],
+                      onCancelPackage: () => ReceivedPackageController().reportPackage(
+                          controller.dataApis[index].id!),
+                      onConfirmPackage: () => controller.accountConfirmPackage(
+                          controller.dataApis[index].id!),
+                      onShowQR: () =>
+                        controller.showQRCode(controller.dataApis[index].id!),
+                      onCodeConfirm: () =>
+                        controller.deliverConfirmCode(controller.dataApis[index].id!)
+                    ),
+                  ],
+                );
+              },
+              separatorBuilder: (_, index) => Gap(12.h),
+              itemCount: controller.dataApis.length),
+        )));
   }
 }
