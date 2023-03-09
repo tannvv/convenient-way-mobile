@@ -79,7 +79,7 @@ class DeliveryTabItem extends StatelessWidget {
               ),
               Gap(12.w),
               ColorButton(
-                'Quét QR lấy hàng',
+                'Quét QR xác nhận',
                 icon: Icons.qr_code_scanner,
                 onPressed: onConfirmPackage,
                 backgroundColor: AppColors.primary800,

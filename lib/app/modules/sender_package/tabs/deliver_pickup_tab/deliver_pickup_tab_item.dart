@@ -7,7 +7,6 @@ import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/location_start_end.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/package_info.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/wrap_item.dart';
-
 import '../../widgets/user_info.dart';
 
 class DeliverPickupTabItem extends StatelessWidget {

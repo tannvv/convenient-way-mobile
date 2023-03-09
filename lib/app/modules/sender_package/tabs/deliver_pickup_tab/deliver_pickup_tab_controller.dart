@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:barcode/barcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,28 +45,22 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
         msg: 'Xác nhân đã đưa hàng cho đúng người lấy hàng giùm?',
         closeOnFinish: false,
         onConfirmTap: () async {
-          _packageRepo.confirmPackage(packageId).then((response) async {
-            Get.back();
-            onRefresh();
-            _authController.reloadAccount();
-          }).catchError((error) {
-            Get.back();
-            ToastService.showError(error.messages[0]);
-          });
+          var future = _packageRepo.confirmPackage(packageId);
+            callDataService(future, onStart: showOverlay, onComplete: hideOverlay,
+                onSuccess: (response) {
+              Get.back();
+              onRefresh();
+              _authController.reloadAccount();
+              ToastService.showSuccess(
+                  'Xác nhận đã đưa gói hàng cho người lấy hàng giùm!');
+            }, onError: (exception) {
+              Get.back();
+              showError(exception);
+            }
+          );
         },
       );
     }
-  }
-
-  Future<void> confirmPackage(String packageId) async {
-    _packageRepo.confirmPackage(packageId).then((response) async {
-      Get.back();
-      onRefresh();
-      _authController.reloadAccount();
-    }).catchError((error) {
-      Get.back();
-      ToastService.showError(error.messages[0]);
-    });
   }
 
   Future<void> senderConfirmCode(String packageId) async {
@@ -75,22 +68,12 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
   }
 
   Future<void> confirmCodeFromQR(String packageId) async {
-    if (code == null || code != packageId.split('-')[0]) {
+    if (code == null || code != (packageId.split('-')[0])) {
       ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',
           seconds: 5);
       return;
     }
     if (code == packageId.split('-')[0]) {
-      // await _packageRepo.deliverySuccess(packageId).then((response) async {
-      //   Get.back();
-      //   onRefresh();
-      //   _authController.reloadAccount();
-      // }).catchError((error) {
-      //   Get.back();
-      //   ToastService.showError(error.messages[0]);
-      // });
-
-      // refresh();
       var future = _packageRepo.deliverySuccess(packageId);
       callDataService(future, onStart: showOverlay, onComplete: hideOverlay,
           onSuccess: (response) {
@@ -151,11 +134,11 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
   }
 
   Future<void> showQRCode(String packageId) async {
-    final svg = Barcode.qrCode().toSvg(packageId.split('-')[0]);
+    final svg = Barcode.qrCode().toSvg(packageId.split('-')[1] + packageId.split('-')[2]);
     await Dialogs.materialDialog(
         dialogWidth: 400.w,
         context: Get.context!,
-        customView: _qrCodeWidget(svg, packageId.split('-')[0]));
+        customView: _qrCodeWidget(svg, packageId.split('-')[1] + packageId.split('-')[2]));
   }
 
   Widget _qrCodeWidget(String svg, String packageId) {
@@ -194,7 +177,7 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
           Gap(20.h),
           Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             ColorButton(
-              'Mã xác nhận: ${packageId.split('-')[0]}',
+              'Mã xác nhận: $packageId',
               icon: Icons.verified,
               onPressed: () {},
               backgroundColor: AppColors.green,

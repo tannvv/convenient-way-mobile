@@ -20,8 +20,6 @@ import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
-import 'package:tien_duong/app/routes/app_pages.dart';
-
 import '../../../../core/values/input_styles.dart';
 
 class DeliveryTabController extends SenderTabBaseController<Package>
@@ -41,14 +39,9 @@ class DeliveryTabController extends SenderTabBaseController<Package>
         onSuccess: onSuccess, onError: onError);
   }
 
-  Future<void> showMapTracking(Package package) async {
-    await Get.toNamed(Routes.TRACKING_PACKAGE, arguments: package);
-  }
-
   Future<void> accountDeliveredPackage(String packageId) async {
     if (await PickUpFileController().scanQR() == packageId.split('-')[0]) {
-      Future<SimpleResponseModel> future =
-      _packageRepo.deliverySuccess(packageId);
+      var future = _packageRepo.deliverySuccess(packageId);
       await callDataService<SimpleResponseModel>(future, onSuccess: (response) {
         ToastService.showSuccess(response.message ?? 'Thành công');
         refreshController.requestRefresh();
@@ -60,17 +53,6 @@ class DeliveryTabController extends SenderTabBaseController<Package>
     } else {
       ToastService.showError('QR Code không đúng vui lòng kiểm tra lại!');
     }
-  }
-
-  Future<void> confirmPackage(String packageId) async {
-    _packageRepo.deliverySuccess(packageId).then((response) async {
-      Get.back();
-      onRefresh();
-      _authController.reloadAccount();
-    }).catchError((error) {
-      Get.back();
-      ToastService.showError(error.messages[0]);
-    });
   }
 
   Future<void> senderConfirmCode(String packageId) async {
@@ -85,18 +67,19 @@ class DeliveryTabController extends SenderTabBaseController<Package>
       return;
     }
     if(code == packageId.split('-')[0]) {
-      await _packageRepo.deliverySuccess(packageId).then((response) async {
-        Get.back();
-        onRefresh();
-        _authController.reloadAccount();
-      }).catchError((error) {
-        Get.back();
-        ToastService.showError(error.messages[0]);
-      });
-      ToastService.showSuccess('Xác nhận gói hàng đã được giao thành công!');
-      refresh();
-    };
-    await Duration(seconds: 3);
+      var future =  _packageRepo.deliverySuccess(packageId);
+      callDataService(future, onStart: showOverlay, onComplete: hideOverlay,
+        onSuccess: (response) {
+          Get.back();
+          onRefresh();
+          _authController.reloadAccount();
+          ToastService.showSuccess('Xác nhận gói hàng đã được giao thành công!');
+        }, onError: (exception) {
+          Get.back();
+          showError(exception);
+        }
+      );
+    }
   }
 
   Widget _confirmCodeWidget() {
@@ -144,11 +127,11 @@ class DeliveryTabController extends SenderTabBaseController<Package>
   }
 
   Future<void> showQRCode(String packageId) async {
-    final svg = Barcode.qrCode().toSvg(packageId.split('-')[0]);
+    final svg = Barcode.qrCode().toSvg(packageId.split('-')[1] + packageId.split('-')[2]);
     await Dialogs.materialDialog(
         dialogWidth: 400.w,
         context: Get.context!,
-        customView: _qrCodeWidget(svg, packageId));
+        customView: _qrCodeWidget(svg, packageId.split('-')[1] + packageId.split('-')[2]));
   }
 
   Widget _qrCodeWidget(String svg, String packageId) {
@@ -189,7 +172,7 @@ class DeliveryTabController extends SenderTabBaseController<Package>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ColorButton(
-                  'Mã xác nhận: '+packageId.split('-')[0],
+                  'Mã xác nhận: $packageId',
                   icon: Icons.verified,
                   onPressed: () {
 
