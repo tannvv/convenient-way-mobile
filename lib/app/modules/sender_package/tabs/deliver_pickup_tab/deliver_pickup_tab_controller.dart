@@ -81,17 +81,28 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
       return;
     }
     if (code == packageId.split('-')[0]) {
-      await _packageRepo.deliverySuccess(packageId).then((response) async {
+      // await _packageRepo.deliverySuccess(packageId).then((response) async {
+      //   Get.back();
+      //   onRefresh();
+      //   _authController.reloadAccount();
+      // }).catchError((error) {
+      //   Get.back();
+      //   ToastService.showError(error.messages[0]);
+      // });
+
+      // refresh();
+      var future = _packageRepo.deliverySuccess(packageId);
+      callDataService(future, onStart: showOverlay, onComplete: hideOverlay,
+          onSuccess: (response) {
         Get.back();
         onRefresh();
         _authController.reloadAccount();
-      }).catchError((error) {
+        ToastService.showSuccess(
+            'Xác nhận đã đưa gói hàng cho người lấy hàng giùm!');
+      }, onError: (exception) {
         Get.back();
-        ToastService.showError(error.messages[0]);
+        showError(exception);
       });
-      ToastService.showSuccess(
-          'Xác nhận đã đưa gói hàng cho người lấy hàng giùm!');
-      refresh();
     }
   }
 
