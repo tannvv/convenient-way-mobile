@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tien_duong/app/core/widgets/custom_footer_smart_refresh.dart';
 import 'package:tien_duong/app/modules/sender_package/tabs/delivered_tab/delivered_tab_controller.dart';
-
 import 'delivered_tab_item.dart';
 
 class DeliveredTabView extends GetView<DeliveredTabController> {
