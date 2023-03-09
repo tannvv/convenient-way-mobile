@@ -1,5 +1,4 @@
 import 'package:barcode/barcode.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,30 +27,6 @@ class DeliveryPackageController extends BasePagingController<Package>
   final AuthController _authController = Get.find<AuthController>();
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
   String? code;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  Future<void> accountConfirmPackage(String packageId) async {
-    if (await PickUpFileController().scanQR() == packageId.split('-')[0]) {
-      MaterialDialogService.showConfirmDialog(
-          msg: 'Xác nhận gói hàng đã giao thành công?',
-          onConfirmTap: () async {
-            _packageRepo.deliverySuccess(packageId).then((response) async {
-              Get.back();
-              onRefresh();
-              _authController.reloadAccount();
-            }).catchError((error) {
-              Get.back();
-              ToastService.showError(error.messages[0]);
-            });
-          });
-    } else {
-      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',
-          seconds: 5);
-    }
-  }
 
   @override
   Future<void> fetchDataApi() async {
@@ -61,31 +36,56 @@ class DeliveryPackageController extends BasePagingController<Package>
     await callDataService<List<Package>>(future,
         onSuccess: onSuccess, onError: onError);
   }
+  
+  Future<void> accountConfirmPackage(String packageId) async {
+    if (await PickUpFileController().scanQR() == (packageId.split('-')[1] + packageId.split('-')[2])) {
+      MaterialDialogService.showConfirmDialog(
+        msg: 'Xác nhận gói hàng đã giao thành công?',
+        onConfirmTap: () async {
+          var future =  _packageRepo.deliverySuccess(packageId);
+          callDataService(future, onStart: showOverlay, onComplete: hideOverlay,
+            onSuccess: (response) {
+              Get.back();
+              onRefresh();
+              _authController.reloadAccount();
+              ToastService.showSuccess('Xác nhận gói hàng đã được giao thành công!');
+            }, onError: (exception) {
+              Get.back();
+              showError(exception);
+            }
+          );
+        }
+      );
+    } else {
+      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',
+          seconds: 5);
+    }
+  }
 
   Future<void> deliverConfirmCode(String packageId) async {
     confirmCode(() => {confirmCodeFromQR(packageId)});
   }
 
   Future<void> confirmCodeFromQR(String packageId) async {
-    if (code == null || code != packageId.split('-')[0]) {
+    if (code == null || code != (packageId.split('-')[1] + packageId.split('-')[2])) {
       ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',
           seconds: 5);
       return;
     }
-    if (code == packageId.split('-')[0]) {
-      await _packageRepo.deliverySuccess(packageId).then((response) async {
-        Get.back();
-        onRefresh();
-        _authController.reloadAccount();
-      }).catchError((error) {
-        Get.back();
-        ToastService.showError(error.messages[0]);
-      });
-      ToastService.showSuccess('Xác nhận gói hàng đã được giao thành công!');
-      refresh();
+    if (code == (packageId.split('-')[1] + packageId.split('-')[2])) {
+      var future =  _packageRepo.deliverySuccess(packageId);
+      callDataService(future, onStart: showOverlay, onComplete: hideOverlay,
+        onSuccess: (response) {
+          Get.back();
+          onRefresh();
+          _authController.reloadAccount();
+          ToastService.showSuccess('Xác nhận gói hàng đã được giao thành công!');
+        }, onError: (exception) {
+          Get.back();
+          showError(exception);
+        }
+      );
     }
-    ;
-    await Duration(seconds: 3);
   }
 
   Widget _confirmCodeWidget() {
@@ -137,7 +137,7 @@ class DeliveryPackageController extends BasePagingController<Package>
     await Dialogs.materialDialog(
         dialogWidth: 400.w,
         context: Get.context!,
-        customView: _qrCodeWidget(svg, packageId));
+        customView: _qrCodeWidget(svg, packageId.split('-')[0]));
   }
 
   Widget _qrCodeWidget(String svg, String packageId) {
@@ -176,7 +176,7 @@ class DeliveryPackageController extends BasePagingController<Package>
           Gap(20.h),
           Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             ColorButton(
-              'Mã xác nhận: ' + packageId.split('-')[0],
+              'Mã xác nhận: $packageId',
               icon: Icons.verified,
               onPressed: () {},
               backgroundColor: AppColors.green,
