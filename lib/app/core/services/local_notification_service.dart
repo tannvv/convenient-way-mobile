@@ -54,6 +54,25 @@ class LocalNotificationService {
         payload: payload);
   }
 
+  static Future<void> showNotificationTracking({
+    var id = 0,
+    String? title,
+    String? body,
+    String? payload,
+  }) async {
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+      'tracking_cw_chanel',
+      'Kênh mặc định theo dõi',
+      enableVibration: false,
+    );
+
+    var notify = const NotificationDetails(android: androidNotificationDetails);
+
+    await flutterLocalNotificationsPlugin.show(id, title, body, notify,
+        payload: payload);
+  }
+
   static Future<void> showCallingNotification({
     var id = 2,
     String? title,

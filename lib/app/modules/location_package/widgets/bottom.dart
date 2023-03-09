@@ -31,38 +31,40 @@ class Bottom extends GetWidget<LocationPackageController> {
               Expanded(flex: 2, child: _header()),
               Expanded(
                   flex: 16,
-                  child: ListView.separated(
-                    padding: EdgeInsets.symmetric(vertical: 8.h),
-                    itemBuilder: (_, index) {
-                      return Row(
-                        children: [
-                          Text(
-                            '${index + 1}',
-                            style: subtitle1.copyWith(
-                                fontWeight: FontWeight.normal,
-                                color: AppColors.softBlack),
-                          ),
-                          Gap(8.w),
-                          SvgPicture.asset(
-                            controller.getAssetsWithType(
-                                controller.pointPackages[index].type!),
-                            width: 20.h,
-                            height: 20.h,
-                          ),
-                          Gap(8.w),
-                          Expanded(
-                              child: Text(
-                                  controller.pointPackages[index].name ?? '',
-                                  style: subtitle1.copyWith(
-                                      fontWeight: FontWeight.normal,
-                                      overflow: TextOverflow.ellipsis,
-                                      color:
-                                          AppColors.softBlack))), // 'Điểm đón')
-                        ],
-                      );
-                    },
-                    separatorBuilder: (context, index) => Gap(8.h),
-                    itemCount: controller.pointPackages.length,
+                  child: Obx(
+                    () => ListView.separated(
+                      padding: EdgeInsets.symmetric(vertical: 8.h),
+                      itemBuilder: (_, index) {
+                        return Row(
+                          children: [
+                            Text(
+                              '${index + 1}',
+                              style: subtitle1.copyWith(
+                                  fontWeight: FontWeight.normal,
+                                  color: AppColors.softBlack),
+                            ),
+                            Gap(8.w),
+                            SvgPicture.asset(
+                              controller.getAssetsWithType(
+                                  controller.pointPackages[index].type!),
+                              width: 20.h,
+                              height: 20.h,
+                            ),
+                            Gap(8.w),
+                            Expanded(
+                                child: Text(
+                                    controller.pointPackages[index].name ?? '',
+                                    style: subtitle1.copyWith(
+                                        fontWeight: FontWeight.normal,
+                                        overflow: TextOverflow.ellipsis,
+                                        color: AppColors
+                                            .softBlack))), // 'Điểm đón')
+                          ],
+                        );
+                      },
+                      separatorBuilder: (context, index) => Gap(8.h),
+                      itemCount: controller.pointPackages.length,
+                    ),
                   )),
             ],
           ),

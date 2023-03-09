@@ -1,5 +1,6 @@
 import 'package:tien_duong/app/core/base/base_repository.dart';
 import 'package:tien_duong/app/data/models/polyline_model.dart';
+import 'package:tien_duong/app/data/models/response_goong_default.dart';
 import 'package:tien_duong/app/data/models/response_goong_model.dart';
 import 'package:tien_duong/app/data/repository/goong_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/request_polyline_model';
@@ -30,6 +31,37 @@ class GoongReqImp extends BaseRepository implements GoongReq {
       return callApi(dioCall).then((response) {
         List<PolylineModel> data = (response.data['data'] as List)
             .map((e) => PolylineModel.fromJson(e))
+            .toList();
+        return data;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ResponseGoong> getDetail(String placeId) {
+    String endpoint = '${DioProvider.baseUrl}/goongs/detail';
+    var dioCall =
+        dioClient.get(endpoint, queryParameters: {'placeId': placeId});
+    try {
+      return callApi(dioCall).then((response) {
+        ResponseGoong data = ResponseGoong.fromJson(response.data['data']);
+        return data;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<ResponseGoongDefault>> getListDefault(String query) {
+    String endpoint = '${DioProvider.baseUrl}/goongs/search-default';
+    var dioCall = dioClient.get(endpoint, queryParameters: {'search': query});
+    try {
+      return callApi(dioCall).then((response) {
+        List<ResponseGoongDefault> data = (response.data['data'] as List)
+            .map((e) => ResponseGoongDefault.fromJson(e))
             .toList();
         return data;
       });

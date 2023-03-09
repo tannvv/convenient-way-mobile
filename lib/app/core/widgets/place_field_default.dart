@@ -6,6 +6,7 @@ import 'package:tien_duong/app/core/values/app_animation_assets.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/input_styles.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
+import 'package:tien_duong/app/data/models/response_goong_default.dart';
 import 'package:tien_duong/app/data/models/response_goong_model.dart';
 import 'package:tien_duong/app/data/repository/goong_req.dart';
 import 'package:tien_duong/app/data/repository/goong_req_imp.dart';
@@ -32,6 +33,7 @@ class PlaceFieldDefault extends StatefulWidget {
 }
 
 class _PlaceFieldDefaultState extends State<PlaceFieldDefault> {
+  GoongReq repo = GoongReqImp();
   @override
   Widget build(BuildContext context) {
     TextEditingController realTextCtrl = widget.textController != null
@@ -39,7 +41,7 @@ class _PlaceFieldDefaultState extends State<PlaceFieldDefault> {
         : widget.reserveTextController;
     return Material(
         color: Colors.transparent,
-        child: TypeAheadField<ResponseGoong>(
+        child: TypeAheadField<ResponseGoongDefault>(
             debounceDuration: const Duration(milliseconds: 500),
             minCharsForSuggestions: 2,
             textFieldConfiguration: TextFieldConfiguration(
@@ -51,7 +53,9 @@ class _PlaceFieldDefaultState extends State<PlaceFieldDefault> {
                 hintText: widget.hintText,
                 labelText: widget.labelText,
               ).copyWith(
-                  suffix: widget.enable && realTextCtrl.text.isNotEmpty
+                  suffix: widget.enable &&
+                          realTextCtrl.text.isNotEmpty &&
+                          widget.onClear != null
                       ? IconButton(
                           onPressed: () {
                             setState(() {
@@ -71,7 +75,7 @@ class _PlaceFieldDefaultState extends State<PlaceFieldDefault> {
                 return [];
               }
               GoongReq repo = GoongReqImp();
-              return await repo.getList(pattern);
+              return await repo.getListDefault(pattern);
             },
             itemBuilder: (context, suggestion) {
               return ListTile(
@@ -99,11 +103,14 @@ class _PlaceFieldDefaultState extends State<PlaceFieldDefault> {
                         fit: BoxFit.cover),
                   ),
                 ),
-            onSuggestionSelected: (suggestion) {
+            onSuggestionSelected: (suggestion) async {
               setState(() {
-                widget.onSelected(suggestion);
                 realTextCtrl.text = suggestion.name ?? '';
               });
+              if (suggestion.placeId == null) return;
+              ResponseGoong detail =
+                  await repo.getDetail(suggestion.placeId ?? '');
+              widget.onSelected(detail);
             },
             noItemsFoundBuilder: (context) => Padding(
                 padding: EdgeInsets.all(10.w),

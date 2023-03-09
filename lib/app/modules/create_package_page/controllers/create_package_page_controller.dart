@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
@@ -32,9 +33,8 @@ class CreatePackagePageController extends BaseController {
   final GlobalKey<FormState> pickupFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> productsFormKey = GlobalKey<FormState>();
 
-  final GlobalKey<FormFieldState> startLocationKey =
-      GlobalKey<FormFieldState>();
-  final GlobalKey<FormFieldState> endLocationKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormState> startLocationKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> endLocationKey = GlobalKey<FormState>();
   final GlobalKey<FormFieldState> pickupNameKey = GlobalKey<FormFieldState>();
   final GlobalKey<FormFieldState> pickupPhoneKey = GlobalKey<FormFieldState>();
   final GlobalKey<FormFieldState> receiverNameKey = GlobalKey<FormFieldState>();
@@ -168,7 +168,11 @@ class CreatePackagePageController extends BaseController {
   void nextStep() {
     switch (currentStep) {
       case 0:
-        if (pickupFormKey.currentState!.validate()) currentStep++;
+        {
+          bool pickupFormCheck = pickupFormKey.currentState!.validate();
+          bool startLocationCheck = startLocationKey.currentState!.validate();
+          if (pickupFormCheck && startLocationCheck) currentStep++;
+        }
         break;
       case 1:
         if (receiverFormKey.currentState!.validate()) currentStep++;
@@ -193,13 +197,14 @@ class CreatePackagePageController extends BaseController {
     MaterialDialogService.showConfirmDialog(
         msg: 'Bạn chắc chắn muốn tạo gói hàng này?',
         onConfirmTap: () async {
-          if(_authController.isNewAccount || (_authController.availableBalance < 50000)) {
+          if (_authController.isNewAccount ||
+              (_authController.availableBalance < 50000)) {
             MaterialDialogService.showConfirmDialog(
-              msg: 'Cần có tối thiểu 50.000 VNĐ trong tài khoản\nVui lòng nạp thêm tiền!',
-              onConfirmTap: () async {
-                Get.toNamed(Routes.PAYMENT);
-              }
-            );
+                msg:
+                    'Cần có tối thiểu 50.000 VNĐ trong tài khoản\nVui lòng nạp thêm tiền!',
+                onConfirmTap: () async {
+                  Get.toNamed(Routes.PAYMENT);
+                });
           } else {
             uploadImageAndCreatePackage();
           }
@@ -274,7 +279,13 @@ class CreatePackagePageController extends BaseController {
     focusStartLocationNode.addListener(() {
       if (!focusStartLocationNode.hasFocus) {
         // startLocationKey.currentState?.validate();
-        pickupFormKey.currentState?.validate();
+        if (pickupTxtCtrl.text.length > 40) {
+          Timer(const Duration(milliseconds: 3000), () {
+            startLocationKey.currentState?.validate();
+          });
+        } else {
+          startLocationKey.currentState?.validate();
+        }
       }
     });
     focusPickupPhone.addListener(() {
@@ -290,7 +301,13 @@ class CreatePackagePageController extends BaseController {
     focusEndLocationNode.addListener(() {
       if (!focusEndLocationNode.hasFocus) {
         // endLocationKey.currentState?.validate();
-        receiverFormKey.currentState?.validate();
+        if (senderTxtCtrl.text.length > 50) {
+          Timer(const Duration(milliseconds: 3000), () {
+            endLocationKey.currentState?.validate();
+          });
+        } else {
+          endLocationKey.currentState?.validate();
+        }
       }
     });
     focusReceiverPhone.addListener(() {

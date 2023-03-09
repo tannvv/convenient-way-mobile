@@ -1,5 +1,6 @@
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/widgets/hyper_shape.dart';
+import 'package:tien_duong/app/core/widgets/place_field_default.dart';
 import 'package:tien_duong/app/data/models/response_goong_model.dart';
 import 'package:tien_duong/app/modules/create-route/controllers/create_route_controller.dart';
 import 'package:tien_duong/app/modules/create-route/widgets/place_field.dart';
@@ -44,14 +45,14 @@ class RouteInfo extends GetWidget<CreateRouteController> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          PlaceField(
+                          PlaceFieldDefault(
                             enable: true,
                             hintText: 'Nhập điểm đi',
                             labelText: 'Điểm đi',
                             onSelected: _onSelectHome,
                             textController: controller.startLocationController,
                           ),
-                          PlaceField(
+                          PlaceFieldDefault(
                             enable: true,
                             hintText: 'Nhập điểm đến',
                             labelText: 'Điểm đến',
@@ -69,14 +70,14 @@ class RouteInfo extends GetWidget<CreateRouteController> {
                         backgroundColor: AppColors.blue,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         padding: const EdgeInsets.all(0),
-                        minimumSize: Size(40.r, 40.r),
+                        minimumSize: Size(26.r, 26.r),
                       ),
                       child: SizedBox(
-                        height: 40.r,
-                        width: 40.r,
+                        height: 26.r,
+                        width: 26.r,
                         child: Icon(
                           Icons.swap_vert,
-                          size: 23.r,
+                          size: 18.r,
                           color: AppColors.white,
                         ),
                       ),

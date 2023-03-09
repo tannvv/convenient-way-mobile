@@ -58,7 +58,7 @@ class TrackingPackageController extends GetxController {
 
   void onTracking() {
     FirebaseMessaging.onMessage.listen((message) {
-      if (message.notification?.title == TypeOfNotification.TRACKING) {
+      if (message.data['typeOfNotification'] == TypeOfNotification.TRACKING) {
         if (message.data['deliverId'] == package.deliverId) {
           locationDeliver.value = LatLng(
               double.parse(message.data['latitude']!),

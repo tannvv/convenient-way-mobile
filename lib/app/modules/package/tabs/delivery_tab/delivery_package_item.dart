@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:tien_duong/app/modules/package/widgets/location_start_end.dart';
 import 'package:tien_duong/app/modules/package/widgets/package_info.dart';
 import 'package:tien_duong/app/modules/package/widgets/user_info.dart';
+import 'package:tien_duong/app/modules/package/widgets/user_info_delivery_point.dart';
 
 class DeliveryPackageItem extends StatelessWidget {
   const DeliveryPackageItem(
@@ -38,7 +39,9 @@ class DeliveryPackageItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          UserInfo(info: package.sender!.infoUser!),
+          UserInfoDeliveryPoint(
+            package: package,
+          ),
           LocationStartEnd(
               locationStart: package.startAddress!,
               locationEnd: package.destinationAddress!),
@@ -52,7 +55,31 @@ class DeliveryPackageItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ColorButton(
-                'Lấy mã QR',
+                'Xác nhận bằng Mã',
+                icon: Icons.onetwothree,
+                onPressed: onCodeConfirm,
+                backgroundColor: AppColors.primary800,
+                textColor: AppColors.primary800,
+                radius: 8.sp,
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
+              Gap(12.h),
+              // ColorButton(
+              //   "Hủy đơn",
+              //   icon: Icons.delete,
+              //   onPressed: onCancelPackage,
+              //   backgroundColor: Colors.red,
+              //   textColor: Colors.red,
+              //   radius: 8.sp,
+              //   //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              // ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ColorButton(
+                'Lấy QR',
                 icon: Icons.qr_code,
                 onPressed: onShowQR,
                 backgroundColor: AppColors.primary800,
@@ -60,13 +87,13 @@ class DeliveryPackageItem extends StatelessWidget {
                 radius: 8.sp,
                 //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
-              Gap(12.h),
+              Gap(12.w),
               ColorButton(
-                "Hủy đơn",
-                icon: Icons.delete,
-                onPressed: onCancelPackage,
-                backgroundColor: Colors.red,
-                textColor: Colors.red,
+                'Xác nhận bằng QR',
+                icon: Icons.qr_code_scanner,
+                onPressed: onConfirmPackage,
+                backgroundColor: AppColors.primary800,
+                textColor: AppColors.primary800,
                 radius: 8.sp,
                 //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
@@ -76,33 +103,13 @@ class DeliveryPackageItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ColorButton(
-                'Xác nhận bằng Mã',
-                icon: Icons.onetwothree,
-                onPressed: onCodeConfirm,
-                backgroundColor: AppColors.primary800,
-                textColor: AppColors.primary800,
-                radius: 8.sp,
-                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-              ),
-              Gap(12.w),
-              ColorButton(
-                'Quét QR lấy hàng',
-                icon: Icons.qr_code_scanner,
-                onPressed: onConfirmPackage,
-                backgroundColor: AppColors.primary800,
-                textColor: AppColors.primary800,
-                radius: 8.sp,
-                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-              ),
-              Gap(8.w),
-              ColorButton(
-                'Giao hàng thất bại',
+                "Giao thất bại",
                 icon: Icons.delete,
                 onPressed: onDeliveryFailedPackage,
                 backgroundColor: Colors.red,
                 textColor: Colors.red,
                 radius: 8.sp,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
             ],
           )

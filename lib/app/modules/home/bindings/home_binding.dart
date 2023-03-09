@@ -1,5 +1,6 @@
 import 'package:tien_duong/app/modules/package/tabs/deliver_cancel_tab/deliver_cancel_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/delivered_tab/delivered_package_controller.dart';
+import 'package:tien_duong/app/modules/package/tabs/delivery_failed_tab/delivery_failed_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/delivery_tab/delivery_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/failed_tab/failed_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/received_tab/received_package_controller.dart';
@@ -30,10 +31,14 @@ class HomeBinding extends Bindings {
     Get.lazyPut<ReceivedPackageController>(() => ReceivedPackageController());
     Get.lazyPut<DeliveryPackageController>(() => DeliveryPackageController());
     Get.lazyPut<DeliveredPackageController>(() => DeliveredPackageController());
-    Get.lazyPut<DeliverCancelPackageController>(() => DeliverCancelPackageController());
-    Get.lazyPut<SenderCancelPackageController>(() => SenderCancelPackageController());
+    Get.lazyPut<DeliverCancelPackageController>(
+        () => DeliverCancelPackageController());
+    Get.lazyPut<SenderCancelPackageController>(
+        () => SenderCancelPackageController());
     Get.lazyPut<FailedPackageController>(() => FailedPackageController());
     Get.lazyPut<SuccessPackageController>(() => SuccessPackageController());
+    Get.lazyPut<DeliveryFailedPackageController>(
+        () => DeliveryFailedPackageController());
   }
 
   void senderTabController() {
@@ -41,7 +46,8 @@ class HomeBinding extends Bindings {
     Get.lazyPut<DeliverCancelTabController>(() => DeliverCancelTabController());
     Get.lazyPut<DeliverPickupTabController>(() => DeliverPickupTabController());
     Get.lazyPut<DeliveredTabController>(() => DeliveredTabController());
-    Get.lazyPut<DeliveryFailedTabController>(() => DeliveryFailedTabController());
+    Get.lazyPut<DeliveryFailedTabController>(
+        () => DeliveryFailedTabController());
     Get.lazyPut<DeliveryTabController>(() => DeliveryTabController());
     Get.lazyPut<RejectTabController>(() => RejectTabController());
     Get.lazyPut<SenderCancelTabController>(() => SenderCancelTabController());

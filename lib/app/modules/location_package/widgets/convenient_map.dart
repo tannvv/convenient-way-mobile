@@ -25,7 +25,7 @@ class ConvenientMap extends GetWidget<LocationPackageController> {
         FlutterMap(
           options: MapOptions(
             interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-            center: LatLng(10.212884, 103.964889),
+            center: LatLng(10.612884, 108.964889),
             zoom: 10.5,
             minZoom: 10.5,
             maxZoom: 18.4,

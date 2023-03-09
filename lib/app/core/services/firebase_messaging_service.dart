@@ -29,7 +29,8 @@ class FirebaseMessagingService {
         'Notification: Background message received, Title: ${message.notification?.title}, Body: ${message.notification?.body}');
     // LocalNotificationService.showCallingNotification(
     //     title: 'Cuộc gọi đến', body: 'Tân Nguyễn đang gọi cho bạn');
-    if (message.notification?.title != TypeOfNotification.TRACKING) {
+
+    if (message.data['typeOfNotification'] != TypeOfNotification.TRACKING) {
       LocalNotificationService.showNotification(
           title: message.notification?.title, body: message.notification?.body);
     }
@@ -38,7 +39,8 @@ class FirebaseMessagingService {
   static Future<void> firebaseForegroundHandler(RemoteMessage message) async {
     debugPrint(
         'Notification: Foreground message received, Title: ${message.notification?.title}, Body: ${message.notification?.body}');
-    if (message.notification?.title != TypeOfNotification.TRACKING) {
+
+    if (message.data['typeOfNotification'] != TypeOfNotification.TRACKING) {
       LocalNotificationService.showNotification(
           title: message.notification?.title, body: message.notification?.body);
     }

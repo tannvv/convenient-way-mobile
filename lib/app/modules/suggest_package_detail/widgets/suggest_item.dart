@@ -69,7 +69,7 @@ class SuggestItem extends StatelessWidget {
                     ),
                     Expanded(
                       child: Text(
-                        '${package.distance!.toInt()}m',
+                        '${package.distance!.toInt()} km',
                         style: subtitle2.copyWith(
                             fontWeight: FontWeights.medium,
                             color: AppColors.softBlack,

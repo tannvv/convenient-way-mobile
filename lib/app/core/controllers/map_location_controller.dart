@@ -69,6 +69,7 @@ class MapLocationController extends BaseController {
       debugPrint('Location: ${result.latitude}, ${result.longitude}');
       return result;
     } catch (e) {
+      setDefaultLocation();
       return Future.error(e);
     }
   }
@@ -117,6 +118,7 @@ class MapLocationController extends BaseController {
           Get.back();
           return result;
         } catch (e) {
+          setDefaultLocation();
           return Future.error(e);
         }
       },

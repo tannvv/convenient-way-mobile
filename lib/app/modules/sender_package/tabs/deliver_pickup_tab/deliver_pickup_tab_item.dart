@@ -17,6 +17,7 @@ class DeliverPickupTabItem extends StatelessWidget {
       required this.onShowQR,
       required this.onConfirmPackage,
       required this.onCodeConfirm,
+      required this.showMapTracking,
       required this.onShowDeliverInfo})
       : super(key: key);
   final Package package;
@@ -24,6 +25,7 @@ class DeliverPickupTabItem extends StatelessWidget {
   final Function() onConfirmPackage;
   final Function() onCodeConfirm;
   final Function() onShowDeliverInfo;
+  final Function() showMapTracking;
   @override
   Widget build(BuildContext context) {
     return WrapItem(
@@ -41,11 +43,20 @@ class DeliverPickupTabItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ColorButton(
-                'Lấy mã QR',
+                'Lấy QR',
                 icon: Icons.qr_code,
                 onPressed: onShowQR,
                 backgroundColor: AppColors.primary800,
                 textColor: AppColors.primary800,
+                radius: 8.sp,
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
+              ColorButton(
+                'Theo dõi đơn hàng',
+                icon: Icons.location_on,
+                onPressed: showMapTracking,
+                backgroundColor: Colors.lightBlueAccent,
+                textColor: Colors.blueAccent,
                 radius: 8.sp,
                 //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
@@ -55,7 +66,7 @@ class DeliverPickupTabItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ColorButton(
-                'Xác nhận bằng Mã',
+                'Nhập mã xác nhận',
                 icon: Icons.onetwothree,
                 onPressed: onCodeConfirm,
                 backgroundColor: AppColors.primary800,
@@ -65,7 +76,7 @@ class DeliverPickupTabItem extends StatelessWidget {
               ),
               Gap(12.w),
               ColorButton(
-                'Quét QR lấy hàng',
+                'Quét QR xác nhận',
                 icon: Icons.qr_code_scanner,
                 onPressed: onConfirmPackage,
                 backgroundColor: AppColors.primary800,

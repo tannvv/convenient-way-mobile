@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:tien_duong/app/config/build_config.dart';
 import 'package:tien_duong/app/core/values/app_assets.dart';
+import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/widgets/hyper_stack.dart';
 
 import '../controllers/tracking_package_controller.dart';
@@ -18,6 +19,7 @@ class TrackingPackageView extends GetView<TrackingPackageController> {
     final markerSize = 30.w;
     return HyperStack(
       children: [
+        _buildBackButton(),
         FlutterMap(
           mapController: controller.mapController,
           options: MapOptions(
@@ -65,6 +67,44 @@ class TrackingPackageView extends GetView<TrackingPackageController> {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildBackButton() {
+    return Positioned(
+      top: 40.h,
+      left: 40.w,
+      child: Container(
+        padding: EdgeInsets.only(
+          top: 10.h,
+          left: 20.w,
+        ),
+        child: Row(
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                Get.back();
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                backgroundColor: AppColors.white,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: const EdgeInsets.all(0),
+                minimumSize: Size(34.r, 34.r),
+              ),
+              child: SizedBox(
+                height: 30.r,
+                width: 30.r,
+                child: Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 18.r,
+                  color: AppColors.primary400,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

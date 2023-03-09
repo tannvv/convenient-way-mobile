@@ -53,11 +53,11 @@ class RouteInfo extends GetWidget<ManageRouteController> {
                                 labelText: 'Điểm đi',
                                 hintText:
                                     controller.routes[index].fromName ?? '',
-                                onClear: () {
-                                  controller.routes[index].fromName = '';
-                                  controller.routes[index].fromLatitude = 0;
-                                  controller.routes[index].fromLongitude = 0;
-                                },
+                                // onClear: () {
+                                //   controller.routes[index].fromName = '';
+                                //   controller.routes[index].fromLatitude = 0;
+                                //   controller.routes[index].fromLongitude = 0;
+                                // },
                                 onSelected: controller.updateFromLocation,
                               ),
                               PlaceFieldDefault(
@@ -65,11 +65,11 @@ class RouteInfo extends GetWidget<ManageRouteController> {
                                 enable: controller.isEditField(index),
                                 onSelected: controller.updateToLocation,
                                 hintText: controller.routes[index].toName ?? '',
-                                onClear: () {
-                                  controller.routes[index].toName = '';
-                                  controller.routes[index].toLatitude = 0;
-                                  controller.routes[index].toLongitude = 0;
-                                },
+                                // onClear: () {
+                                //   controller.routes[index].toName = '';
+                                //   controller.routes[index].toLatitude = 0;
+                                //   controller.routes[index].toLongitude = 0;
+                                // },
                               ),
                             ],
                           ),

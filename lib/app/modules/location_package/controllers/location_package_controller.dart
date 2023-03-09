@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
@@ -68,11 +70,13 @@ class LocationPackageController extends BaseController {
 
   void onMapCreated(MapController controller) {
     _animatedMapService = AnimatedMapService(controller: controller);
-    if (packages.isNotEmpty) {
-      gotoCurrentBound();
-    } else {
-      gotoCurrentLocation();
-    }
+    Timer(const Duration(seconds: 2), () {
+      if (packages.isNotEmpty) {
+        gotoCurrentBound();
+      } else {
+        gotoCurrentLocation();
+      }
+    });
   }
 
   void gotoCurrentLocation() {
@@ -83,7 +87,7 @@ class LocationPackageController extends BaseController {
   }
 
   void centerZoomFitBounds() {
-    currentBounds.pad(0.4);
+    currentBounds.pad(0.2);
     LatLng? ne = currentBounds.northEast;
     LatLng? sw = currentBounds.southWest;
     final heightBuffer = (sw!.latitude - ne!.latitude).abs() * 0.8;
@@ -96,8 +100,7 @@ class LocationPackageController extends BaseController {
     String deliverId = _authController.account!.id!;
     PackageListModel model = PackageListModel(
       deliverId: deliverId,
-      status:
-          '${PackageStatus.DELIVER_PICKUP},${PackageStatus.DELIVERY},${PackageStatus.DELIVERY_FAILED}',
+      status: '${PackageStatus.DELIVER_PICKUP},${PackageStatus.DELIVERY}',
     );
     var future = _packageReq.getList(model);
     await callDataService<List<Package>>(
@@ -122,25 +125,26 @@ class LocationPackageController extends BaseController {
     currentBounds.extend(currentPosition);
 
     for (var package in packages) {
-      if (package.status == PackageStatus.DELIVER_PICKUP) {
-        LatLng packagePosition = LatLng(
-          package.startLatitude!,
-          package.startLongitude!,
-        );
-        currentBounds.extend(packagePosition);
-      } else if (package.status == PackageStatus.DELIVERY) {
-        LatLng packagePosition = LatLng(
-          package.destinationLatitude!,
-          package.destinationLongitude!,
-        );
-        currentBounds.extend(packagePosition);
-      } else if (package.status == PackageStatus.DELIVERY_FAILED) {
-        LatLng packagePosition = LatLng(
-          package.startLatitude!,
-          package.startLongitude!,
-        );
-        currentBounds.extend(packagePosition);
-      }
+      LatLng packagePosition = LatLng(
+        package.startLatitude!,
+        package.startLongitude!,
+      );
+      LatLng packageEndPosition = LatLng(
+        package.destinationLatitude!,
+        package.destinationLongitude!,
+      );
+      currentBounds.extend(packagePosition);
+      currentBounds.extend(packageEndPosition);
+    }
+    RouteAcc? activeRoute = _authController.account?.infoUser?.routes
+        ?.firstWhere((element) => element.isActive == true);
+    if (activeRoute != null) {
+      LatLng routeStart =
+          LatLng(activeRoute.fromLatitude!, activeRoute.fromLongitude!);
+      LatLng routeEnd =
+          LatLng(activeRoute.toLatitude!, activeRoute.toLongitude!);
+      currentBounds.extend(routeStart);
+      currentBounds.extend(routeEnd);
     }
     currentBounds.pad(0.2);
     centerZoomFitBounds();

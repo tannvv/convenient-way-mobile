@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/modules/location_package/controllers/location_package_controller.dart';
@@ -40,6 +41,7 @@ class Top extends GetWidget<LocationPackageController> {
               ),
               child: _active(),
             ),
+            _reloadButton()
           ],
         ),
       ),
@@ -63,6 +65,23 @@ class Top extends GetWidget<LocationPackageController> {
               shape: BoxShape.circle, color: AppColors.primary400),
         ),
       ],
+    );
+  }
+
+  Widget _reloadButton() {
+    return Container(
+      decoration: BoxDecoration(
+          color: AppColors.white,
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.primary400.withOpacity(0.5))),
+      child: IconButton(
+          onPressed: () {
+            controller.fetchPackages();
+          },
+          icon: Icon(
+            Icons.refresh,
+            color: AppColors.primary400.withOpacity(0.5),
+          )),
     );
   }
 }

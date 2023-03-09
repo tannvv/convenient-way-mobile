@@ -9,14 +9,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tien_duong/app/modules/package/widgets/location_start_end.dart';
 import 'package:tien_duong/app/modules/package/widgets/package_info.dart';
 import 'package:tien_duong/app/modules/package/widgets/user_info.dart';
+import 'package:tien_duong/app/modules/package/widgets/user_info_pickup_point.dart';
 
 class ReceivedPackageItem extends StatelessWidget {
   const ReceivedPackageItem(
       {Key? key,
       required this.package,
       this.onCancelPackage,
-        this.onConfirmPackage,
-        this.onCodeConfirm,
+      this.onConfirmPackage,
+      this.onCodeConfirm,
       required this.onShowQR})
       : super(key: key);
   final Package package;
@@ -35,7 +36,9 @@ class ReceivedPackageItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          UserInfo(info: package.sender!.infoUser!),
+          UserInfoPickupPoint(
+            package: package,
+          ),
           LocationStartEnd(
               locationStart: package.startAddress!,
               locationEnd: package.destinationAddress!),

@@ -10,7 +10,6 @@ import 'package:tien_duong/app/modules/sender_package/tabs/delivery_failed_tab/d
 import 'package:tien_duong/app/modules/sender_package/tabs/delivery_tab/delivery_tab_view.dart';
 import 'package:tien_duong/app/modules/sender_package/tabs/reject_tab/reject_tab_view.dart';
 import 'package:tien_duong/app/modules/sender_package/tabs/sender_cancel_tab/sender_cancel_tab_view.dart';
-import 'package:tien_duong/app/modules/sender_package/tabs/success_tab/success_tab_view.dart';
 import 'package:tien_duong/app/modules/sender_package/tabs/waiting_tab/waiting_tab_view.dart';
 
 class SenderPackageController extends BaseController
@@ -22,11 +21,10 @@ class SenderPackageController extends BaseController
     'Đã xác nhận',
     'Đã được nhận',
     'Đang giao hàng',
-    'Lấy hàng thành công',
-    'Lấy hàng thành công',
-    'Lấy hàng thất bại',
+    'Giao thành công',
+    'Giao thất bại',
     'Quản trị viên hủy',
-    'Người lấy hàng giùm hủy',
+    'Người giao hủy',
     'Đã hủy',
   ];
 
@@ -36,7 +34,6 @@ class SenderPackageController extends BaseController
     DeliverPickupTabView(),
     DeliveryTabView(),
     DeliveredTabView(),
-    SuccessTabView(),
     DeliveryFailedTabView(),
     RejectTabView(),
     DeliverCancelTabView(),

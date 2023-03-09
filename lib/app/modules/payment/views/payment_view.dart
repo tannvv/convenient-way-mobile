@@ -155,26 +155,26 @@ class PaymentView extends GetView<PaymentController> {
                     title: 'VnPay',
                     description: 'Thanh toán trong nước',
                   ),
-                  PaymentRadioItem(
-                    onPressed: () {
-                      controller.changePaymentMethod(PaymentMethod.momo);
-                    },
-                    state:
-                        controller.selectedPaymentMethod == PaymentMethod.momo,
-                    svgAsset: AppAssets.momo,
-                    title: 'MoMo',
-                    description: 'Thanh toán đa dạng',
-                  ),
-                  PaymentRadioItem(
-                    onPressed: () {
-                      controller.changePaymentMethod(PaymentMethod.paypal);
-                    },
-                    state: controller.selectedPaymentMethod ==
-                        PaymentMethod.paypal,
-                    svgAsset: AppAssets.paypal,
-                    title: 'PayPal',
-                    description: 'Thanh toán quốc tế',
-                  ),
+                  // PaymentRadioItem(
+                  //   onPressed: () {
+                  //     controller.changePaymentMethod(PaymentMethod.momo);
+                  //   },
+                  //   state:
+                  //       controller.selectedPaymentMethod == PaymentMethod.momo,
+                  //   svgAsset: AppAssets.momo,
+                  //   title: 'MoMo',
+                  //   description: 'Thanh toán đa dạng',
+                  // ),
+                  // PaymentRadioItem(
+                  //   onPressed: () {
+                  //     controller.changePaymentMethod(PaymentMethod.paypal);
+                  //   },
+                  //   state: controller.selectedPaymentMethod ==
+                  //       PaymentMethod.paypal,
+                  //   svgAsset: AppAssets.paypal,
+                  //   title: 'PayPal',
+                  //   description: 'Thanh toán quốc tế',
+                  // ),
                 ],
               );
             },

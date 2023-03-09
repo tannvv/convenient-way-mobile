@@ -29,6 +29,7 @@ class DeliverPickupTabView extends GetView<DeliverPickupTabController> {
                               controller.dataApis[index].id!),
                           onCodeConfirm: () => controller.senderConfirmCode(
                                 controller.dataApis[index].id!),
+                          showMapTracking: () => controller.showMapTracking( controller.dataApis[index]),
                           onShowQR: () => controller.showQRCode(
                               controller.dataApis[index].id!),
                           onShowDeliverInfo: () => controller.showInfoDeliver(

@@ -23,7 +23,7 @@ class PaymentStatusController extends GetxController {
   void returnProfilePage() {
     ProfilePageController profileController = Get.find<ProfilePageController>();
     profileController.account?.balance = _authController.account?.balance;
-    Get.offAllNamed(Routes.HOME, arguments: {'initialPageIndex': '4'});
+    Get.offAllNamed(Routes.HOME, arguments: {'initialPageIndex': '0'});
     Get.back();
   }
 }

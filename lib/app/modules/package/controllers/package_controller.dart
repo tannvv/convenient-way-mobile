@@ -1,8 +1,8 @@
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/deliver_cancel_tab/deliver_cancel_package_view.dart';
 import 'package:tien_duong/app/modules/package/tabs/delivered_tab/delivered_package_view.dart';
+import 'package:tien_duong/app/modules/package/tabs/delivery_failed_tab/delivery_failed_package_view.dart';
 import 'package:tien_duong/app/modules/package/tabs/delivery_tab/delivery_package_view.dart';
-import 'package:tien_duong/app/modules/package/tabs/failed_tab/failed_package_view.dart';
 import 'package:tien_duong/app/modules/package/tabs/received_tab/received_package_view.dart';
 import 'package:tien_duong/app/modules/package/tabs/sender_cancel_tab/sender_cancel_package_view.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class PackageController extends BaseController
     ReceivedPackageView(),
     DeliveryPackageView(),
     DeliveredPackageView(),
-    FailedPackageView(),
+    DeliveryFailedPackageView(),
     SenderCancelPackageView(),
     DeliverCancelPackageView(),
   ];

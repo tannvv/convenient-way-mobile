@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:barcode/barcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,8 +21,8 @@ import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
-import 'package:tien_duong/app/data/repository/request_model/check_code_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
+
 class DeliverPickupTabController extends SenderTabBaseController<Package>
     with GetSingleTickerProviderStateMixin {
   final AuthController _authController = Get.find<AuthController>();
@@ -39,7 +41,7 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
   }
 
   Future<void> accountConfirmPackage(String packageId) async {
-    if(await PickUpFileController().scanQR() == packageId.split('-')[0]){
+    if (await PickUpFileController().scanQR() == packageId.split('-')[0]) {
       MaterialDialogService.showConfirmDialog(
         msg: 'Xác nhân đã đưa hàng cho đúng người lấy hàng giùm?',
         closeOnFinish: false,
@@ -52,7 +54,8 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
             Get.back();
             ToastService.showError(error.messages[0]);
           });
-        },);
+        },
+      );
     }
   }
 
@@ -68,17 +71,16 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
   }
 
   Future<void> senderConfirmCode(String packageId) async {
-    confirmCode(() => {
-      confirmCodeFromQR(packageId)
-    });
+    confirmCode(() => {confirmCodeFromQR(packageId)});
   }
 
   Future<void> confirmCodeFromQR(String packageId) async {
     if (code == null || code != packageId.split('-')[0]) {
-      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
+      ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',
+          seconds: 5);
       return;
     }
-    if(code == packageId.split('-')[0]) {
+    if (code == packageId.split('-')[0]) {
       await _packageRepo.deliverySuccess(packageId).then((response) async {
         Get.back();
         onRefresh();
@@ -87,10 +89,10 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
         Get.back();
         ToastService.showError(error.messages[0]);
       });
-      ToastService.showSuccess('Xác nhận đã đưa gói hàng cho người lấy hàng giùm!');
+      ToastService.showSuccess(
+          'Xác nhận đã đưa gói hàng cho người lấy hàng giùm!');
       refresh();
-    };
-    await Duration(seconds: 3);
+    }
   }
 
   Widget _confirmCodeWidget() {
@@ -142,7 +144,7 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
     await Dialogs.materialDialog(
         dialogWidth: 400.w,
         context: Get.context!,
-        customView: _qrCodeWidget(svg, packageId));
+        customView: _qrCodeWidget(svg, packageId.split('-')[0]));
   }
 
   Widget _qrCodeWidget(String svg, String packageId) {
@@ -164,11 +166,11 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
                       fontStyle: FontStyle.italic,
                       decoration: TextDecoration.underline),
                   children: [
-                    TextSpan(
-                        text:
+                TextSpan(
+                    text:
                         ' Tuyệt đối không chia sẽ mã này với người không liên quan.',
-                        style: caption.copyWith(decoration: TextDecoration.none))
-                  ])),
+                    style: caption.copyWith(decoration: TextDecoration.none))
+              ])),
           Gap(20.h),
           SizedBox(
             height: 200.h,
@@ -179,36 +181,31 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
             ),
           ),
           Gap(20.h),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ColorButton(
-                  'Mã xác nhận: '+packageId.split('-')[0],
-                  icon: Icons.verified,
-                  onPressed: () {
-
-                  },
-                  backgroundColor: AppColors.green,
-                  textColor: AppColors.green,
-                  radius: 8.sp,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-                ),
-                RichText(
-                    text: TextSpan(
-                        text: 'Chú ý:',
-                        style: caption.copyWith(
-                            color: Colors.red[600],
-                            fontWeight: FontWeights.medium,
-                            fontStyle: FontStyle.italic,
-                            decoration: TextDecoration.underline),
-                        children: [
-                          TextSpan(
-                              text:
-                              ' Dùng mã này để xác nhận với người nhận lấy hàng giùm.',
-                              style: caption.copyWith(decoration: TextDecoration.none))
-                        ])),
-              ]
-          ),
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            ColorButton(
+              'Mã xác nhận: ${packageId.split('-')[0]}',
+              icon: Icons.verified,
+              onPressed: () {},
+              backgroundColor: AppColors.green,
+              textColor: AppColors.green,
+              radius: 8.sp,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+            ),
+            RichText(
+                text: TextSpan(
+                    text: 'Chú ý:',
+                    style: caption.copyWith(
+                        color: Colors.red[600],
+                        fontWeight: FontWeights.medium,
+                        fontStyle: FontStyle.italic,
+                        decoration: TextDecoration.underline),
+                    children: [
+                  TextSpan(
+                      text:
+                          ' Dùng mã này để xác nhận với người nhận lấy hàng giùm.',
+                      style: caption.copyWith(decoration: TextDecoration.none))
+                ])),
+          ]),
         ],
       ),
     );

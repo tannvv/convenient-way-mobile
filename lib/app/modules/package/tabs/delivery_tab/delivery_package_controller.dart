@@ -17,7 +17,6 @@ import 'package:tien_duong/app/core/widgets/button_color.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
-import 'package:tien_duong/app/data/repository/request_model/check_code_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import '../../../../core/values/font_weight.dart';
@@ -64,9 +63,7 @@ class DeliveryPackageController extends BasePagingController<Package>
   }
 
   Future<void> deliverConfirmCode(String packageId) async {
-    confirmCode(() => {
-      confirmCodeFromQR(packageId)
-    });
+    confirmCode(() => {confirmCodeFromQR(packageId)});
   }
 
   Future<void> confirmCodeFromQR(String packageId) async {
@@ -75,7 +72,7 @@ class DeliveryPackageController extends BasePagingController<Package>
           seconds: 5);
       return;
     }
-    if(code == packageId.split('-')[0]) {
+    if (code == packageId.split('-')[0]) {
       await _packageRepo.deliverySuccess(packageId).then((response) async {
         Get.back();
         onRefresh();
@@ -86,7 +83,8 @@ class DeliveryPackageController extends BasePagingController<Package>
       });
       ToastService.showSuccess('Xác nhận gói hàng đã được giao thành công!');
       refresh();
-    };
+    }
+    ;
     await Duration(seconds: 3);
   }
 
@@ -161,11 +159,11 @@ class DeliveryPackageController extends BasePagingController<Package>
                       fontStyle: FontStyle.italic,
                       decoration: TextDecoration.underline),
                   children: [
-                    TextSpan(
-                        text:
+                TextSpan(
+                    text:
                         ' Tuyệt đối không chia sẽ mã này với người không liên quan.',
-                        style: caption.copyWith(decoration: TextDecoration.none))
-                  ])),
+                    style: caption.copyWith(decoration: TextDecoration.none))
+              ])),
           Gap(20.h),
           SizedBox(
             height: 200.h,
@@ -176,36 +174,31 @@ class DeliveryPackageController extends BasePagingController<Package>
             ),
           ),
           Gap(20.h),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ColorButton(
-                  'Mã xác nhận: '+packageId.split('-')[0],
-                  icon: Icons.verified,
-                  onPressed: () {
-
-                  },
-                  backgroundColor: AppColors.green,
-                  textColor: AppColors.green,
-                  radius: 8.sp,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-                ),
-                RichText(
-                    text: TextSpan(
-                        text: 'Chú ý:',
-                        style: caption.copyWith(
-                            color: Colors.red[600],
-                            fontWeight: FontWeights.medium,
-                            fontStyle: FontStyle.italic,
-                            decoration: TextDecoration.underline),
-                        children: [
-                          TextSpan(
-                              text:
-                              ' Dùng mã này để xác nhận với người nhờ lấy hàng giùm.',
-                              style: caption.copyWith(decoration: TextDecoration.none))
-                        ])),
-              ]
-          ),
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            ColorButton(
+              'Mã xác nhận: ' + packageId.split('-')[0],
+              icon: Icons.verified,
+              onPressed: () {},
+              backgroundColor: AppColors.green,
+              textColor: AppColors.green,
+              radius: 8.sp,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+            ),
+            RichText(
+                text: TextSpan(
+                    text: 'Chú ý:',
+                    style: caption.copyWith(
+                        color: Colors.red[600],
+                        fontWeight: FontWeights.medium,
+                        fontStyle: FontStyle.italic,
+                        decoration: TextDecoration.underline),
+                    children: [
+                  TextSpan(
+                      text:
+                          ' Dùng mã này để xác nhận với người nhờ lấy hàng giùm.',
+                      style: caption.copyWith(decoration: TextDecoration.none))
+                ])),
+          ]),
         ],
       ),
     );

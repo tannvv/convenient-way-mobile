@@ -1,3 +1,5 @@
+import 'package:tien_duong/app/core/utils/datetime_utils.dart';
+
 class NotificationModel {
   String? id;
   String? title;
@@ -20,8 +22,9 @@ class NotificationModel {
     title = json['title'];
     content = json['content'];
     isSend = json['isSend'];
-    createdAt =
-        json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null;
+    createdAt = json['createdAt'] != null
+        ? DateTimeUtils.convertStringTimeZoneVN(json['createdAt'])
+        : null;
     accountId = json['accountId'];
   }
 
