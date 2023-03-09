@@ -19,7 +19,6 @@ class TrackingPackageView extends GetView<TrackingPackageController> {
     final markerSize = 30.w;
     return HyperStack(
       children: [
-        _buildBackButton(),
         FlutterMap(
           mapController: controller.mapController,
           options: MapOptions(
@@ -66,6 +65,7 @@ class TrackingPackageView extends GetView<TrackingPackageController> {
             ),
           ],
         ),
+        _buildBackButton(),
       ],
     );
   }
@@ -73,7 +73,6 @@ class TrackingPackageView extends GetView<TrackingPackageController> {
   Widget _buildBackButton() {
     return Positioned(
       top: 40.h,
-      left: 40.w,
       child: Container(
         padding: EdgeInsets.only(
           top: 10.h,

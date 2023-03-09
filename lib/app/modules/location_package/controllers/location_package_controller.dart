@@ -111,11 +111,7 @@ class LocationPackageController extends BaseController {
         pointPackages.value = getPointPackage(packages);
         getPolyLine();
       },
-      onError: (exception) {
-        if (exception is BaseException) {
-          ToastService.showError(exception.message);
-        }
-      },
+      onError: showError,
     );
   }
 
