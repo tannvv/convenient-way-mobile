@@ -50,6 +50,7 @@ class DeliverPickupTabItem extends StatelessWidget {
                 radius: 8.sp,
                 //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
+              Gap(12.w),
               ColorButton(
                 'Theo dõi đơn hàng',
                 icon: Icons.location_on,

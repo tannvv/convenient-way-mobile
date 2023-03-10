@@ -40,7 +40,7 @@ class DeliveryTabController extends SenderTabBaseController<Package>
   }
 
   Future<void> accountDeliveredPackage(String packageId) async {
-    if (await PickUpFileController().scanQR() == packageId.split('-')[0]) {
+    if (await PickUpFileController().scanQR() == packageId.split('-')[4].substring(0,8)) {
       var future = _packageRepo.deliverySuccess(packageId);
       await callDataService<SimpleResponseModel>(future, onSuccess: (response) {
         ToastService.showSuccess(response.message ?? 'Thành công');
@@ -62,11 +62,11 @@ class DeliveryTabController extends SenderTabBaseController<Package>
   }
 
   Future<void> confirmCodeFromQR(String packageId) async {
-    if (code == null || code != packageId.split('-')[0]) {
+    if (code == null || code != packageId.split('-')[4].substring(0,8)) {
       ToastService.showError('Mã số sai, vui lòng quét mã QR và kiểm tra lại!',seconds: 5);
       return;
     }
-    if(code == packageId.split('-')[0]) {
+    if(code == packageId.split('-')[4].substring(0,8)) {
       var future =  _packageRepo.deliverySuccess(packageId);
       callDataService(future, onStart: showOverlay, onComplete: hideOverlay,
         onSuccess: (response) {
@@ -127,11 +127,11 @@ class DeliveryTabController extends SenderTabBaseController<Package>
   }
 
   Future<void> showQRCode(String packageId) async {
-    final svg = Barcode.qrCode().toSvg(packageId.split('-')[1] + packageId.split('-')[2]);
+    final svg = Barcode.qrCode().toSvg(packageId.split('-')[2] + packageId.split('-')[3]);
     await Dialogs.materialDialog(
         dialogWidth: 400.w,
         context: Get.context!,
-        customView: _qrCodeWidget(svg, packageId.split('-')[1] + packageId.split('-')[2]));
+        customView: _qrCodeWidget(svg, packageId.split('-')[2] + packageId.split('-')[3]));
   }
 
   Widget _qrCodeWidget(String svg, String packageId) {

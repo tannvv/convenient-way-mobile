@@ -66,7 +66,7 @@ class ReceivedPackageController extends BasePagingController<Package>
   }
 
   Future<void> deliverConfirmPackage(String packageId) async {
-    if (await PickUpFileController().scanQR() == packageId.split('-')[0]) {
+    if (await PickUpFileController().scanQR() == (packageId.split('-')[1] + packageId.split('-')[2])) {
       MaterialDialogService.showConfirmDialog(
           msg: 'Bạn chắc chắn muốn nhận gói hàng này để đi giao?',
           closeOnFinish: false,
