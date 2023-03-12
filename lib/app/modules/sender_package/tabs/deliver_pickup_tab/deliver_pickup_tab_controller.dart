@@ -74,7 +74,7 @@ class DeliverPickupTabController extends SenderTabBaseController<Package>
       return;
     }
     if (code == packageId.split('-')[0]) {
-      var future = _packageRepo.deliverySuccess(packageId);
+      var future = _packageRepo.confirmPackage(packageId);
       callDataService(future, onStart: showOverlay, onComplete: hideOverlay,
           onSuccess: (response) {
         Get.back();
