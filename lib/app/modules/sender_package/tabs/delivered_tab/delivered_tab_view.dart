@@ -31,6 +31,11 @@ class DeliveredTabView extends GetView<DeliveredTabController> {
                               .confirmFailed(controller.dataApis[index].id!),
                           onConfirmSuccess: () => controller
                               .confirmSuccess(controller.dataApis[index].id!),
+                          onSendFeedbackDriver: () => {
+                            controller.sendFeedback(controller.dataApis[index])
+                          },
+                          onPressedDetail: () =>
+                              controller.gotoDetail(controller.dataApis[index]),
                         ),
                       ],
                     );

@@ -99,6 +99,7 @@ class ManageRouteController extends BaseController {
           response.message ?? 'Thay đổi lộ trình thành công');
       _authController.account?.infoUser?.routes = routes;
       _authController.setDataPrefs();
+      _authController.reloadAccount();
     }, onError: (exception) {
       if (exception is BaseException) {
         ToastService.showError(exception.message);

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -106,6 +107,7 @@ class AuthController extends BaseController {
         PreferenceManager prefs = Get.find(tag: (PreferenceManager).toString());
         prefs.setString(PrefsMemory.token, token!);
         prefs.setString(PrefsMemory.userJson, jsonEncode(response.account));
+
         await BackgroundNotificationService.initializeService();
         await FirebaseMessagingService.registerNotification(
             _account.value!.id!);
@@ -164,6 +166,7 @@ class AuthController extends BaseController {
     ));
     // BackgroundNotificationService.stopService();
     await FirebaseMessagingService.unregisterNotification(_account.value!.id!);
+    BackgroundNotificationService.stopService();
     var future =
         _accountRepo.logout(LogoutModel(accountId: _account.value!.id!));
     await callDataService(future, onError: showError);
@@ -192,10 +195,9 @@ class AuthController extends BaseController {
   Future<void> clearToken() async {
     _token = null;
     _account.value = null;
-    await SharedPreferences.getInstance().then((prefs) {
-      prefs.remove(PrefsMemory.token);
-      prefs.remove(PrefsMemory.userJson);
-    });
+    PreferenceManager prefs = Get.find(tag: (PreferenceManager).toString());
+    prefs.remove(PrefsMemory.token);
+    prefs.remove(PrefsMemory.userJson);
   }
 
   Future<bool> requireCreateRoute() async {

@@ -14,15 +14,20 @@ class DeliveredTabItem extends StatelessWidget {
       required this.package,
       required this.onConfirmSuccess,
       required this.onConfirmFailed,
-      required this.showInfoDeliver})
+      required this.onSendFeedbackDriver,
+      required this.showInfoDeliver,
+      this.onPressedDetail})
       : super(key: key);
   final Package package;
   final Function() onConfirmSuccess;
   final Function() onConfirmFailed;
   final Function() showInfoDeliver;
+  final Function() onSendFeedbackDriver;
+  final Function()? onPressedDetail;
   @override
   Widget build(BuildContext context) {
     return WrapItem(
+      onPressedDetail: onPressedDetail,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -45,6 +50,20 @@ class DeliveredTabItem extends StatelessWidget {
                 radius: 8.sp,
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
               ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ColorButton(
+                'Gửi đánh giá',
+                icon: Icons.star,
+                onPressed: onSendFeedbackDriver,
+                backgroundColor: Colors.yellow,
+                textColor: Colors.amber[800]!,
+                radius: 8.sp,
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 2.h),
+              )
             ],
           )
         ],

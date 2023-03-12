@@ -27,7 +27,7 @@ class ConvenientMap extends GetWidget<LocationPackageController> {
             interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
             center: LatLng(10.612884, 108.964889),
             zoom: 10.5,
-            minZoom: 10.5,
+            minZoom: 9,
             maxZoom: 18.4,
             slideOnBoundaries: true,
             onMapCreated: controller.onMapCreated,

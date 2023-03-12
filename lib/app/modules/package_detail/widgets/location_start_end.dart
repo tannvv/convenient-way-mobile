@@ -23,7 +23,7 @@ class LocationStartEnd extends GetWidget<PackageDetailController> {
             children: [
               const TitleItem(title: 'Chặng đường: '),
               Text(
-                '  (${controller.package.distance?.ceil()} m)',
+                '  (${controller.package.distance?.ceil()} km)',
                 style: subtitle2.copyWith(
                     fontWeight: FontWeight.bold, color: Colors.grey[500]),
               )

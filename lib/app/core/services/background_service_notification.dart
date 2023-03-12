@@ -11,7 +11,9 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tien_duong/app/data/constants/prefs_memory.dart';
+import 'package:tien_duong/app/data/local/preference/preference_manager.dart';
 import 'package:tien_duong/app/data/repository/request_model/send_notification_tracking_model.dart';
+import 'package:dio/src/response.dart' as DioResponse;
 
 import '../../data/constants/notification_type.dart';
 
@@ -112,7 +114,7 @@ class BackgroundNotificationService {
     try {
       bool result = await InternetConnectionChecker().hasConnection;
       if (result == true) {
-        Response response = await Dio().post(
+        DioResponse.Response response = await Dio().post(
             'https://ship-convenient.azurewebsites.net/api/v1.0/notifications/send-tracking',
             data: model.toJson());
         debugPrint('Response: ${response.data}');
@@ -128,6 +130,7 @@ class BackgroundNotificationService {
     String? result;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString(PrefsMemory.token);
+
     if (token != null) {
       Map<String, dynamic> payload = Jwt.parseJwt(token.toString());
       result = payload['id'];

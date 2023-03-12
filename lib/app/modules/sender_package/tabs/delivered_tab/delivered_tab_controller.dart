@@ -8,6 +8,7 @@ import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
+import 'package:tien_duong/app/routes/app_pages.dart';
 
 class DeliveredTabController extends SenderTabBaseController<Package>
     with GetSingleTickerProviderStateMixin {
@@ -54,5 +55,9 @@ class DeliveredTabController extends SenderTabBaseController<Package>
         onComplete: hideOverlay,
       );
     });
+  }
+
+  Future<void> sendFeedback(Package package) async {
+    await Get.toNamed(Routes.FEEDBACK_FOR_DELIVER, arguments: package);
   }
 }

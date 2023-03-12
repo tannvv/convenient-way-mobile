@@ -59,24 +59,24 @@ class PaymentInfo extends GetWidget<PackageDetailController> {
             ],
           ),
           Gap(8.h),
-          Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Text(
-                  'Tổng',
-                  style: subtitle2.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.description),
-                ),
-              ),
-              Text(
-                controller.totalPrice,
-                style: subtitle2.copyWith(
-                    fontWeight: FontWeight.w500, color: AppColors.description),
-              )
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       flex: 1,
+          //       child: Text(
+          //         'Tổng',
+          //         style: subtitle2.copyWith(
+          //             fontWeight: FontWeight.w500,
+          //             color: AppColors.description),
+          //       ),
+          //     ),
+          //     Text(
+          //       controller.totalPrice,
+          //       style: subtitle2.copyWith(
+          //           fontWeight: FontWeight.w500, color: AppColors.description),
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );

@@ -9,7 +9,6 @@ import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/controllers/map_location_controller.dart';
 import 'package:tien_duong/app/core/services/animated_map_service.dart';
 import 'package:tien_duong/app/core/utils/location_utils.dart';
-import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/core/values/app_assets.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/app_values.dart';
@@ -21,19 +20,17 @@ import 'package:tien_duong/app/data/repository/goong_req.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/request_polyline_model';
-import 'package:tien_duong/app/modules/location_package/controllers/route_data_service.dart';
 import 'package:tien_duong/app/modules/location_package/models/point_package.dart';
-import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 
 class LocationPackageController extends BaseController {
   final AuthController _authController = Get.find<AuthController>();
-  late AnimatedMapService _animatedMapService;
+  AnimatedMapService? _animatedMapService;
   final MapLocationController _mapLocationController =
       Get.find<MapLocationController>();
   final RxList<Package> packages = <Package>[].obs;
   LatLngBounds currentBounds = LatLngBounds();
-  RouteDataService routeDataService = RouteDataService();
   RxList<PointPackage> pointPackages = <PointPackage>[].obs;
+  // RxList<Polyline> polylines = <Polyline>[].obs;
   final RxList<LatLng> _routes = <LatLng>[].obs;
 
   final PackageReq _packageReq = Get.find(tag: (PackageReq).toString());
@@ -41,7 +38,6 @@ class LocationPackageController extends BaseController {
 
   @override
   void onInit() {
-    routeDataService.fetchRoutes();
     fetchPackages();
     super.onInit();
   }
@@ -70,7 +66,7 @@ class LocationPackageController extends BaseController {
 
   void onMapCreated(MapController controller) {
     _animatedMapService = AnimatedMapService(controller: controller);
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 4), () {
       if (packages.isNotEmpty) {
         gotoCurrentBound();
       } else {
@@ -82,17 +78,18 @@ class LocationPackageController extends BaseController {
   void gotoCurrentLocation() {
     if (_mapLocationController.location != null) {
       LatLng currentLocation = _mapLocationController.location!;
-      _animatedMapService.move(currentLocation, AppValues.focusZoomLevel);
+      _animatedMapService?.move(currentLocation, AppValues.overviewZoomLevel);
     }
   }
 
   void centerZoomFitBounds() {
-    currentBounds.pad(0.2);
+    currentBounds.pad(0.4);
     LatLng? ne = currentBounds.northEast;
     LatLng? sw = currentBounds.southWest;
     final heightBuffer = (sw!.latitude - ne!.latitude).abs() * 0.8;
     sw = LatLng(sw.latitude - heightBuffer, sw.longitude);
     currentBounds.extend(sw);
+    gotoCurrentBound();
   }
 
   Future<void> fetchPackages() async {
@@ -116,9 +113,12 @@ class LocationPackageController extends BaseController {
   }
 
   Future<void> createBounds() async {
+    currentBounds = LatLngBounds();
     await _mapLocationController.loadLocation();
-    LatLng currentPosition = _mapLocationController.location!;
-    currentBounds.extend(currentPosition);
+    LatLng? currentPosition = _mapLocationController.location;
+    if (currentPosition != null) {
+      currentBounds.extend(currentPosition);
+    }
 
     for (var package in packages) {
       LatLng packagePosition = LatLng(
@@ -142,7 +142,7 @@ class LocationPackageController extends BaseController {
       currentBounds.extend(routeStart);
       currentBounds.extend(routeEnd);
     }
-    currentBounds.pad(0.2);
+    // gotoCurrentLocation();
     centerZoomFitBounds();
   }
 
@@ -181,7 +181,8 @@ class LocationPackageController extends BaseController {
   }
 
   void gotoCurrentBound() {
-    _animatedMapService.move(currentBounds.center, AppValues.overviewZoomLevel);
+    _animatedMapService?.move(
+        currentBounds.center, AppValues.overviewZoomLevel);
   }
 
   List<PointPackage> getPointPackage(List<Package> packages) {
