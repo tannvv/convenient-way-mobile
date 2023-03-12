@@ -8,6 +8,9 @@ import 'package:tien_duong/app/modules/package/tabs/sender_cancel_tab/sender_can
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../tabs/refund_failed_tab/refund_failed_package_view.dart';
+import '../tabs/refund_success_tab/refund_success_package_view.dart';
+
 class PackageController extends BaseController
     with GetSingleTickerProviderStateMixin {
   late TabController tabController;
@@ -17,6 +20,8 @@ class PackageController extends BaseController
     'Đang giao',
     'Giao hàng thành công',
     'Giao hàng thất bại',
+    'Hoàn trả thành công',
+    'Hoàn trả thất bại',
     'Người gửi hủy',
     'Đã hủy'
   ];
@@ -26,6 +31,8 @@ class PackageController extends BaseController
     DeliveryPackageView(),
     DeliveredPackageView(),
     DeliveryFailedPackageView(),
+    RefundSuccessPackageView(),
+    RefundFailedPackageView(),
     SenderCancelPackageView(),
     DeliverCancelPackageView(),
   ];

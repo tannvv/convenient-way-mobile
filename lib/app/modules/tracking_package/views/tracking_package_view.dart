@@ -92,14 +92,13 @@ class TrackingPackageView extends GetView<TrackingPackageController> {
                 minimumSize: Size(34.r, 34.r),
               ),
               child: SizedBox(
-                height: 30.r,
-                width: 30.r,
-                child: Icon(
-                  Icons.arrow_back_ios_new,
-                  size: 18.r,
-                  color: AppColors.primary400,
-                ),
-              ),
+                  height: 30.r,
+                  width: 30.r,
+                  child: Icon(
+                    Icons.arrow_back_ios_new,
+                    size: 18.r,
+                    color: AppColors.primary400,
+                  )),
             ),
           ],
         ),

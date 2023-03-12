@@ -4,12 +4,11 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tien_duong/app/core/widgets/custom_footer_smart_refresh.dart';
-import 'package:tien_duong/app/modules/package/tabs/delivery_failed_tab/delivery_failed_package_controller.dart';
-import 'package:tien_duong/app/modules/package/tabs/delivery_failed_tab/delivery_failed_package_item.dart';
+import 'package:tien_duong/app/modules/package/tabs/refund_failed_tab/refund_failed_package_item.dart';
+import 'package:tien_duong/app/modules/package/tabs/success_tab/success_package_controller.dart';
 
-class DeliveryFailedPackageView
-    extends GetView<DeliveryFailedPackageController> {
-  const DeliveryFailedPackageView({Key? key}) : super(key: key);
+class RefundFailedPackageView extends GetView<SuccessPackageController> {
+  const RefundFailedPackageView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,14 +23,8 @@ class DeliveryFailedPackageView
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        DeliveryFailedPackageItem(
-                          package: controller.dataApis[index],
-                          onRefundSuccess: () =>
-                              controller.refundPackageSuccess(
-                                  controller.dataApis[index].id!),
-                          onRefundFailed: () => controller.refundPackageFailed(
-                              controller.dataApis[index].id!),
-                        ),
+                        RefundFailedPackageItem(
+                            package: controller.dataApis[index]),
                       ],
                     );
                   },

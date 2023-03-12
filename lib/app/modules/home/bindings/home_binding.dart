@@ -4,6 +4,7 @@ import 'package:tien_duong/app/modules/package/tabs/delivery_failed_tab/delivery
 import 'package:tien_duong/app/modules/package/tabs/delivery_tab/delivery_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/failed_tab/failed_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/received_tab/received_package_controller.dart';
+import 'package:tien_duong/app/modules/package/tabs/refund_failed_tab/refund_failed_package_controller.dart';
 import 'package:tien_duong/app/modules/package/tabs/sender_cancel_tab/sender_cancel_package_controller.dart';
 import 'package:get/get.dart';
 import 'package:tien_duong/app/modules/package/tabs/success_tab/success_package_controller.dart';
@@ -17,6 +18,7 @@ import 'package:tien_duong/app/modules/sender_package/tabs/reject_tab/reject_tab
 import 'package:tien_duong/app/modules/sender_package/tabs/sender_cancel_tab/sender_cancel_tab_controller.dart';
 import 'package:tien_duong/app/modules/sender_package/tabs/success_tab/success_tab_controller.dart';
 import 'package:tien_duong/app/modules/sender_package/tabs/waiting_tab/waiting_tab_controller.dart';
+import '../../package/tabs/refund_success_tab/refund_success_package_controller.dart';
 import '../controllers/home_controller.dart';
 
 class HomeBinding extends Bindings {
@@ -39,6 +41,10 @@ class HomeBinding extends Bindings {
     Get.lazyPut<SuccessPackageController>(() => SuccessPackageController());
     Get.lazyPut<DeliveryFailedPackageController>(
         () => DeliveryFailedPackageController());
+    Get.lazyPut<RefundSuccessPackageController>(
+        () => RefundSuccessPackageController());
+    Get.lazyPut<RefundFailedPackageController>(
+        () => RefundFailedPackageController());
   }
 
   void senderTabController() {

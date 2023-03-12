@@ -13,18 +13,13 @@ class DeliveryFailedPackageItem extends StatelessWidget {
   const DeliveryFailedPackageItem(
       {Key? key,
       required this.package,
-      this.onCancelPackage,
-      this.onConfirmPackage,
-      this.onCodeConfirm,
-      this.onShowQR,
-      this.onDeliveryFailedPackage})
+      required this.onRefundSuccess,
+      required this.onRefundFailed})
       : super(key: key);
   final Package package;
-  final Function()? onShowQR;
-  final Function()? onCancelPackage;
-  final Function()? onCodeConfirm;
-  final Function()? onConfirmPackage;
-  final Function()? onDeliveryFailedPackage;
+  final Function() onRefundSuccess;
+  final Function() onRefundFailed;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,6 +39,34 @@ class DeliveryFailedPackageItem extends StatelessWidget {
           PackageInfo(
             package: package,
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ColorButton(
+                'Hoàn trả thành công',
+                icon: Icons.check,
+                onPressed: onRefundSuccess,
+                backgroundColor: AppColors.primary800,
+                textColor: AppColors.primary800,
+                radius: 8.sp,
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ColorButton(
+                'Hoàn trả thất bại',
+                icon: Icons.sms_failed,
+                onPressed: onRefundFailed,
+                backgroundColor: AppColors.primary800,
+                textColor: AppColors.primary800,
+                radius: 8.sp,
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
+            ],
+          )
         ],
       ),
     );

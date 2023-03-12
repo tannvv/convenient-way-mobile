@@ -1,7 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:tien_duong/app/core/values/app_colors.dart';
-import 'package:tien_duong/app/core/values/shadow_styles.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tien_duong/app/modules/sender_package/widgets/location_start_end.dart';
