@@ -99,6 +99,8 @@ class CreatePackagePageController extends BaseController {
     listenFocusNode();
     receivedName = _authController.account?.infoUser?.firstName ?? '';
     receivedPhone = _authController.account?.infoUser?.phone ?? '';
+    pickupName = _authController.account?.infoUser?.firstName ?? '';
+    pickupPhone = _authController.account?.infoUser?.phone ?? '';
 
     super.onInit();
   }

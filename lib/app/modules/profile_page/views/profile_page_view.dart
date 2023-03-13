@@ -102,20 +102,30 @@ class ProfilePageView extends GetView<ProfilePageController> {
             children: [
               Text('Số dư', style: body2.copyWith(color: AppColors.floatLabel)),
               Gap(6.w),
-              _balanceAvailable(),
+              Text(
+                '(khả dụng)',
+                style: caption.copyWith(
+                  color: AppColors.softBlack,
+                  fontWeight: FontWeights.medium,
+                ),
+              ),
             ],
           ),
           SizedBox(
             height: 5.h,
           ),
           Obx(
-            () => Text(
-              controller.accountBalanceVND,
-              style: subtitle1.copyWith(
-                fontSize: 18.sp,
-                color: AppColors.softBlack,
-                fontWeight: FontWeights.medium,
-              ),
+            () => Row(
+              children: [
+                Text(controller.accountBalanceVND,
+                    style: subtitle1.copyWith(
+                      fontSize: 18.sp,
+                      color: AppColors.softBlack,
+                      fontWeight: FontWeights.medium,
+                    )),
+                Gap(8.w),
+                _balanceAvailable()
+              ],
             ),
           ),
           SizedBox(
@@ -455,28 +465,27 @@ class ProfilePageView extends GetView<ProfilePageController> {
   Obx _balanceAvailable() {
     return Obx(() => controller.isLoadingBalance
         ? Shimmer.fromColors(
-      baseColor: AppColors.shimmerBaseColor,
-      highlightColor: AppColors.shimmerHighlightColor,
-      child: Container(
-        width: 50.w,
-        height: 14.h,
-        decoration: const BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
-        ),
-      ),
-    )
+            baseColor: AppColors.shimmerBaseColor,
+            highlightColor: AppColors.shimmerHighlightColor,
+            child: Container(
+              width: 50.w,
+              height: 14.h,
+              decoration: const BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+            ),
+          )
         : controller.isNewAccount
-        ? Container()
-        : Text(
-      '(khả dụng: ${controller.availableBalance.toVND()})',
-      style: caption.copyWith(
-        color: AppColors.softBlack,
-        fontWeight: FontWeights.medium,
-      ),
-    ));
+            ? Container()
+            : Text(
+                '(${controller.availableBalance.toVND()})',
+                style: caption.copyWith(
+                  color: AppColors.softBlack,
+                  fontWeight: FontWeights.medium,
+                ),
+              ));
   }
-
 }

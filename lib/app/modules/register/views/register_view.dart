@@ -160,6 +160,9 @@ class RegisterView extends GetView<RegisterController> {
         if (value.toString().isEmpty) {
           return 'Vui lòng nhập mật khẩu';
         }
+        if (value.toString().trim().length < 6) {
+          return 'Mật khẩu phải có ít nhất 6 ký tự';
+        }
         return null;
       },
     );
@@ -179,6 +182,9 @@ class RegisterView extends GetView<RegisterController> {
       validator: (value) {
         if (value.toString().isEmpty) {
           return 'Vui lòng nhập tên đăng nhập';
+        }
+        if (value.toString().trim().length < 6) {
+          return 'Tên đăng nhập phải có ít nhất 6 ký tự';
         }
         return null;
       },

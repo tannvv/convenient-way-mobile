@@ -53,8 +53,7 @@ class ReceivedInfo extends GetWidget<CreatePackagePageController> {
                 initialValue: controller.receivedName,
                 focusNode: controller.focusReceiverName,
                 autofocus: true,
-                decoration:
-                    InputStyles.createPackage(labelText: 'Tên người nhận')),
+                decoration: InputStyles.createPackage(labelText: 'Tên')),
             Gap(20.h),
             TextFormField(
                 style: subtitle1.copyWith(

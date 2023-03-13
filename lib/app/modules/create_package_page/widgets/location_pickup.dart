@@ -52,8 +52,8 @@ class LocationPickup extends GetWidget<CreatePackagePageController> {
                 onChanged: (value) => controller.pickupName = value,
                 validator: FunctionUtils.validatorNotNull,
                 focusNode: controller.focusPickupName,
-                decoration:
-                    InputStyles.createPackage(labelText: 'Tên người gửi')),
+                initialValue: controller.pickupName,
+                decoration: InputStyles.createPackage(labelText: 'Tên')),
             Gap(20.h),
             TextFormField(
                 style: subtitle1.copyWith(
@@ -62,6 +62,7 @@ class LocationPickup extends GetWidget<CreatePackagePageController> {
                 key: controller.receiverPhoneKey,
                 validator: FunctionUtils.validatorPhone,
                 focusNode: controller.focusReceiverPhone,
+                initialValue: controller.pickupPhone,
                 maxLength: 10,
                 autofocus: false,
                 keyboardType: TextInputType.phone,
