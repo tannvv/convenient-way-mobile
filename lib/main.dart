@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +15,7 @@ import 'package:tien_duong/app/core/services/local_notification_service.dart';
 import 'app/config/env_config.dart';
 import 'app/config/firebase_options.dart';
 import 'app/config/map_config.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 Future<void> main() async {
   Logger.root.onRecord.listen((LogRecord rec) {

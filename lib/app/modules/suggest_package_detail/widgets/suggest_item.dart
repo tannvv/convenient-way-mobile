@@ -1,3 +1,4 @@
+import 'package:gap/gap.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/core/values/font_weight.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
@@ -7,11 +8,16 @@ import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SuggestItem extends StatelessWidget {
-  const SuggestItem({Key? key, required this.isSelected, required this.package})
+  const SuggestItem(
+      {Key? key,
+      required this.isSelected,
+      required this.package,
+      this.warningPrice = 0})
       : super(key: key);
 
   final bool isSelected;
   final Package package;
+  final int warningPrice;
   @override
   Widget build(BuildContext context) {
     int price = 0;
@@ -129,7 +135,28 @@ class SuggestItem extends StatelessWidget {
                     //   ),
                     // )
                   ],
-                )
+                ),
+                Gap(4.h),
+                warningPrice <= package.getTotalPrice()
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Chú ý',
+                              style: caption.copyWith(
+                                  fontSize: 14.sp,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  decoration: TextDecoration.underline)),
+                          Text(
+                            ': giá trị đơn hàng cao hơn giá trị\n  mong đợi của bạn',
+                            style: caption.copyWith(
+                                fontSize: 14.sp, color: Colors.red),
+                          ),
+                        ],
+                      )
+                    : Container()
               ],
             ),
           ),

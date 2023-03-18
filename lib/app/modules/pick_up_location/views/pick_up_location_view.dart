@@ -17,38 +17,38 @@ class PickUpLocationView extends GetView<PickUpLocationController> {
     return Scaffold(
       body: Stack(
         children: [
-          FlutterMap(
-            options: MapOptions(
-                interactiveFlags:
-                    InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-                center: controller.centerLocation.value,
-                zoom: 12,
-                minZoom: 8,
-                maxZoom: 18.4,
-                slideOnBoundaries: true,
-                onMapCreated: controller.onMapCreated),
-            children: [
-              TileLayerWidget(
-                  options: TileLayerOptions(
-                      urlTemplate:
-                          BuildConfig.instance.mapConfig.mapboxUrlTemplate,
-                      additionalOptions: {
-                    'accessToken':
-                        BuildConfig.instance.mapConfig.mapboxAccessToken,
-                    'id': BuildConfig.instance.mapConfig.mapboxId
-                  })),
-              Obx(
-                () => MarkerLayerWidget(
-                    options: MarkerLayerOptions(markers: [
-                  Marker(
-                      height: 40.sp,
-                      width: 40.sp,
-                      point: controller.centerLocation.value,
-                      builder: (_) => SvgPicture.asset(AppAssets.locationIcon))
-                ])),
-              )
-            ],
-          ),
+          // FlutterMap(
+          //   options: MapOptions(
+          //       interactiveFlags:
+          //           InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+          //       center: controller.centerLocation.value,
+          //       zoom: 12,
+          //       minZoom: 8,
+          //       maxZoom: 18.4,
+          //       slideOnBoundaries: true,
+          //       onMapCreated: controller.onMapCreated),
+          //   children: [
+          //     TileLayerWidget(
+          //         options: TileLayerOptions(
+          //             urlTemplate:
+          //                 BuildConfig.instance.mapConfig.mapboxUrlTemplate,
+          //             additionalOptions: {
+          //           'accessToken':
+          //               BuildConfig.instance.mapConfig.mapboxAccessToken,
+          //           'id': BuildConfig.instance.mapConfig.mapboxId
+          //         })),
+          //     Obx(
+          //       () => MarkerLayerWidget(
+          //           options: MarkerLayerOptions(markers: [
+          //         Marker(
+          //             height: 40.sp,
+          //             width: 40.sp,
+          //             point: controller.centerLocation.value,
+          //             builder: (_) => SvgPicture.asset(AppAssets.locationIcon))
+          //       ])),
+          //     )
+          //   ],
+          // ),
           Positioned(
             top: 50.h,
             left: 20.w,

@@ -12,12 +12,14 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tien_duong/app/data/constants/prefs_memory.dart';
 import 'package:tien_duong/app/data/local/preference/preference_manager.dart';
+import 'package:tien_duong/app/data/repository/request_model/account_model/update_location_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/send_notification_tracking_model.dart';
 import 'package:dio/src/response.dart' as DioResponse;
 
 import '../../data/constants/notification_type.dart';
 
 class BackgroundNotificationService {
+  static final String host = 'https://02c3-116-110-42-103.ap.ngrok.io';
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   static Future<void> initializeService() async {
@@ -36,7 +38,6 @@ class BackgroundNotificationService {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
-
     await service.configure(
       iosConfiguration: IosConfiguration(
         autoStart: true,
@@ -47,7 +48,7 @@ class BackgroundNotificationService {
       ),
       androidConfiguration: AndroidConfiguration(
         onStart: onStart,
-        isForegroundMode: true,
+        isForegroundMode: false,
         autoStart: true,
       ),
     );
@@ -70,7 +71,7 @@ class BackgroundNotificationService {
       service.stopSelf();
     });
 
-    Timer.periodic(const Duration(seconds: 6), (timer) async {
+    Timer.periodic(const Duration(seconds: 12), (timer) async {
       await sendNotificationTracking();
     });
     debugPrint('FLUTTER BACKGROUND SERVICE: ${DateTime.now()}');
@@ -94,7 +95,7 @@ class BackgroundNotificationService {
   static Future<void> sendNotificationTracking() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
-    debugPrint('Current position: ${position.latitude}, ${position.longitude}');
+    // debugPrint('Current position: ${position.latitude}, ${position.longitude}');
     String? userId = await getUserId();
     if (userId == null || userId.isEmpty) {
       debugPrint('Không có user id');
@@ -111,13 +112,21 @@ class BackgroundNotificationService {
           'deliverId': userId,
           'typeOfNotification': TypeOfNotification.TRACKING,
         });
+    UpdateLocationModel updateLocationModel = UpdateLocationModel(
+        accountId: userId,
+        latitude: position.latitude,
+        longitude: position.longitude);
     try {
       bool result = await InternetConnectionChecker().hasConnection;
       if (result == true) {
         DioResponse.Response response = await Dio().post(
-            'https://ship-convenient.azurewebsites.net/api/v1.0/notifications/send-tracking',
+            '$host/api/v1.0/notifications/send-tracking',
             data: model.toJson());
-        debugPrint('Response: ${response.data}');
+        DioResponse.Response response2 = await Dio().put(
+            '$host/api/v1.0/config-user/location',
+            data: updateLocationModel.toJson());
+        debugPrint(
+            'Response firebase: ${response.data}\nResponse update location: ${response2.data}');
       } else {
         debugPrint('No internet connection');
       }

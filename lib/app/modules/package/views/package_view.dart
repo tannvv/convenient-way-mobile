@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:scroll_navigation/misc/navigation_helpers.dart';
 import 'package:scroll_navigation/navigation/title_scroll_navigation.dart';
@@ -27,8 +28,8 @@ class PackageView extends GetView<PackageController> {
                   width: double.infinity,
                   height: double.infinity,
                   child: TitleScrollNavigation(
-                    identiferStyle: const NavigationIdentiferStyle(
-                        color: AppColors.primary900),
+                    identiferStyle: NavigationIdentiferStyle(
+                        width: 10.w, color: AppColors.primary900),
                     showIdentifier: true,
                     barStyle: TitleNavigationBarStyle(
                       style: subtitle2.copyWith(

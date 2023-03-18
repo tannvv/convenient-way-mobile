@@ -170,7 +170,14 @@ class ProfilePageView extends GetView<ProfilePageController> {
             color: AppColors.softGreen,
             onPress: () {
               Get.toNamed(Routes.MANAGE_ROUTE);
-            })
+            }),
+        CardItem(
+            icon: Icons.settings,
+            text: 'Thông tin cấu hình',
+            color: AppColors.yellow,
+            onPress: () {
+              Get.toNamed(Routes.USER_CONFIG);
+            }),
       ],
     );
   }
@@ -455,28 +462,27 @@ class ProfilePageView extends GetView<ProfilePageController> {
   Obx _balanceAvailable() {
     return Obx(() => controller.isLoadingBalance
         ? Shimmer.fromColors(
-      baseColor: AppColors.shimmerBaseColor,
-      highlightColor: AppColors.shimmerHighlightColor,
-      child: Container(
-        width: 50.w,
-        height: 14.h,
-        decoration: const BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
-        ),
-      ),
-    )
+            baseColor: AppColors.shimmerBaseColor,
+            highlightColor: AppColors.shimmerHighlightColor,
+            child: Container(
+              width: 50.w,
+              height: 14.h,
+              decoration: const BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+            ),
+          )
         : controller.isNewAccount
-        ? Container()
-        : Text(
-      '(khả dụng: ${controller.availableBalance.toVND()})',
-      style: caption.copyWith(
-        color: AppColors.softBlack,
-        fontWeight: FontWeights.medium,
-      ),
-    ));
+            ? Container()
+            : Text(
+                '(khả dụng: ${controller.availableBalance.toVND()})',
+                style: caption.copyWith(
+                  color: AppColors.softBlack,
+                  fontWeight: FontWeights.medium,
+                ),
+              ));
   }
-
 }

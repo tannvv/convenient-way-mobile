@@ -10,6 +10,8 @@ import 'package:tien_duong/app/data/repository/request_model/create_feedback_mod
 import 'package:tien_duong/app/data/repository/request_model/create_package_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_cancel_list_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/package_model/pickup_package_failed_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/package_model/delivered_package_failed_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/suggest_package_request_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import 'package:tien_duong/app/network/dio_provider.dart';
@@ -18,7 +20,7 @@ class PackageReqImp extends BaseRepository implements PackageReq {
   @override
   Future<List<SuggestPackage>> getSuggestPackage(
       SuggestPackageRequestModel model) {
-    String endpoint = '${DioProvider.baseUrl}/packages/combos';
+    String endpoint = '${DioProvider.baseUrl}/packages/combos-v2';
     Map<String, dynamic> queryParams = model.toJson();
     var dioCall = dioClient.get(endpoint, queryParameters: queryParams);
     try {
@@ -51,25 +53,6 @@ class PackageReqImp extends BaseRepository implements PackageReq {
   }
 
   @override
-  Future<List<PackageCancel>> getListDeliverCancel(
-      PackageCancelListModel model) {
-    String endpoint =
-        '${DioProvider.baseUrl}/transactionpackages/deliver-cancel';
-    Map<String, dynamic> queryParams = model.toJson();
-    var dioCall = dioClient.get(endpoint, queryParameters: queryParams);
-    try {
-      return callApi(dioCall).then((response) {
-        List<PackageCancel> data = (response.data['data'] as List)
-            .map((e) => PackageCancel.fromJson(e))
-            .toList();
-        return data;
-      });
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
   Future<List<PackageCancel>> getListCancelReason(
       PackageCancelListModel model) {
     String endpoint =
@@ -89,8 +72,9 @@ class PackageReqImp extends BaseRepository implements PackageReq {
   }
 
   @override
-  Future<SimpleResponseModel> pickUpPackage(AccountPickUpModel model) async {
-    String endpoint = '${DioProvider.baseUrl}/packages/deliver-pickup';
+  Future<SimpleResponseModel> selectedPackages(
+      SelectedPackagesModel model) async {
+    String endpoint = '${DioProvider.baseUrl}/packages/deliver-selected';
     var dioCall = dioClient.put(endpoint, data: model.toJson());
     try {
       return callApi(dioCall)
@@ -101,34 +85,8 @@ class PackageReqImp extends BaseRepository implements PackageReq {
   }
 
   @override
-  Future<SimpleResponseModel> deliveryFailed(String packageId) {
-    String endpoint = '${DioProvider.baseUrl}/packages/delivery-failed';
-    var dioCall =
-        dioClient.put(endpoint, queryParameters: {'packageId': packageId});
-    try {
-      return callApi(dioCall)
-          .then((response) => SimpleResponseModel.fromJson(response.data));
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<SimpleResponseModel> deliverySuccess(String packageId) {
-    String endpoint = '${DioProvider.baseUrl}/packages/delivery-success';
-    var dioCall =
-        dioClient.put(endpoint, queryParameters: {'packageId': packageId});
-    try {
-      return callApi(dioCall)
-          .then((response) => SimpleResponseModel.fromJson(response.data));
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<SimpleResponseModel> confirmPackage(String packageId) {
-    String endpoint = '${DioProvider.baseUrl}/packages/confirm-packages';
+  Future<SimpleResponseModel> pickupSuccess(String packageId) {
+    String endpoint = '${DioProvider.baseUrl}/packages/pickup-success';
     var dioCall =
         dioClient.put(endpoint, queryParameters: {'packageId': packageId});
     try {
@@ -218,9 +176,21 @@ class PackageReqImp extends BaseRepository implements PackageReq {
   }
 
   @override
-  Future<SimpleResponseModel> senderConfirmDeliverySuccess(String packageId) {
-    String endpoint =
-        '${DioProvider.baseUrl}/packages/sender-confirm-delivery-success';
+  Future<SimpleResponseModel> deliveredFailed(
+      DeliveredPackageFailedModel model) {
+    String endpoint = '${DioProvider.baseUrl}/packages/delivered-failed';
+    var dioCall = dioClient.put(endpoint, data: model.toJson());
+    try {
+      return callApi(dioCall)
+          .then((response) => SimpleResponseModel.fromJson(response.data));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SimpleResponseModel> deliveredSuccess(String packageId) {
+    String endpoint = '${DioProvider.baseUrl}/packages/delivered-success';
     var dioCall =
         dioClient.put(endpoint, queryParameters: {'packageId': packageId});
     try {
@@ -232,11 +202,9 @@ class PackageReqImp extends BaseRepository implements PackageReq {
   }
 
   @override
-  Future<SimpleResponseModel> senderConfirmDeliveryFailed(String packageId) {
-    String endpoint =
-        '${DioProvider.baseUrl}/packages/sender-confirm-delivery-failed';
-    var dioCall =
-        dioClient.put(endpoint, queryParameters: {'packageId': packageId});
+  Future<SimpleResponseModel> pickupFailed(PickupPackageFailedModel model) {
+    String endpoint = '${DioProvider.baseUrl}/packages/pickup-failed';
+    var dioCall = dioClient.put(endpoint, data: model.toJson());
     try {
       return callApi(dioCall)
           .then((response) => SimpleResponseModel.fromJson(response.data));

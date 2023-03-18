@@ -1,4 +1,5 @@
 import 'package:tien_duong/app/data/models/route_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/route_model/create_route_point_model.dart';
 
 class CreateRoute {
   String? fromName;
@@ -8,6 +9,7 @@ class CreateRoute {
   double? toLongitude;
   double? toLatitude;
   String? accountId;
+  List<CreateRoutePointModel>? routePoints;
 
   CreateRoute(
       {this.fromName,
@@ -16,6 +18,7 @@ class CreateRoute {
       this.toName,
       this.toLongitude,
       this.toLatitude,
+      this.routePoints,
       this.accountId});
 
   CreateRoute.fromJson(Map<String, dynamic> json) {
@@ -26,6 +29,12 @@ class CreateRoute {
     toLongitude = json['toLongitude'];
     toLatitude = json['toLatitude'];
     accountId = json['accountId'];
+    if (json['routePoints'] != null) {
+      routePoints = <CreateRoutePointModel>[];
+      json['routePoints'].forEach((v) {
+        routePoints!.add(CreateRoutePointModel.fromJson(v));
+      });
+    }
   }
 
   static fromRoute(RouteAcc route, String accountId) {
@@ -48,6 +57,9 @@ class CreateRoute {
     data['toLongitude'] = toLongitude;
     data['toLatitude'] = toLatitude;
     data['accountId'] = accountId;
+    if (routePoints != null) {
+      data['routePoints'] = routePoints!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

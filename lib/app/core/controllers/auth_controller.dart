@@ -14,9 +14,11 @@ import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/core/widgets/custom_overlay.dart';
 import 'package:tien_duong/app/data/constants/prefs_memory.dart';
+import 'package:tien_duong/app/data/constants/user_config_name.dart';
 import 'package:tien_duong/app/data/local/preference/preference_manager.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/models/balance_model.dart';
+import 'package:tien_duong/app/data/models/user_config_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/login_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/logout_model.dart';
@@ -26,6 +28,7 @@ import 'package:tien_duong/app/routes/app_pages.dart';
 
 class AuthController extends BaseController {
   final RxBool _isReload = false.obs;
+  final RxBool _isLoadingConfig = false.obs;
 
   final AccountRep _accountRepo = Get.find(tag: (AccountRep).toString());
   final PreferenceManager prefs = Get.find(tag: (PreferenceManager).toString());
@@ -34,6 +37,7 @@ class AuthController extends BaseController {
   final Rx<Account?> _account = Rx<Account?>(null);
   final Rx<BalanceModel?> _balanceAvailable = Rx<BalanceModel?>(null);
   final RxBool _isLoadingAvailableBalance = false.obs;
+  final RxList<UserConfig> configs = RxList<UserConfig>([]);
 
   Account? get account => _account.value;
   int get availableBalance => _balanceAvailable.value?.balance ?? 0;
@@ -44,6 +48,27 @@ class AuthController extends BaseController {
   }
 
   bool get isReload => _isReload.value;
+
+  int? get warningPriceConfig => int.parse(configs
+          .firstWhereOrNull(
+              (element) => element.name == UserConfigName.WARNING_PRICE)
+          ?.value ??
+      '0');
+  bool? get isActiveConfig =>
+      configs
+          .firstWhereOrNull(
+              (element) => element.name == UserConfigName.IS_ACTIVE)
+          ?.value ==
+      'TRUE';
+  String? get directionSuggestConfig => configs
+      .firstWhereOrNull(
+          (element) => element.name == UserConfigName.DIRECTION_SUGGEST)
+      ?.value;
+  int? get packageDistanceConfig => int.parse(configs
+          .firstWhereOrNull(
+              (element) => element.name == UserConfigName.PACKAGE_DISTANCE)
+          ?.value ??
+      '0');
 
   String? get token {
     if (!isTokenValidDateTime(_token)) {
@@ -82,6 +107,7 @@ class AuthController extends BaseController {
                 Get.find(tag: (PreferenceManager).toString());
             prefs.setString(PrefsMemory.userJson, jsonEncode(response));
             loadBalance();
+            loadConfigs();
             // BackgroundNotificationService.initializeService();
           },
           onError: (exception) {
@@ -112,6 +138,7 @@ class AuthController extends BaseController {
         await FirebaseMessagingService.registerNotification(
             _account.value!.id!);
         loadBalance();
+        loadConfigs();
       }, onError: (exception) {
         if (exception is BaseException) {
           ToastService.showError((exception).message);
@@ -153,6 +180,7 @@ class AuthController extends BaseController {
       if (userJson.isNotEmpty) {
         _account.value = Account.fromJson(jsonDecode(userJson));
         loadBalance();
+        loadConfigs();
         return _account.value;
       }
     }
@@ -207,7 +235,8 @@ class AuthController extends BaseController {
           msg: 'Bạn có muốn tạo tuyến đường để có thể nhận gói hàng?',
           closeOnFinish: false,
           onConfirmTap: () async {
-            result = await Get.toNamed(Routes.CREATE_ROUTE) as bool?;
+            result = await Get.toNamed(Routes.SELECT_ROUTE) as bool?;
+            if (result == true) account?.status = "ACTIVE";
             Get.back();
             return false;
           });
@@ -215,5 +244,23 @@ class AuthController extends BaseController {
       result = true;
     }
     return result ?? false;
+  }
+
+  Future<void> loadConfigs() async {
+    if (account != null) {
+      var future = _accountRepo.getUserConfigs(account!.id!);
+      await callDataService(future,
+          onSuccess: (List<UserConfig> response) {
+            configs.value = [];
+            configs.value = response;
+          },
+          onError: showError,
+          onStart: () {
+            _isLoadingConfig.value = true;
+          },
+          onComplete: () {
+            _isLoadingConfig.value = false;
+          });
+    }
   }
 }

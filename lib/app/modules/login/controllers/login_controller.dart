@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/services/firebase_messaging_service.dart';
+import 'package:tien_duong/app/data/constants/role_name.dart';
 import 'package:tien_duong/app/data/repository/request_model/login_model.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
@@ -35,10 +36,10 @@ class LoginController extends BaseController {
   Future<void> login() async {
     isLoading = true;
     LoginModel loginModel = LoginModel(
-      userName: userName,
-      password: password,
-      registrationToken: await FirebaseMessagingService.getToken(),
-    );
+        userName: userName,
+        password: password,
+        registrationToken: await FirebaseMessagingService.getToken(),
+        role: RoleName.deliver);
     await _authController.login(loginModel);
     isLoading = false;
   }

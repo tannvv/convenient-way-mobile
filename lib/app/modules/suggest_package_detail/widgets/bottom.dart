@@ -66,6 +66,7 @@ class Bottom extends GetWidget<SuggestPackageDetailController> {
                   isSelected: controller.selectedPackages
                       .contains(controller.suggest.value!.packages![index].id!),
                   package: controller.suggest.value!.packages![index],
+                  warningPrice: controller.warningPrice,
                 ),
               ),
               shape: RoundedRectangleBorder(

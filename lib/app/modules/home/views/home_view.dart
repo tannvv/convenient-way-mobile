@@ -55,9 +55,9 @@ class HomeView extends GetView<HomeController> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     NavButton(
-                      title: 'Gói hàng của bạn',
-                      icon: Octicons.package,
-                      iconOutlined: Octicons.package,
+                      title: 'Thông báo',
+                      icon: Icons.notifications,
+                      iconOutlined: Icons.notifications_outlined,
                       onPressed: () {
                         controller.changeTab(2);
                       },

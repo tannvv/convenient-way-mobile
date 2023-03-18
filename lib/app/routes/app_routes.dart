@@ -27,6 +27,10 @@ abstract class Routes {
   static const CREATE_PACKAGE_PAGE = _Paths.CREATE_PACKAGE_PAGE;
   static const TRACKING_PACKAGE = _Paths.TRACKING_PACKAGE;
   static const PACKAGE_DETAIL = _Paths.PACKAGE_DETAIL;
+  static const SELECT_ROUTE = _Paths.SELECT_ROUTE;
+  static const ROUTE_DETAIL = _Paths.ROUTE_DETAIL;
+  static const USER_CONFIG = _Paths.USER_CONFIG;
+  static const PACKAGE_COMPLETE = _Paths.PACKAGE_COMPLETE;
 }
 
 abstract class _Paths {
@@ -53,4 +57,8 @@ abstract class _Paths {
   static const CREATE_PACKAGE_PAGE = '/create-package-page';
   static const TRACKING_PACKAGE = '/tracking-package';
   static const PACKAGE_DETAIL = '/package-detail';
+  static const SELECT_ROUTE = '/select-route';
+  static const ROUTE_DETAIL = '/route-detail';
+  static const USER_CONFIG = '/user-config';
+  static const PACKAGE_COMPLETE = '/package-complete';
 }

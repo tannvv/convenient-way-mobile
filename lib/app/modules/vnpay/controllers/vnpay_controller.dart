@@ -1,3 +1,4 @@
+import 'package:tien_duong/app/config/build_config.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/enum/payment_method.dart';
 import 'package:tien_duong/app/core/model/payment_result.dart';
@@ -55,7 +56,7 @@ class VnpayController extends BaseController {
           },
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith(
-                'https://ship-convenient.azurewebsites.net/api/v1.0/vnpay/payment-result')) {
+                '${BuildConfig.instance.config.baseUrl}/vnpay/payment-result')) {
               debugPrint('blocking navigation to ${request.url}');
               paymentReturn(request.url);
               return NavigationDecision.prevent;

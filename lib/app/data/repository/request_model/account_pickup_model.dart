@@ -1,8 +1,8 @@
-class AccountPickUpModel {
+class SelectedPackagesModel {
   String deliverId;
   List<String> packageIds;
 
-  AccountPickUpModel({
+  SelectedPackagesModel({
     required this.deliverId,
     required this.packageIds,
   });

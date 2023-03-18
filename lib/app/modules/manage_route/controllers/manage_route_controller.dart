@@ -10,6 +10,7 @@ import 'package:tien_duong/app/data/repository/goong_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_route_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import 'package:tien_duong/app/network/exceptions/base_exception.dart';
+import 'package:tien_duong/app/routes/app_pages.dart';
 
 class ManageRouteController extends BaseController {
   final AuthController _authController = Get.find<AuthController>();
@@ -49,6 +50,13 @@ class ManageRouteController extends BaseController {
       indexNewRoute.value = routes.length - 1;
     } else {
       ToastService.showError('Bạn phải hoàn thành tạo mới lộ trình trước đó');
+    }
+  }
+
+  void gotoSelectRoute() async {
+    bool? result = await Get.toNamed(Routes.SELECT_ROUTE) as bool?;
+    if (result == true) {
+      loadRoutes();
     }
   }
 
@@ -144,5 +152,9 @@ class ManageRouteController extends BaseController {
 
   bool isEditField(int index) {
     return indexNewRoute.value == index;
+  }
+
+  void gotoRouteDetail(index) {
+    Get.toNamed(Routes.ROUTE_DETAIL, arguments: routes[index]);
   }
 }

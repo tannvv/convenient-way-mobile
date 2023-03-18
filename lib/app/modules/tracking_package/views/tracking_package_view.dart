@@ -19,52 +19,52 @@ class TrackingPackageView extends GetView<TrackingPackageController> {
     final markerSize = 30.w;
     return HyperStack(
       children: [
-        FlutterMap(
-          mapController: controller.mapController,
-          options: MapOptions(
-              interactiveFlags:
-                  InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-              zoom: 10.5,
-              minZoom: 10.5,
-              maxZoom: 18.4,
-              slideOnBoundaries: true,
-              onMapCreated: controller.onMapCreated),
-          children: [
-            TileLayerWidget(
-              options: TileLayerOptions(
-                urlTemplate: BuildConfig.instance.mapConfig.mapboxUrlTemplate,
-                additionalOptions: {
-                  'access_token':
-                      BuildConfig.instance.mapConfig.mapboxAccessToken,
-                  'id': BuildConfig.instance.mapConfig.mapboxId,
-                },
-              ),
-            ),
-            Obx(
-              () => MarkerLayerWidget(
-                  options: MarkerLayerOptions(markers: [
-                if (controller.locationStart != null)
-                  Marker(
-                      height: markerSize,
-                      width: markerSize,
-                      point: controller.locationStart!,
-                      builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
-                if (controller.locationEnd != null)
-                  Marker(
-                      height: markerSize,
-                      width: markerSize,
-                      point: controller.locationEnd!,
-                      builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
-                if (controller.locationDeliver.value != null)
-                  Marker(
-                      height: markerSize,
-                      width: markerSize,
-                      point: controller.locationDeliver.value!,
-                      builder: (_) => SvgPicture.asset(AppAssets.motorcycle)),
-              ])),
-            ),
-          ],
-        ),
+        // FlutterMap(
+        //   mapController: controller.mapController,
+        //   options: MapOptions(
+        //       interactiveFlags:
+        //           InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+        //       zoom: 10.5,
+        //       minZoom: 10.5,
+        //       maxZoom: 18.4,
+        //       slideOnBoundaries: true,
+        //       onMapCreated: controller.onMapCreated),
+        //   children: [
+        //     TileLayerWidget(
+        //       options: TileLayerOptions(
+        //         urlTemplate: BuildConfig.instance.mapConfig.mapboxUrlTemplate,
+        //         additionalOptions: {
+        //           'access_token':
+        //               BuildConfig.instance.mapConfig.mapboxAccessToken,
+        //           'id': BuildConfig.instance.mapConfig.mapboxId,
+        //         },
+        //       ),
+        //     ),
+        //     Obx(
+        //       () => MarkerLayerWidget(
+        //           options: MarkerLayerOptions(markers: [
+        //         if (controller.locationStart != null)
+        //           Marker(
+        //               height: markerSize,
+        //               width: markerSize,
+        //               point: controller.locationStart!,
+        //               builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
+        //         if (controller.locationEnd != null)
+        //           Marker(
+        //               height: markerSize,
+        //               width: markerSize,
+        //               point: controller.locationEnd!,
+        //               builder: (_) => SvgPicture.asset(AppAssets.locationIcon)),
+        //         if (controller.locationDeliver.value != null)
+        //           Marker(
+        //               height: markerSize,
+        //               width: markerSize,
+        //               point: controller.locationDeliver.value!,
+        //               builder: (_) => SvgPicture.asset(AppAssets.motorcycle)),
+        //       ])),
+        //     ),
+        //   ],
+        // ),
         _buildBackButton(),
       ],
     );

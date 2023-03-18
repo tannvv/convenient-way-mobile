@@ -25,7 +25,8 @@ class CreateRouteButton extends GetWidget<ManageRouteController> {
             backgroundColor: MaterialStateProperty.all(AppColors.white),
           ),
           onPressed: () {
-            controller.createRouteToList();
+            // controller.createRouteToList();
+            controller.gotoSelectRoute();
           },
           icon: const Icon(
             Icons.add_box,

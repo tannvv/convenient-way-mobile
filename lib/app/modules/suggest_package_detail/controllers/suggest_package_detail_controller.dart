@@ -38,6 +38,7 @@ class SuggestPackageDetailController extends BaseController
   int maxSelectedPackages = 3;
   final double bottomHeight = 310.h;
 
+  int get warningPrice => _authController.warningPriceConfig ?? 0;
   RxList<String> selectedPackages = <String>[].obs;
   MapController? _mapController;
   AnimatedMapService? _animatedMapService;
@@ -139,10 +140,10 @@ class SuggestPackageDetailController extends BaseController
         closeOnFinish: false,
         onConfirmTap: () {
           String accountId = _authController.account!.id!;
-          AccountPickUpModel model = AccountPickUpModel(
+          SelectedPackagesModel model = SelectedPackagesModel(
               deliverId: accountId, packageIds: selectedPackages);
           Future<SimpleResponseModel> future =
-              _packageRepo.pickUpPackage(model);
+              _packageRepo.selectedPackages(model);
           callDataService(future,
               onSuccess: (response) async {
                 Get.back(); // close dialog

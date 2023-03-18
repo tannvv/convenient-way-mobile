@@ -1,40 +1,28 @@
 import 'package:tien_duong/app/core/base/base_controller.dart';
-import 'package:tien_duong/app/modules/package/tabs/deliver_cancel_tab/deliver_cancel_package_view.dart';
-import 'package:tien_duong/app/modules/package/tabs/delivered_tab/delivered_package_view.dart';
-import 'package:tien_duong/app/modules/package/tabs/delivery_failed_tab/delivery_failed_package_view.dart';
-import 'package:tien_duong/app/modules/package/tabs/delivery_tab/delivery_package_view.dart';
-import 'package:tien_duong/app/modules/package/tabs/received_tab/received_package_view.dart';
-import 'package:tien_duong/app/modules/package/tabs/sender_cancel_tab/sender_cancel_package_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../tabs/refund_failed_tab/refund_failed_package_view.dart';
-import '../tabs/refund_success_tab/refund_success_package_view.dart';
+import '../tabs/delivered_failed_tab/delivered_failed_tab_view.dart';
+import '../tabs/delivered_success_tab/delivered_success_tab_view.dart';
+import '../tabs/pickup_success_tab/pickup_success_tab_view.dart';
+import '../tabs/selected_tab/selected_package_tab_view.dart';
 
 class PackageController extends BaseController
     with GetSingleTickerProviderStateMixin {
   late TabController tabController;
 
   List<String> tabsTitle = const [
-    'Đã nhận',
-    'Đang giao',
+    'Chờ lấy hàng',
+    'Chờ giao hàng',
     'Giao hàng thành công',
     'Giao hàng thất bại',
-    'Hoàn trả thành công',
-    'Hoàn trả thất bại',
-    'Người gửi hủy',
-    'Đã hủy'
   ];
 
   final List<Widget> _screens = const [
-    ReceivedPackageView(),
-    DeliveryPackageView(),
-    DeliveredPackageView(),
-    DeliveryFailedPackageView(),
-    RefundSuccessPackageView(),
-    RefundFailedPackageView(),
-    SenderCancelPackageView(),
-    DeliverCancelPackageView(),
+    SelectedPackageTabView(),
+    PickupSuccessTabView(),
+    DeliveredSuccessTabView(),
+    DeliveredFailedTabView(),
   ];
 
   List<Widget> get screens => _screens;

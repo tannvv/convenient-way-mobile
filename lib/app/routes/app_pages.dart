@@ -23,6 +23,8 @@ import '../modules/notification_page/bindings/notification_page_binding.dart';
 import '../modules/notification_page/views/notification_page_view.dart';
 import '../modules/package/bindings/package_binding.dart';
 import '../modules/package/views/package_view.dart';
+import '../modules/package_complete/bindings/package_complete_binding.dart';
+import '../modules/package_complete/views/package_complete_view.dart';
 import '../modules/package_detail/bindings/package_detail_binding.dart';
 import '../modules/package_detail/views/package_detail_view.dart';
 import '../modules/payment/bindings/payment_binding.dart';
@@ -33,6 +35,10 @@ import '../modules/pick_up_location/bindings/pick_up_location_binding.dart';
 import '../modules/pick_up_location/views/pick_up_location_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
+import '../modules/route_detail/bindings/route_detail_binding.dart';
+import '../modules/route_detail/views/route_detail_view.dart';
+import '../modules/select_route/bindings/select_route_binding.dart';
+import '../modules/select_route/views/select_route_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/suggest_package_detail/bindings/suggest_package_detail_binding.dart';
@@ -41,6 +47,8 @@ import '../modules/tracking_package/bindings/tracking_package_binding.dart';
 import '../modules/tracking_package/views/tracking_package_view.dart';
 import '../modules/transaction/bindings/transaction_binding.dart';
 import '../modules/transaction/views/transaction_view.dart';
+import '../modules/user_config/bindings/user_config_binding.dart';
+import '../modules/user_config/views/user_config_view.dart';
 import '../modules/verify-otp/bindings/verify_otp_binding.dart';
 import '../modules/verify-otp/views/verify_otp_view.dart';
 import '../modules/vnpay/bindings/vnpay_binding.dart';
@@ -163,6 +171,26 @@ class AppPages {
       name: _Paths.PACKAGE_DETAIL,
       page: () => const PackageDetailView(),
       binding: PackageDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.SELECT_ROUTE,
+      page: () => const SelectRouteView(),
+      binding: SelectRouteBinding(),
+    ),
+    GetPage(
+      name: _Paths.ROUTE_DETAIL,
+      page: () => const RouteDetailView(),
+      binding: RouteDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.USER_CONFIG,
+      page: () => const UserConfigView(),
+      binding: UserConfigBinding(),
+    ),
+    GetPage(
+      name: _Paths.PACKAGE_COMPLETE,
+      page: () => const PackageCompleteView(),
+      binding: PackageCompleteBinding(),
     ),
   ];
 }

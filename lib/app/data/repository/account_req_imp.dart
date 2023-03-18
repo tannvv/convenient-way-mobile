@@ -4,13 +4,17 @@ import 'package:tien_duong/app/data/models/account_rating_model.dart';
 import 'package:tien_duong/app/data/models/balance_model.dart';
 import 'package:tien_duong/app/data/models/notification_model.dart';
 import 'package:tien_duong/app/data/models/route_model.dart';
+import 'package:tien_duong/app/data/models/route_point_model.dart';
+import 'package:tien_duong/app/data/models/user_config_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
+import 'package:tien_duong/app/data/repository/request_model/account_model/update_user_config_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_account_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/create_route_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/is_valid_account_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/login_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/logout_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/notification_list_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/route_model/route_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/send_notification_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/send_notification_tracking_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/update_account_model.dart';
@@ -235,6 +239,51 @@ class AccountReqImp extends BaseRepository implements AccountRep {
     try {
       return callApi(dioCall).then((response) {
         BalanceModel model = BalanceModel.fromJson(response.data['data']);
+        return model;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<RouteListModel> getRoutePoints(String routeId) {
+    String endpoint = '${DioProvider.baseUrl}/routes/point-list/$routeId';
+    var dioCall = dioClient.get(endpoint);
+    try {
+      return callApi(dioCall).then((response) {
+        RouteListModel model = RouteListModel.fromJson(response.data['data']);
+        return model;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<UserConfig>> getUserConfigs(String accountId) {
+    String endpoint = '${DioProvider.baseUrl}/config-user/$accountId';
+    var dioCall = dioClient.get(endpoint);
+    try {
+      return callApi(dioCall).then((response) {
+        List<UserConfig> configs = [];
+        for (var item in response.data['data']) {
+          configs.add(UserConfig.fromJson(item));
+        }
+        return configs;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserConfig> updateUserConfig(UpdateUserConfigModel model) {
+    String endpoint = '${DioProvider.baseUrl}/config-user';
+    var dioCall = dioClient.put(endpoint, data: model.toJson());
+    try {
+      return callApi(dioCall).then((response) {
+        UserConfig model = UserConfig.fromJson(response.data['data']);
         return model;
       });
     } catch (e) {

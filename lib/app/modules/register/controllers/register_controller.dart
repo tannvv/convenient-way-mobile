@@ -10,7 +10,6 @@ import 'package:tien_duong/app/data/repository/request_model/create_account_mode
 import 'package:tien_duong/app/data/repository/request_model/is_valid_account_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import 'package:tien_duong/app/modules/register/models/args_register_model.dart';
-import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
 class RegisterController extends BaseController {
@@ -67,14 +66,8 @@ class RegisterController extends BaseController {
     Future<SimpleResponseModel> future =
         _accountRepo.isValidAccount(isValidAccount);
     await callDataService<SimpleResponseModel>(future, onSuccess: (data) async {
-      verifyPhone();
-    }, onError: (error) {
-      if (error is BaseException) {
-        ToastService.showError(error.message);
-      } else {
-        ToastService.showError('Thông tin không hợp lệ');
-      }
-    });
+      await verifyPhone();
+    }, onError: showError, onStart: () {}, onComplete: () {});
   }
 
   Future<void> gotoSignIn() async {
@@ -89,14 +82,17 @@ class RegisterController extends BaseController {
     debugPrint('Phone number: 0$_phone');
     _phone = '+84$_phone';
     isLoading = true;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    await auth.setSettings(appVerificationDisabledForTesting: true);
+
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: _phone,
       timeout: const Duration(seconds: 20),
       verificationCompleted: (PhoneAuthCredential credential) {
+        isLoading = false;
         debugPrint('Auth Completed! \nCredential: $credential');
       },
       verificationFailed: (FirebaseAuthException e) {
-        isLoading = false;
         if (e.message != null) {
           if (e.message!.contains('block')) {
             ToastService.showError(
@@ -120,7 +116,7 @@ class RegisterController extends BaseController {
             lastName: _lastName,
             phone: _phone,
             photoUrl: _photoUrl,
-            role: RoleName.user,
+            role: RoleName.deliver,
             gender: _gender.value);
         ArgsRegisterModel argsRegisterModel = ArgsRegisterModel(
             createAccountModel: createAccountModel,
@@ -129,7 +125,8 @@ class RegisterController extends BaseController {
         await Get.toNamed(Routes.VERIFY_OTP, arguments: argsRegisterModel);
       },
       codeAutoRetrievalTimeout: (String verificationId) async {
-        debugPrint('Auto Retrieval Timeout! \nVerificationId: $verificationId');
+        isLoading = false;
+        // ToastService.showError('Có lỗi xảy ra, vui lòng thử lại');
       },
     );
   }

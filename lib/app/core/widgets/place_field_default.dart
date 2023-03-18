@@ -19,6 +19,7 @@ class PlaceFieldDefault extends StatefulWidget {
       required this.labelText,
       required this.onSelected,
       this.onClear,
+      this.direction = AxisDirection.down,
       this.textController});
   final bool enable;
   final String hintText;
@@ -27,6 +28,7 @@ class PlaceFieldDefault extends StatefulWidget {
   final Function()? onClear;
   final TextEditingController? textController;
   final TextEditingController reserveTextController = TextEditingController();
+  final AxisDirection direction;
 
   @override
   State<PlaceFieldDefault> createState() => _PlaceFieldDefaultState();
@@ -44,6 +46,7 @@ class _PlaceFieldDefaultState extends State<PlaceFieldDefault> {
         child: TypeAheadField<ResponseGoongDefault>(
             debounceDuration: const Duration(milliseconds: 500),
             minCharsForSuggestions: 2,
+            direction: widget.direction,
             textFieldConfiguration: TextFieldConfiguration(
               enabled: widget.enable,
               controller: realTextCtrl,

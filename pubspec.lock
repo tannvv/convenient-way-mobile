@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: "6215ac7d00ed98300b72f45ed2b38c2ca841f9f4e6965fab33cbd591e45e4473"
+      sha256: "330d7fcbb72624f5b6d374af8b059b0ef4ba96ba5b8987f874964a1287eb617d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.13"
+    version: "1.0.18"
   animated_splash_screen:
     dependency: "direct main"
     description:
@@ -337,6 +337,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.5"
+  firebase_app_check:
+    dependency: "direct main"
+    description:
+      name: firebase_app_check
+      sha256: "4c5d21c218f345c69c6d9e0d2774c545023c4be4bef937b8db28b4471e77bb33"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1+14"
+  firebase_app_check_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_app_check_platform_interface
+      sha256: "8deb2a21078c7da3460ed3061a94f57343519e9f79536bb03c14f7cdecf4c0bf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5+17"
+  firebase_app_check_web:
+    dependency: transitive
+    description:
+      name: firebase_app_check_web
+      sha256: "397fd31b37b7e720334f22253eb5d7c9ddc61a37b67aa4228ca0f56941e2537e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.7+17"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -365,10 +389,10 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: be13e431c0c950f0fc66bdb67b41b8059121d7e7d8bbbc21fb59164892d561f8
+      sha256: "75f747cafd7cbd6c00b908e3a7aa59fc31593d46ba8165d9ee8a79e69464a394"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.0"
+    version: "2.8.0"
   firebase_core_platform_interface:
     dependency: "direct main"
     description:
@@ -381,10 +405,10 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: "4b3a41410f3313bb95fd560aa5eb761b6ad65c185de772c72231e8b4aeed6d18"
+      sha256: "0c1cf1f1022d2245ac117443bb95207952ca770281524d2908e323bc063fb8ff"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "2.2.2"
   firebase_messaging:
     dependency: "direct main"
     description:
@@ -658,18 +682,18 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_map
-      sha256: "09010e452bcd8c57ade1b936b79643c4fd599f93b00d1696630f0b919b6f374a"
+      sha256: "59dfd14267b691bea55760786b47d3172d47cdcc0d79ff930746a5ad123491b8"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "3.1.0"
   flutter_map_location_marker:
     dependency: "direct main"
     description:
       name: flutter_map_location_marker
-      sha256: f521ea2d6d7a80e60d9d523a2a6b34b4bd2387a584c92244169a9559d589327f
+      sha256: e21bc8999887498bcf88df8a25cacd3a9b45c43315f2b01d61b9ec4a89df8bdd
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.4"
+    version: "5.2.1"
   flutter_multi_select_items:
     dependency: "direct main"
     description:
@@ -742,6 +766,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.3"
+  flutter_switch:
+    dependency: "direct main"
+    description:
+      name: flutter_switch
+      sha256: b91477f926bba135d2d203d7b24367492662d8d9c3aa6adb960b14c1087d3c41
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -1440,6 +1472,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  restart_app:
+    dependency: "direct main"
+    description:
+      name: restart_app
+      sha256: fed4f0756df1fd3a84dbb78fe35869f54ddb1e095604d5843bfc60b76e1398fd
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   rxdart:
     dependency: transitive
     description:

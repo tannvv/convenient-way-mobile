@@ -38,29 +38,29 @@ class PickUpLocationController extends GetxController
     super.onClose();
   }
 
-  void onMapCreated(MapController controller) async {
-    _mapController = controller;
-    bool checkPermission = await _mapLocationController.getPermission();
-    if (checkPermission) {
-      _mapController.onReady.then((_) async {
-        // bool isAcceptLocation = await _mapLocationController.loadLocation();
-        // if (isAcceptLocation) {
-        //   Position position = await Geolocator.getCurrentPosition();
-        //   centerLocation.value = LatLng(position.latitude, position.longitude);
-        //   _animatedMapMove(centerLocation.value, 12);
-        // }
-        // if (_mapLocationController.location != null) {
-        //   _animatedMapMove(_mapLocationController.location!, 12);
-        // }
-        subscription = controller.mapEventStream.listen((MapEvent mapEvent) {
-          if (mapEvent is MapEventMove) {
-            centerLocation.value =
-                LatLng(mapEvent.center.latitude, mapEvent.center.longitude);
-          }
-        });
-      });
-    }
-  }
+  // void onMapCreated(MapController controller) async {
+  //   _mapController = controller;
+  //   bool checkPermission = await _mapLocationController.getPermission();
+  //   if (checkPermission) {
+  //     _mapController.onReady.then((_) async {
+  //       // bool isAcceptLocation = await _mapLocationController.loadLocation();
+  //       // if (isAcceptLocation) {
+  //       //   Position position = await Geolocator.getCurrentPosition();
+  //       //   centerLocation.value = LatLng(position.latitude, position.longitude);
+  //       //   _animatedMapMove(centerLocation.value, 12);
+  //       // }
+  //       // if (_mapLocationController.location != null) {
+  //       //   _animatedMapMove(_mapLocationController.location!, 12);
+  //       // }
+  //       subscription = controller.mapEventStream.listen((MapEvent mapEvent) {
+  //         if (mapEvent is MapEventMove) {
+  //           centerLocation.value =
+  //               LatLng(mapEvent.center.latitude, mapEvent.center.longitude);
+  //         }
+  //       });
+  //     });
+  //   }
+  // }
 
   void _animatedMapMove(LatLng destLocation, double destZoom) {
     final latTween = Tween<double>(

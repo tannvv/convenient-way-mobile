@@ -76,19 +76,21 @@ class RouteInfo extends GetWidget<ManageRouteController> {
                         ),
                         SizedBox(width: 5.w),
                         ElevatedButton(
-                          onPressed: null,
+                          onPressed: () {
+                            controller.gotoRouteDetail(index);
+                          },
                           style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
                             backgroundColor: AppColors.blue,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             padding: const EdgeInsets.all(0),
-                            minimumSize: Size(24.r, 24.r),
+                            minimumSize: Size(30.r, 30.r),
                           ),
                           child: SizedBox(
-                            height: 24.r,
-                            width: 24.r,
+                            height: 30.r,
+                            width: 30.r,
                             child: Icon(
-                              Icons.swap_vert,
+                              Icons.location_pin,
                               size: 16.r,
                               color: AppColors.white,
                             ),

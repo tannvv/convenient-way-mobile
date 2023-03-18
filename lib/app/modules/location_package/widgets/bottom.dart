@@ -92,7 +92,7 @@ class Bottom extends GetWidget<LocationPackageController> {
         children: [
           ElevatedButton(
             onPressed: () {
-              controller.gotoCurrentLocation();
+              controller.centerZoomFitBounds();
             },
             style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),

@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
-import 'package:tien_duong/app/core/controllers/map_location_controller.dart';
-import 'package:tien_duong/app/core/services/animated_map_service.dart';
+import 'package:tien_duong/app/core/controllers/cw_map_controller.dart';
 import 'package:tien_duong/app/core/utils/location_utils.dart';
 import 'package:tien_duong/app/core/values/app_assets.dart';
 import 'package:tien_duong/app/core/values/app_colors.dart';
-import 'package:tien_duong/app/core/values/app_values.dart';
 import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/models/polyline_model.dart';
@@ -19,14 +19,12 @@ import 'package:tien_duong/app/data/models/route_model.dart';
 import 'package:tien_duong/app/data/repository/goong_req.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
-import 'package:tien_duong/app/data/repository/request_model/request_polyline_model';
+import 'package:tien_duong/app/data/repository/request_model/request_polyline_model.dart';
 import 'package:tien_duong/app/modules/location_package/models/point_package.dart';
 
 class LocationPackageController extends BaseController {
   final AuthController _authController = Get.find<AuthController>();
-  AnimatedMapService? _animatedMapService;
-  final MapLocationController _mapLocationController =
-      Get.find<MapLocationController>();
+  final CwMapController cwMapController = CwMapController();
   final RxList<Package> packages = <Package>[].obs;
   LatLngBounds currentBounds = LatLngBounds();
   RxList<PointPackage> pointPackages = <PointPackage>[].obs;
@@ -57,29 +55,48 @@ class LocationPackageController extends BaseController {
           ),
         );
 
-        return PolylineLayerWidget(
-            options: PolylineLayerOptions(
-                polylineCulling: true, saveLayers: true, polylines: polylines));
+        return PolylineLayer(
+          polylineCulling: true,
+          // saveLayers: true,
+          polylines: polylines,
+        );
       },
     );
   }
 
-  void onMapCreated(MapController controller) {
-    _animatedMapService = AnimatedMapService(controller: controller);
-    Timer(const Duration(seconds: 4), () {
-      if (packages.isNotEmpty) {
-        gotoCurrentBound();
-      } else {
-        gotoCurrentLocation();
+  Widget markerLayer() {
+    return Obx(() {
+      List<Marker> markers = [];
+
+      for (var i = 0; i < pointPackages.length; i++) {
+        markers.add(
+          Marker(
+            height: 30.h,
+            width: 30.h,
+            point: pointPackages[i].latLng!,
+            builder: (_) => Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset(
+                  getAssetsWithType(pointPackages[i].type!),
+                  width: 30.w,
+                  height: 30.h,
+                ),
+                Text((i + 1).toString())
+              ],
+            ),
+          ),
+        );
       }
+      return MarkerLayer(
+        markers: markers,
+      );
     });
   }
 
-  void gotoCurrentLocation() {
-    if (_mapLocationController.location != null) {
-      LatLng currentLocation = _mapLocationController.location!;
-      _animatedMapService?.move(currentLocation, AppValues.overviewZoomLevel);
-    }
+  void onMapReady() async {
+    await cwMapController.refreshCurrentLocation();
+    createBounds();
   }
 
   void centerZoomFitBounds() {
@@ -97,14 +114,13 @@ class LocationPackageController extends BaseController {
     String deliverId = _authController.account!.id!;
     PackageListModel model = PackageListModel(
       deliverId: deliverId,
-      status: '${PackageStatus.DELIVER_PICKUP},${PackageStatus.DELIVERY}',
+      status: '${PackageStatus.SELECTED},${PackageStatus.PICKUP_SUCCESS}',
     );
     var future = _packageReq.getList(model);
     await callDataService<List<Package>>(
       future,
       onSuccess: (response) async {
         packages(response);
-        await createBounds();
         pointPackages.value = getPointPackage(packages);
         getPolyLine();
       },
@@ -114,8 +130,7 @@ class LocationPackageController extends BaseController {
 
   Future<void> createBounds() async {
     currentBounds = LatLngBounds();
-    await _mapLocationController.loadLocation();
-    LatLng? currentPosition = _mapLocationController.location;
+    LatLng? currentPosition = cwMapController.currentLocation;
     if (currentPosition != null) {
       currentBounds.extend(currentPosition);
     }
@@ -133,7 +148,7 @@ class LocationPackageController extends BaseController {
       currentBounds.extend(packageEndPosition);
     }
     RouteAcc? activeRoute = _authController.account?.infoUser?.routes
-        ?.firstWhere((element) => element.isActive == true);
+        ?.firstWhereOrNull((element) => element.isActive == true);
     if (activeRoute != null) {
       LatLng routeStart =
           LatLng(activeRoute.fromLatitude!, activeRoute.fromLongitude!);
@@ -147,23 +162,23 @@ class LocationPackageController extends BaseController {
   }
 
   LatLng getLatLngWithStatus(Package package) {
-    if (package.status == PackageStatus.DELIVER_PICKUP) {
+    if (package.status == PackageStatus.SELECTED) {
       return LatLng(package.startLatitude!, package.startLongitude!);
-    } else if (package.status == PackageStatus.DELIVERY) {
+    } else if (package.status == PackageStatus.PICKUP_SUCCESS) {
       return LatLng(
           package.destinationLatitude!, package.destinationLongitude!);
-    } else if (package.status == PackageStatus.DELIVERY_FAILED) {
+    } else if (package.status == PackageStatus.PICKUP_SUCCESS) {
       return LatLng(package.startLatitude!, package.startLongitude!);
     }
     return LatLng(package.startLatitude!, package.startLongitude!);
   }
 
   String getAssetsWithStatus(Package package) {
-    if (package.status == PackageStatus.DELIVER_PICKUP) {
+    if (package.status == PackageStatus.PICKUP_SUCCESS) {
       return AppAssets.locationIcon;
-    } else if (package.status == PackageStatus.DELIVERY) {
+    } else if (package.status == PackageStatus.PICKUP_SUCCESS) {
       return AppAssets.locationGreenIcon;
-    } else if (package.status == PackageStatus.DELIVERY_FAILED) {
+    } else if (package.status == PackageStatus.DELIVERED_FAILED) {
       return AppAssets.locationBlueIcon2;
     }
     return 'assets/images/pickup.png';
@@ -181,15 +196,13 @@ class LocationPackageController extends BaseController {
   }
 
   void gotoCurrentBound() {
-    _animatedMapService?.move(
-        currentBounds.center, AppValues.overviewZoomLevel);
+    cwMapController.centerZoomFitBounds(currentBounds);
   }
 
   List<PointPackage> getPointPackage(List<Package> packages) {
     List<PointPackage> result = [];
     RouteAcc? activeRoute = _authController.account?.infoUser?.routes
-        ?.where((element) => element.isActive == true)
-        .first;
+        ?.firstWhereOrNull((element) => element.isActive == true);
     if (activeRoute == null) return [];
     LatLng startLocation =
         LatLng(activeRoute.fromLatitude!, activeRoute.fromLongitude!);
