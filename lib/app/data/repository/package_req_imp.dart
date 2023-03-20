@@ -1,6 +1,7 @@
 import 'package:tien_duong/app/core/base/base_repository.dart';
 import 'package:tien_duong/app/data/models/feedback_model.dart';
 import 'package:tien_duong/app/data/models/package_cancel_model.dart';
+import 'package:tien_duong/app/data/models/package_count_model.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/models/suggest_package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
@@ -208,6 +209,19 @@ class PackageReqImp extends BaseRepository implements PackageReq {
     try {
       return callApi(dioCall)
           .then((response) => SimpleResponseModel.fromJson(response.data));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PackageCount> getPackageCount(String deliverId) {
+    String endpoint = '${DioProvider.baseUrl}/dashboards/package-count';
+    var dioCall =
+        dioClient.get(endpoint, queryParameters: {'deliverId': deliverId});
+    try {
+      return callApi(dioCall)
+          .then((response) => PackageCount.fromJson(response.data['data']));
     } catch (e) {
       rethrow;
     }

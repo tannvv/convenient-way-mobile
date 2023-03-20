@@ -1,14 +1,13 @@
 import 'package:get/get.dart';
 
-import '../modules/cancel_package/bindings/cancel_package_binding.dart';
-import '../modules/cancel_package/views/cancel_package_view.dart';
 import '../modules/chat_message/bindings/chat_message_binding.dart';
 import '../modules/chat_message/views/chat_message_view.dart';
 import '../modules/create-route/bindings/create_route_binding.dart';
 import '../modules/create-route/views/create_route_view.dart';
 import '../modules/create_package_page/bindings/create_package_page_binding.dart';
 import '../modules/create_package_page/views/create_package_page_view.dart';
-import '../modules/create_package_page/views/create_package_page_view.dart';
+import '../modules/delivered_failed/bindings/delivered_failed_binding.dart';
+import '../modules/delivered_failed/views/delivered_failed_view.dart';
 import '../modules/feedback_for_deliver/bindings/feedback_for_deliver_binding.dart';
 import '../modules/feedback_for_deliver/views/feedback_for_deliver_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -23,6 +22,8 @@ import '../modules/notification_page/bindings/notification_page_binding.dart';
 import '../modules/notification_page/views/notification_page_view.dart';
 import '../modules/package/bindings/package_binding.dart';
 import '../modules/package/views/package_view.dart';
+import '../modules/package_cancel_and_refund/bindings/package_cancel_and_refund_binding.dart';
+import '../modules/package_cancel_and_refund/views/package_cancel_and_refund_view.dart';
 import '../modules/package_complete/bindings/package_complete_binding.dart';
 import '../modules/package_complete/views/package_complete_view.dart';
 import '../modules/package_detail/bindings/package_detail_binding.dart';
@@ -33,6 +34,8 @@ import '../modules/payment_status/bindings/payment_status_binding.dart';
 import '../modules/payment_status/views/payment_status_view.dart';
 import '../modules/pick_up_location/bindings/pick_up_location_binding.dart';
 import '../modules/pick_up_location/views/pick_up_location_view.dart';
+import '../modules/pickup_failed/bindings/pickup_failed_binding.dart';
+import '../modules/pickup_failed/views/pickup_failed_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/route_detail/bindings/route_detail_binding.dart';
@@ -113,11 +116,6 @@ class AppPages {
       binding: ChatMessageBinding(),
     ),
     GetPage(
-      name: _Paths.CANCEL_PACKAGE,
-      page: () => const CancelPackageView(),
-      binding: CancelPackageBinding(),
-    ),
-    GetPage(
       name: _Paths.SPLASH_SCREEN,
       page: () => const SplashScreenView(),
       binding: SplashScreenBinding(),
@@ -191,6 +189,21 @@ class AppPages {
       name: _Paths.PACKAGE_COMPLETE,
       page: () => const PackageCompleteView(),
       binding: PackageCompleteBinding(),
+    ),
+    GetPage(
+      name: _Paths.PICKUP_FAILED,
+      page: () => const PickupFailedView(),
+      binding: PickupFailedBinding(),
+    ),
+    GetPage(
+      name: _Paths.DELIVERED_FAILED,
+      page: () => const DeliveredFailedView(),
+      binding: DeliveredFailedBinding(),
+    ),
+    GetPage(
+      name: _Paths.PACKAGE_CANCEL_AND_REFUND,
+      page: () => const PackageCancelAndRefundView(),
+      binding: PackageCancelAndRefundBinding(),
     ),
   ];
 }

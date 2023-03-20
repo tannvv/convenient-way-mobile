@@ -39,34 +39,34 @@ class DeliveredFailedTabItem extends StatelessWidget {
           PackageInfo(
             package: package,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ColorButton(
-                'Hoàn trả thành công',
-                icon: Icons.check,
-                onPressed: onRefundSuccess,
-                backgroundColor: AppColors.primary800,
-                textColor: AppColors.primary800,
-                radius: 8.sp,
-                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ColorButton(
-                'Hoàn trả thất bại',
-                icon: Icons.sms_failed,
-                onPressed: onRefundFailed,
-                backgroundColor: AppColors.primary800,
-                textColor: AppColors.primary800,
-                radius: 8.sp,
-                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-              ),
-            ],
-          )
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     ColorButton(
+          //       'Hoàn trả thành công',
+          //       icon: Icons.check,
+          //       onPressed: onRefundSuccess,
+          //       backgroundColor: AppColors.primary800,
+          //       textColor: AppColors.primary800,
+          //       radius: 8.sp,
+          //       //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+          //     ),
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     ColorButton(
+          //       'Hoàn trả thất bại',
+          //       icon: Icons.sms_failed,
+          //       onPressed: onRefundFailed,
+          //       backgroundColor: AppColors.primary800,
+          //       textColor: AppColors.primary800,
+          //       radius: 8.sp,
+          //       //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+          //     ),
+          //   ],
+          // )
         ],
       ),
     );

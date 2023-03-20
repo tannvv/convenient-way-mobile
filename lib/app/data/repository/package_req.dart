@@ -1,5 +1,6 @@
 import 'package:tien_duong/app/data/models/feedback_model.dart';
 import 'package:tien_duong/app/data/models/package_cancel_model.dart';
+import 'package:tien_duong/app/data/models/package_count_model.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/models/suggest_package_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/account_pickup_model.dart';
@@ -31,4 +32,5 @@ abstract class PackageReq {
   Future<SimpleResponseModel> refundSuccess(String packageId);
   Future<SimpleResponseModel> refundFailed(String packageId);
   Future<Feedback> createFeedback(CreateFeedbackModel model);
+  Future<PackageCount> getPackageCount(String deliverId);
 }

@@ -41,7 +41,7 @@ class HomeView extends GetView<HomeController> {
                       width: 4.w,
                     ),
                     NavButton(
-                      title: 'Gói hàng đã nhận',
+                      title: 'Đang thực hiện',
                       icon: Octicons.package,
                       iconOutlined: Octicons.package,
                       onPressed: () {

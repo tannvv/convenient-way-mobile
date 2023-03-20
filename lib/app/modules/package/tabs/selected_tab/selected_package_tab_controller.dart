@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_format_money_vietnam/flutter_format_money_vietnam.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:tien_duong/app/core/base/base_paging_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/alert_quick_service.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
@@ -21,15 +21,15 @@ import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/core/values/text_styles.dart';
 import 'package:tien_duong/app/data/repository/request_model/cancel_package_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
-import 'package:tien_duong/app/network/exceptions/base_exception.dart';
 import '../../../../core/controllers/pickup_file_controller.dart';
 import 'package:barcode/barcode.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:material_dialogs/dialogs.dart';
 import '../../../../core/values/font_weight.dart';
+import 'package:tien_duong/app/core/base/processing_tab_base_controller.dart';
 
-class SelectedPackageTabController extends BasePagingController<Package>
+class SelectedPackageTabController extends ProcessingTabBaseController<Package>
     with GetSingleTickerProviderStateMixin {
   final AuthController _authController = Get.find<AuthController>();
   final LocationPackageController _locationPackageController =
@@ -103,6 +103,7 @@ class SelectedPackageTabController extends BasePagingController<Package>
 
   @override
   Future<void> fetchDataApi() async {
+    super.fetchDataApi();
     PackageListModel requestModel = PackageListModel(
         deliverId: _authController.account!.id,
         status: PackageStatus.SELECTED,
@@ -152,40 +153,44 @@ class SelectedPackageTabController extends BasePagingController<Package>
     return packageIds;
   }
 
-  Future<void> cancelPackageDialog(String packageId) async {
-    await Dialogs.materialDialog(
-        context: Get.context!,
-        customView: _cancelWidget(),
-        actions: [
-          IconsButton(
-            onPressed: () {
-              Get.back();
-            },
-            text: 'Thoát',
-            iconData: Icons.arrow_back_ios_new,
-            color: const Color.fromARGB(255, 204, 203, 203),
-            textStyle: const TextStyle(color: Colors.black38),
-            iconColor: Colors.black38,
-          ),
-          IconsButton(
-            onPressed: () {
-              deliverCancelPackage(packageId);
-            },
-            text: 'Hủy đơn',
-            iconData: Icons.check,
-            color: Colors.red,
-            textStyle: const TextStyle(color: Colors.white),
-            iconColor: Colors.white,
-          ),
-        ]);
+  Future<void> cancelPackageDialog(Package package) async {
+    // await Dialogs.materialDialog(
+    //     context: Get.context!,
+    //     customView: _cancelWidget(),
+    //     actions: [
+    //       IconsButton(
+    //         onPressed: () {
+    //           Get.back();
+    //         },
+    //         text: 'Thoát',
+    //         iconData: Icons.arrow_back_ios_new,
+    //         color: const Color.fromARGB(255, 204, 203, 203),
+    //         textStyle: const TextStyle(color: Colors.black38),
+    //         iconColor: Colors.black38,
+    //       ),
+    //       IconsButton(
+    //         onPressed: () {
+    //           deliverCancelPackage(packageId);
+    //         },
+    //         text: 'Hủy đơn',
+    //         iconData: Icons.check,
+    //         color: Colors.red,
+    //         textStyle: const TextStyle(color: Colors.white),
+    //         iconColor: Colors.white,
+    //       ),
+    //     ]);
+    MaterialDialogService.showDeleteDialog(
+      onConfirmTap: () {
+        deliverCancelPackage(package.id!);
+      },
+      title: 'Hủy đơn hàng',
+      msg:
+          'Bạn chắc chắn muốn hủy đơn hàng này, bạn sẽ bị mất số tiền đã cọc trước đó (${package.getTotalPrice().toVND()}) ?',
+      confirmIconData: Icons.check,
+    );
   }
 
   Future<void> deliverCancelPackage(String packageId) async {
-    if (reason == null || reason!.isEmpty) {
-      ToastService.showError('Vui lòng nhập lý do hủy đơn hàng');
-      return;
-    }
-
     CancelPackageModel requestModel = CancelPackageModel(
       packageId: packageId,
       reason: reason!,
@@ -196,38 +201,13 @@ class SelectedPackageTabController extends BasePagingController<Package>
       ToastService.showSuccess('Hủy gói hàng thành công!');
       Get.back();
       refresh();
-    }, onError: (error) {
-      if (error is BaseException) {
-        ToastService.showError(error.message);
-      } else {
-        ToastService.showError('Có lỗi xảy ra!');
-      }
-    });
+    }, onError: showError, onStart: showOverlay, onComplete: hideOverlay);
   }
 
-  Widget _cancelWidget() {
-    return Container(
-      padding: EdgeInsets.only(top: 20.h),
-      height: 100.h,
-      width: 220.w,
-      child: Column(
-        children: [
-          Text(
-            'Lý do hủy đơn hàng:',
-            style: subtitle2.copyWith(fontSize: 16.sp),
-          ),
-          const SizedBox(height: 10),
-          TextField(
-            onChanged: (value) {
-              reason = value;
-            },
-            decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(horizontal: 20.w)),
-          ),
-        ],
-      ),
-    );
+  Future<void> onPickupFailed(Package package) async {
+    bool? result =
+        await Get.toNamed(Routes.PICKUP_FAILED, arguments: package) as bool?;
+    onRefresh();
   }
 
   Future<void> deliverConfirmCode(String packageId) async {

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:tien_duong/app/core/base/base_paging_controller.dart';
+import 'package:tien_duong/app/core/base/processing_tab_base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
@@ -9,13 +9,14 @@ import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 
-class DeliveredFailedTabController extends BasePagingController<Package>
+class DeliveredFailedTabController extends ProcessingTabBaseController<Package>
     with GetSingleTickerProviderStateMixin {
   final AuthController _authController = Get.find<AuthController>();
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
 
   @override
   Future<void> fetchDataApi() async {
+    super.fetchDataApi();
     PackageListModel requestModel = PackageListModel(
         deliverId: _authController.account!.id,
         status: PackageStatus.DELIVERED_FAILED);

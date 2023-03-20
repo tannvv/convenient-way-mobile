@@ -7,7 +7,6 @@ import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:tien_duong/app/core/utils/toast_service.dart';
-import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 
 class PickUpFileController extends GetxController {

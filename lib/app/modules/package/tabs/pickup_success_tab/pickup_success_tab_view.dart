@@ -29,7 +29,7 @@ class PickupSuccessTabView extends GetView<PickupSuccessTabController> {
                                 controller.accountConfirmPackage(
                                     controller.dataApis[index].id!),
                             onDeliveryFailedPackage: () => controller
-                                .deliveryFailed(controller.dataApis[index].id!),
+                                .deliveredFailed(controller.dataApis[index]),
                             onShowQR: () => controller
                                 .showQRCode(controller.dataApis[index].id!),
                             onCodeConfirm: () => controller.deliverConfirmCode(

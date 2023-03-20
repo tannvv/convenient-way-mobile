@@ -16,6 +16,7 @@ class SelectedPackageTabItem extends StatelessWidget {
       this.onCancelPackage,
       this.onConfirmPackage,
       this.onCodeConfirm,
+      this.onPickupFailed,
       required this.onShowQR})
       : super(key: key);
   final Package package;
@@ -23,6 +24,7 @@ class SelectedPackageTabItem extends StatelessWidget {
   final Function()? onConfirmPackage;
   final Function()? onCodeConfirm;
   final Function() onShowQR;
+  final Function()? onPickupFailed;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,6 +57,41 @@ class SelectedPackageTabItem extends StatelessWidget {
                 radius: 8.sp,
                 //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),
+            ],
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            ColorButton(
+              'Xác nhận bằng Mã',
+              icon: Icons.onetwothree,
+              onPressed: onCodeConfirm,
+              backgroundColor: AppColors.primary800,
+              textColor: AppColors.primary800,
+              radius: 8.sp,
+              //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+            ),
+            Gap(12.w),
+            ColorButton(
+              'Quét QR lấy hàng',
+              icon: Icons.qr_code_scanner,
+              onPressed: onConfirmPackage,
+              backgroundColor: AppColors.primary800,
+              textColor: AppColors.primary800,
+              radius: 8.sp,
+              //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+            ),
+          ]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ColorButton(
+                'Tôi không thể lấy hàng',
+                icon: Icons.sms_failed,
+                onPressed: onPickupFailed,
+                backgroundColor: Colors.red,
+                textColor: Colors.red,
+                radius: 8.sp,
+                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
+              ),
               Gap(12.h),
               ColorButton(
                 "Hủy đơn",
@@ -62,30 +99,6 @@ class SelectedPackageTabItem extends StatelessWidget {
                 onPressed: onCancelPackage,
                 backgroundColor: Colors.red,
                 textColor: Colors.red,
-                radius: 8.sp,
-                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ColorButton(
-                'Xác nhận bằng Mã',
-                icon: Icons.onetwothree,
-                onPressed: onCodeConfirm,
-                backgroundColor: AppColors.primary800,
-                textColor: AppColors.primary800,
-                radius: 8.sp,
-                //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
-              ),
-              Gap(12.w),
-              ColorButton(
-                'Quét QR lấy hàng',
-                icon: Icons.qr_code_scanner,
-                onPressed: onConfirmPackage,
-                backgroundColor: AppColors.primary800,
-                textColor: AppColors.primary800,
                 radius: 8.sp,
                 //padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 2.h),
               ),

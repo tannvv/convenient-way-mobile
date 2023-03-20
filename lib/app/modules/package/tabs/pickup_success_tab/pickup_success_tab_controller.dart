@@ -6,7 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
-import 'package:tien_duong/app/core/base/base_paging_controller.dart';
+import 'package:tien_duong/app/core/base/processing_tab_base_controller.dart';
 import 'package:tien_duong/app/core/controllers/auth_controller.dart';
 import 'package:tien_duong/app/core/controllers/pickup_file_controller.dart';
 import 'package:tien_duong/app/core/utils/material_dialog_service.dart';
@@ -17,13 +17,12 @@ import 'package:tien_duong/app/data/constants/package_status.dart';
 import 'package:tien_duong/app/data/models/package_model.dart';
 import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
-import 'package:tien_duong/app/data/repository/request_model/package_model/delivered_package_failed_model.dart';
-import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
 import '../../../../core/values/font_weight.dart';
 import '../../../../core/values/input_styles.dart';
 import '../../../../core/values/text_styles.dart';
+import '../../../../routes/app_pages.dart';
 
-class PickupSuccessTabController extends BasePagingController<Package>
+class PickupSuccessTabController extends ProcessingTabBaseController<Package>
     with GetSingleTickerProviderStateMixin {
   final AuthController _authController = Get.find<AuthController>();
   final PackageReq _packageRepo = Get.find(tag: (PackageReq).toString());
@@ -31,6 +30,7 @@ class PickupSuccessTabController extends BasePagingController<Package>
 
   @override
   Future<void> fetchDataApi() async {
+    super.fetchDataApi();
     PackageListModel requestModel = PackageListModel(
         deliverId: _authController.account!.id,
         status: PackageStatus.PICKUP_SUCCESS);
@@ -208,18 +208,9 @@ class PickupSuccessTabController extends BasePagingController<Package>
     );
   }
 
-  Future<void> deliveryFailed(String packageId) async {
-    MaterialDialogService.showConfirmDialog(
-        msg: 'Xác nhận gói hàng đã giao thất bại?',
-        onConfirmTap: () async {
-          DeliveredPackageFailedModel model =
-              DeliveredPackageFailedModel(packageId: packageId);
-          Future<SimpleResponseModel> future =
-              _packageRepo.deliveredFailed(model);
-          callDataService<SimpleResponseModel>(future, onSuccess: (response) {
-            ToastService.showSuccess('Xác nhận gói hàng đã giao thất bại!');
-            refresh();
-          }, onError: showError, onStart: showOverlay, onComplete: hideOverlay);
-        });
+  Future<void> deliveredFailed(Package package) async {
+    bool? result =
+        await Get.toNamed(Routes.DELIVERED_FAILED, arguments: package) as bool?;
+    onRefresh();
   }
 }

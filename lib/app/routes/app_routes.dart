@@ -31,6 +31,9 @@ abstract class Routes {
   static const ROUTE_DETAIL = _Paths.ROUTE_DETAIL;
   static const USER_CONFIG = _Paths.USER_CONFIG;
   static const PACKAGE_COMPLETE = _Paths.PACKAGE_COMPLETE;
+  static const PICKUP_FAILED = _Paths.PICKUP_FAILED;
+  static const DELIVERED_FAILED = _Paths.DELIVERED_FAILED;
+  static const PACKAGE_CANCEL_AND_REFUND = _Paths.PACKAGE_CANCEL_AND_REFUND;
 }
 
 abstract class _Paths {
@@ -61,4 +64,7 @@ abstract class _Paths {
   static const ROUTE_DETAIL = '/route-detail';
   static const USER_CONFIG = '/user-config';
   static const PACKAGE_COMPLETE = '/package-complete';
+  static const PICKUP_FAILED = '/pickup-failed';
+  static const DELIVERED_FAILED = '/delivered-failed';
+  static const PACKAGE_CANCEL_AND_REFUND = '/package-cancel-and-refund';
 }

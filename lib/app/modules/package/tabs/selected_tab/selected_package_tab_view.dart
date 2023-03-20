@@ -27,8 +27,8 @@ class SelectedPackageTabView extends GetView<SelectedPackageTabController> {
                       children: [
                         SelectedPackageTabItem(
                           package: controller.dataApis[index],
-                          onCancelPackage: () => controller.cancelPackageDialog(
-                              controller.dataApis[index].id!),
+                          onCancelPackage: () => controller
+                              .cancelPackageDialog(controller.dataApis[index]),
                           onConfirmPackage: () =>
                               controller.deliverConfirmPackage(
                                   controller.dataApis[index].id!),
@@ -38,6 +38,8 @@ class SelectedPackageTabView extends GetView<SelectedPackageTabController> {
                             controller
                                 .showQRCode(controller.dataApis[index].id!);
                           },
+                          onPickupFailed: () => controller
+                              .onPickupFailed(controller.dataApis[index]),
                         ),
                       ],
                     );
