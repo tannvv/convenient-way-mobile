@@ -2,6 +2,10 @@ import 'package:get/get.dart';
 
 import '../modules/chat_message/bindings/chat_message_binding.dart';
 import '../modules/chat_message/views/chat_message_view.dart';
+import '../modules/complete_package/bindings/complete_package_binding.dart';
+import '../modules/complete_package/views/complete_package_view.dart';
+import '../modules/complete_package_detail/bindings/complete_package_detail_binding.dart';
+import '../modules/complete_package_detail/views/complete_package_detail_view.dart';
 import '../modules/create-route/bindings/create_route_binding.dart';
 import '../modules/create-route/views/create_route_view.dart';
 import '../modules/create_package_page/bindings/create_package_page_binding.dart';
@@ -36,6 +40,8 @@ import '../modules/pick_up_location/bindings/pick_up_location_binding.dart';
 import '../modules/pick_up_location/views/pick_up_location_view.dart';
 import '../modules/pickup_failed/bindings/pickup_failed_binding.dart';
 import '../modules/pickup_failed/views/pickup_failed_view.dart';
+import '../modules/rating/bindings/rating_binding.dart';
+import '../modules/rating/views/rating_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/route_detail/bindings/route_detail_binding.dart';
@@ -204,6 +210,21 @@ class AppPages {
       name: _Paths.PACKAGE_CANCEL_AND_REFUND,
       page: () => const PackageCancelAndRefundView(),
       binding: PackageCancelAndRefundBinding(),
+    ),
+    GetPage(
+      name: _Paths.COMPLETE_PACKAGE,
+      page: () => const CompletePackageView(),
+      binding: CompletePackageBinding(),
+    ),
+    GetPage(
+      name: _Paths.COMPLETE_PACKAGE_DETAIL,
+      page: () => const CompletePackageDetailView(),
+      binding: CompletePackageDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.RATING,
+      page: () => const RatingView(),
+      binding: RatingBinding(),
     ),
   ];
 }

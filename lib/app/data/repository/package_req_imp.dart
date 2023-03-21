@@ -11,6 +11,7 @@ import 'package:tien_duong/app/data/repository/request_model/create_feedback_mod
 import 'package:tien_duong/app/data/repository/request_model/create_package_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_cancel_list_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/package_model/feedback_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_model/pickup_package_failed_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_model/delivered_package_failed_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/suggest_package_request_model.dart';
@@ -222,6 +223,23 @@ class PackageReqImp extends BaseRepository implements PackageReq {
     try {
       return callApi(dioCall)
           .then((response) => PackageCount.fromJson(response.data['data']));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Feedback>> getFeedback(FeedbackListModel model) {
+    String endpoint = '${DioProvider.baseUrl}/feedbacks';
+    Map<String, dynamic> queryParams = model.toJson();
+    var dioCall = dioClient.get(endpoint, queryParameters: queryParams);
+    try {
+      return callApi(dioCall).then((response) {
+        List<Feedback> data = (response.data['data'] as List)
+            .map((e) => Feedback.fromJson(e))
+            .toList();
+        return data;
+      });
     } catch (e) {
       rethrow;
     }

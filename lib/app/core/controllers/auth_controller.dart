@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tien_duong/app/core/base/base_controller.dart';
 import 'package:tien_duong/app/core/services/background_service_notification.dart';
 import 'package:tien_duong/app/core/services/firebase_messaging_service.dart';
@@ -18,8 +17,10 @@ import 'package:tien_duong/app/data/constants/user_config_name.dart';
 import 'package:tien_duong/app/data/local/preference/preference_manager.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/models/balance_model.dart';
+import 'package:tien_duong/app/data/models/package_count_model.dart';
 import 'package:tien_duong/app/data/models/user_config_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
+import 'package:tien_duong/app/data/repository/package_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/login_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/logout_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/authorize_response_model.dart';
@@ -31,15 +32,18 @@ class AuthController extends BaseController {
   final RxBool _isLoadingConfig = false.obs;
 
   final AccountRep _accountRepo = Get.find(tag: (AccountRep).toString());
+  final PackageReq _packageReq = Get.find(tag: (PackageReq).toString());
   final PreferenceManager prefs = Get.find(tag: (PreferenceManager).toString());
 
   String? _token;
   final Rx<Account?> _account = Rx<Account?>(null);
+  final Rx<PackageCount?> _packageCount = Rx<PackageCount?>(null);
   final Rx<BalanceModel?> _balanceAvailable = Rx<BalanceModel?>(null);
   final RxBool _isLoadingAvailableBalance = false.obs;
   final RxList<UserConfig> configs = RxList<UserConfig>([]);
 
   Account? get account => _account.value;
+  PackageCount? get packageCount => _packageCount.value;
   int get availableBalance => _balanceAvailable.value?.balance ?? 0;
   bool get isNewAccount => _balanceAvailable.value?.isNewAccount ?? false;
   bool get isLoadingAvailableBalance => _isLoadingAvailableBalance.value;
@@ -106,9 +110,10 @@ class AuthController extends BaseController {
             PreferenceManager prefs =
                 Get.find(tag: (PreferenceManager).toString());
             prefs.setString(PrefsMemory.userJson, jsonEncode(response));
+            // await BackgroundNotificationService.initializeService();
             loadBalance();
             loadConfigs();
-            // BackgroundNotificationService.initializeService();
+            considerBgService();
           },
           onError: (exception) {
             if (exception is BaseException) {
@@ -134,7 +139,7 @@ class AuthController extends BaseController {
         prefs.setString(PrefsMemory.token, token!);
         prefs.setString(PrefsMemory.userJson, jsonEncode(response.account));
 
-        await BackgroundNotificationService.initializeService();
+        considerBgService();
         await FirebaseMessagingService.registerNotification(
             _account.value!.id!);
         loadBalance();
@@ -181,6 +186,7 @@ class AuthController extends BaseController {
         _account.value = Account.fromJson(jsonDecode(userJson));
         loadBalance();
         loadConfigs();
+        considerBgService();
         return _account.value;
       }
     }
@@ -192,9 +198,8 @@ class AuthController extends BaseController {
         widget: const CustomOverlay(
       content: 'Đang đăng xuất',
     ));
-    // BackgroundNotificationService.stopService();
-    await FirebaseMessagingService.unregisterNotification(_account.value!.id!);
     BackgroundNotificationService.stopService();
+    await FirebaseMessagingService.unregisterNotification(_account.value!.id!);
     var future =
         _accountRepo.logout(LogoutModel(accountId: _account.value!.id!));
     await callDataService(future, onError: showError);
@@ -261,6 +266,32 @@ class AuthController extends BaseController {
           onComplete: () {
             _isLoadingConfig.value = false;
           });
+    }
+  }
+
+  Future<void> loadPackageCount() async {
+    if (account != null) {
+      var future = _packageReq.getPackageCount(account!.id!);
+      await callDataService(
+        future,
+        onSuccess: (PackageCount response) {
+          _packageCount.value = response;
+        },
+        onError: showError,
+      );
+    }
+  }
+
+  void considerBgService() {
+    if (account != null) {
+      var future = _packageReq.getPackageCount(account!.id!);
+      callDataService<PackageCount>(future, onSuccess: (response) {
+        if (response.selected! > 0 || response.deliveredSuccess! > 0) {
+          BackgroundNotificationService.initializeService();
+        } else {
+          BackgroundNotificationService.stopService();
+        }
+      });
     }
   }
 }

@@ -9,6 +9,7 @@ import 'package:tien_duong/app/data/repository/request_model/create_feedback_mod
 import 'package:tien_duong/app/data/repository/request_model/create_package_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_cancel_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_list_model.dart';
+import 'package:tien_duong/app/data/repository/request_model/package_model/feedback_list_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/package_model/pickup_package_failed_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/suggest_package_request_model.dart';
 import 'package:tien_duong/app/data/repository/response_model/simple_response_model.dart';
@@ -33,4 +34,5 @@ abstract class PackageReq {
   Future<SimpleResponseModel> refundFailed(String packageId);
   Future<Feedback> createFeedback(CreateFeedbackModel model);
   Future<PackageCount> getPackageCount(String deliverId);
+  Future<List<Feedback>> getFeedback(FeedbackListModel model);
 }

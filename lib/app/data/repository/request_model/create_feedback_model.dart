@@ -2,21 +2,24 @@ class CreateFeedbackModel {
   String? content;
   String? feedbackFor;
   String? packageId;
-  String? accountId;
+  String? creatorId;
+  String? receiverId;
   double? rating;
 
   CreateFeedbackModel(
       {this.content,
       this.feedbackFor,
       this.packageId,
-      this.accountId,
+      this.creatorId,
+      this.receiverId,
       this.rating});
 
   CreateFeedbackModel.fromJson(Map<String, dynamic> json) {
     content = json['content'];
     feedbackFor = json['feedbackFor'];
     packageId = json['packageId'];
-    accountId = json['accountId'];
+    creatorId = json['creatorId'];
+    receiverId = json['receiverId'];
     rating = json['rating'];
   }
 
@@ -25,7 +28,8 @@ class CreateFeedbackModel {
     data['content'] = content;
     data['feedbackFor'] = feedbackFor;
     data['packageId'] = packageId;
-    data['accountId'] = accountId;
+    data['creatorId'] = creatorId;
+    data['receiverId'] = receiverId;
     data['rating'] = rating;
     return data;
   }

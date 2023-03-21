@@ -56,6 +56,7 @@ class SelectedPackageTabController extends ProcessingTabBaseController<Package>
       }
       hideOverlay();
       onRefresh();
+      _authController.considerBgService();
       _authController.reloadAccount();
       _locationPackageController.fetchPackages();
     }, onError: ((exception) {
@@ -182,6 +183,7 @@ class SelectedPackageTabController extends ProcessingTabBaseController<Package>
     MaterialDialogService.showDeleteDialog(
       onConfirmTap: () {
         deliverCancelPackage(package.id!);
+        _authController.considerBgService();
       },
       title: 'Hủy đơn hàng',
       msg:
@@ -193,14 +195,14 @@ class SelectedPackageTabController extends ProcessingTabBaseController<Package>
   Future<void> deliverCancelPackage(String packageId) async {
     CancelPackageModel requestModel = CancelPackageModel(
       packageId: packageId,
-      reason: reason!,
+      reason: reason ?? '',
     );
     Future<SimpleResponseModel> future =
         _packageRepo.deliverCancel(requestModel);
     await callDataService<SimpleResponseModel>(future, onSuccess: (data) {
       ToastService.showSuccess('Hủy gói hàng thành công!');
       Get.back();
-      refresh();
+      onRefresh();
     }, onError: showError, onStart: showOverlay, onComplete: hideOverlay);
   }
 

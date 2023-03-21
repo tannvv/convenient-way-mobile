@@ -1,6 +1,7 @@
 import 'package:tien_duong/app/core/utils/datetime_utils.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/models/product_model.dart';
+import 'package:tien_duong/app/data/models/transaction_package_model.dart';
 
 class Package {
   String? id;
@@ -30,6 +31,7 @@ class Package {
   String? deliverId;
   Account? deliver;
   List<Product>? products;
+  List<TransactionPackage>? transactionPackages;
 
   Package(
       {this.id,
@@ -58,6 +60,7 @@ class Package {
       this.sender,
       this.deliverId,
       this.deliver,
+      this.transactionPackages,
       this.products});
 
   Package.fromJson(Map<String, dynamic> json) {
@@ -92,6 +95,12 @@ class Package {
     deliverId = json['deliverId'];
     deliver =
         json['deliver'] != null ? Account.fromJson(json['deliver']) : null;
+    if (json['packageTransactions'] != null) {
+      transactionPackages = <TransactionPackage>[];
+      json['packageTransactions'].forEach((v) {
+        transactionPackages?.add(TransactionPackage.fromJson(v));
+      });
+    }
     if (json['products'] != null) {
       products = <Product>[];
       json['products'].forEach((v) {

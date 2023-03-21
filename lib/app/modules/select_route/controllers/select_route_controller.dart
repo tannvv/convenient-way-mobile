@@ -288,7 +288,7 @@ class SelectRouteController extends BaseController {
           directionType: DirectionType.backward);
       points.add(pointBackward);
     }
-
+    revertDirectionRoute();
     CreateRoute model = CreateRoute();
     model.fromName = startTxtController.text;
     model.toName = endTxtController.text;
@@ -320,5 +320,13 @@ class SelectRouteController extends BaseController {
 
     createBound();
     fetchPolyline();
+  }
+
+  void revertDirectionRoute() {
+    LatLng temp = LatLng(startLatitude.value, startLongitude.value);
+    startLatitude.value = endLatitude.value;
+    startLongitude.value = endLongitude.value;
+    endLatitude.value = temp.latitude;
+    endLongitude.value = temp.longitude;
   }
 }

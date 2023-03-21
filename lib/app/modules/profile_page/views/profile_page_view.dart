@@ -106,6 +106,11 @@ class ProfilePageView extends GetView<ProfilePageController> {
             color: AppColors.hardBlue,
             onPress: () {}),
         CardItem(
+            icon: Icons.star,
+            text: 'Đánh giá của tôi',
+            color: AppColors.yellow,
+            onPress: () {}),
+        CardItem(
             icon: Icons.alt_route_outlined,
             text: 'Các lộ trình thiết lập',
             color: AppColors.softGreen,
@@ -115,7 +120,7 @@ class ProfilePageView extends GetView<ProfilePageController> {
         CardItem(
             icon: Icons.settings,
             text: 'Thông tin cấu hình',
-            color: AppColors.yellow,
+            color: AppColors.gray,
             onPress: () {
               Get.toNamed(Routes.USER_CONFIG);
             }),

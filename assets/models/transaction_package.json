@@ -1,0 +1,9 @@
+{
+    "fromStatus": "NOT_EXIST",
+    "toStatus": "WAITING",
+    "description": "Đơn hàng được tạo vào lúc: Sunday, 19-03-2023 21:33",
+    "reason": "string",
+    "imageUrl": "string",
+    "createdAt": "2023-03-19T21:33:01.79",
+    "packageId": "58e029a1-d4f4-4a2f-9172-de2c13f6f42b"
+  }

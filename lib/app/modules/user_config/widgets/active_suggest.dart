@@ -21,7 +21,6 @@ class ActiveSuggest extends GetWidget<UserConfigController> {
             borderRadius: 30.0,
             padding: 8.0,
             onToggle: (val) {
-              controller.isActive.value = val;
               controller.changeStatus();
             },
           ),

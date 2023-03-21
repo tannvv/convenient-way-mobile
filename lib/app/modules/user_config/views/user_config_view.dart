@@ -34,8 +34,8 @@ class UserConfigView extends GetView<UserConfigController> {
       children: [
         const ActiveSuggest(),
         SizedBox(height: 16.h),
-        const WarningPriceForm(),
-        SizedBox(height: 16.h),
+        // const WarningPriceForm(),
+        // SizedBox(height: 16.h),
         const DistancePackageForm(),
         SizedBox(height: 16.h),
         const DirectionSuggestForm(),

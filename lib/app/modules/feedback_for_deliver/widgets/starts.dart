@@ -1,8 +1,6 @@
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:tien_duong/app/core/values/app_colors.dart';
 import 'package:tien_duong/app/modules/feedback_for_deliver/controllers/feedback_for_deliver_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class Stars extends GetView<FeedbackForDeliverController> {
@@ -13,7 +11,7 @@ class Stars extends GetView<FeedbackForDeliverController> {
   @override
   Widget build(BuildContext context) {
     return RatingBar.builder(
-      initialRating: 0,
+      initialRating: controller.initRating ?? 0,
       minRating: 1,
       direction: Axis.horizontal,
       itemCount: 5,

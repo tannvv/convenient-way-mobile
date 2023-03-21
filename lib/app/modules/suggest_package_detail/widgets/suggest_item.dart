@@ -136,27 +136,27 @@ class SuggestItem extends StatelessWidget {
                     // )
                   ],
                 ),
-                Gap(4.h),
-                warningPrice <= package.getTotalPrice()
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Chú ý',
-                              style: caption.copyWith(
-                                  fontSize: 14.sp,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontStyle: FontStyle.italic,
-                                  decoration: TextDecoration.underline)),
-                          Text(
-                            ': giá trị đơn hàng cao hơn giá trị\n  mong đợi của bạn',
-                            style: caption.copyWith(
-                                fontSize: 14.sp, color: Colors.red),
-                          ),
-                        ],
-                      )
-                    : Container()
+                // Gap(4.h),
+                // warningPrice <= package.getTotalPrice()
+                //     ? Row(
+                //         mainAxisAlignment: MainAxisAlignment.start,
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Text('Chú ý',
+                //               style: caption.copyWith(
+                //                   fontSize: 14.sp,
+                //                   color: Colors.black,
+                //                   fontWeight: FontWeight.bold,
+                //                   fontStyle: FontStyle.italic,
+                //                   decoration: TextDecoration.underline)),
+                //           Text(
+                //             ': giá trị đơn hàng cao hơn giá trị\n  mong đợi của bạn',
+                //             style: caption.copyWith(
+                //                 fontSize: 14.sp, color: Colors.red),
+                //           ),
+                //         ],
+                //       )
+                //     : Container()
               ],
             ),
           ),

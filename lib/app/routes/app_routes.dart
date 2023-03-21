@@ -34,6 +34,9 @@ abstract class Routes {
   static const PICKUP_FAILED = _Paths.PICKUP_FAILED;
   static const DELIVERED_FAILED = _Paths.DELIVERED_FAILED;
   static const PACKAGE_CANCEL_AND_REFUND = _Paths.PACKAGE_CANCEL_AND_REFUND;
+  static const COMPLETE_PACKAGE = _Paths.COMPLETE_PACKAGE;
+  static const COMPLETE_PACKAGE_DETAIL = _Paths.COMPLETE_PACKAGE_DETAIL;
+  static const RATING = _Paths.RATING;
 }
 
 abstract class _Paths {
@@ -67,4 +70,7 @@ abstract class _Paths {
   static const PICKUP_FAILED = '/pickup-failed';
   static const DELIVERED_FAILED = '/delivered-failed';
   static const PACKAGE_CANCEL_AND_REFUND = '/package-cancel-and-refund';
+  static const COMPLETE_PACKAGE = '/complete-package';
+  static const COMPLETE_PACKAGE_DETAIL = '/complete-package-detail';
+  static const RATING = '/rating';
 }

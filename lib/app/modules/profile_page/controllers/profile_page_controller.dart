@@ -9,6 +9,7 @@ import 'package:tien_duong/app/core/utils/toast_service.dart';
 import 'package:tien_duong/app/data/models/account_model.dart';
 import 'package:tien_duong/app/data/repository/account_req.dart';
 import 'package:tien_duong/app/data/repository/request_model/update_account_model.dart';
+import 'package:tien_duong/app/modules/home/controllers/home_controller.dart';
 import 'package:tien_duong/app/routes/app_pages.dart';
 
 enum FieldUpdate { firstName, phone, image }
@@ -90,5 +91,10 @@ class ProfilePageController extends BaseController {
       _authController.setDataPrefs();
       ToastService.showSuccess('Cập nhật thành công');
     }, onStart: showOverlay, onComplete: hideOverlay);
+  }
+
+  void gotoProcessingPackage() async {
+    HomeController homeController = Get.find<HomeController>();
+    homeController.changeTab(1);
   }
 }

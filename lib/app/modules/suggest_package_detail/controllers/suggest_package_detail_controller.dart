@@ -151,6 +151,7 @@ class SuggestPackageDetailController extends BaseController
                     duration: 3);
                 _authController.reloadAccount();
                 _locationPackageController.fetchPackages();
+                _authController.considerBgService();
                 Get.back(result: true);
               },
               onError: (error) {

@@ -156,15 +156,15 @@ class FeedbackForDeliverView extends GetView<FeedbackForDeliverController> {
               SizedBox(
                 width: 20.w,
               ),
-              _iconFeedBack(AppAssets.friendly, 'Tài xế rất thân thiện'),
+              _iconFeedBack(AppAssets.friendly, 'Người nhờ rất thân thiện'),
               SizedBox(
                 width: 10.w,
               ),
-              _iconFeedBack(AppAssets.enthusiasm, 'Tài xế rất nhiệt tình'),
+              _iconFeedBack(AppAssets.enthusiasm, 'Người nhờ rất nhiệt tình'),
               SizedBox(
                 width: 10.w,
               ),
-              _iconFeedBack(AppAssets.impressive, 'Xe rất ấn tượng'),
+              _iconFeedBack(AppAssets.impressive, 'Hàng nhỏ ấn tượng'),
               SizedBox(
                 width: 10.w,
               ),
@@ -229,15 +229,16 @@ class FeedbackForDeliverView extends GetView<FeedbackForDeliverController> {
               SizedBox(
                 width: 20.w,
               ),
-              _iconFeedBack(AppAssets.notFriendly, 'Tài xế không thân thiện'),
+              _iconFeedBack(
+                  AppAssets.notFriendly, 'Người nhờ không thân thiện'),
               SizedBox(
                 width: 10.w,
               ),
-              _iconFeedBack(AppAssets.badService, 'Dịch vụ không tốt'),
+              _iconFeedBack(AppAssets.badService, 'Người nhờ không tốt'),
               SizedBox(
                 width: 10.w,
               ),
-              _iconFeedBack(AppAssets.dangerous, 'Chạy xe không an toàn'),
+              _iconFeedBack(AppAssets.dangerous, 'Người nhờ nguy hiểm'),
               SizedBox(
                 width: 20.w,
               ),

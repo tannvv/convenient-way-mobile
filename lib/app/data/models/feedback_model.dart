@@ -4,7 +4,8 @@ class Feedback {
   double? rating;
   String? feedbackFor;
   String? packageId;
-  String? accountId;
+  String? creatorId;
+  String? receiverId;
   String? createdAt;
 
   Feedback(
@@ -13,7 +14,8 @@ class Feedback {
       this.rating,
       this.feedbackFor,
       this.packageId,
-      this.accountId,
+      this.creatorId,
+      this.receiverId,
       this.createdAt});
 
   Feedback.fromJson(Map<String, dynamic> json) {
@@ -22,7 +24,8 @@ class Feedback {
     rating = json['rating'];
     feedbackFor = json['feedbackFor'];
     packageId = json['packageId'];
-    accountId = json['accountId'];
+    creatorId = json['creatorId'];
+    receiverId = json['receiverId'];
     createdAt = json['createdAt'];
   }
 
@@ -33,7 +36,8 @@ class Feedback {
     data['rating'] = rating;
     data['feedbackFor'] = feedbackFor;
     data['packageId'] = packageId;
-    data['accountId'] = accountId;
+    data['creatorId'] = creatorId;
+    data['receiverId'] = receiverId;
     data['createdAt'] = createdAt;
     return data;
   }

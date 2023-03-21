@@ -93,6 +93,7 @@ class RegisterController extends BaseController {
         debugPrint('Auth Completed! \nCredential: $credential');
       },
       verificationFailed: (FirebaseAuthException e) {
+        isLoading = false;
         if (e.message != null) {
           if (e.message!.contains('block')) {
             ToastService.showError(

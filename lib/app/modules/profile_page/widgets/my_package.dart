@@ -36,10 +36,13 @@ class MyPackage extends GetWidget<ProfilePageController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _statusPackage(
-                  AppAssets.deliverPickupPng, 'Đang\nthực hiện', () {}),
+              _statusPackage(AppAssets.deliverPickupPng, 'Đang\nthực hiện', () {
+                controller.gotoProcessingPackage();
+              }),
               Gap(8.w),
-              _statusPackage(AppAssets.deliveredPng, 'Đã\nthực hiện', () {}),
+              _statusPackage(AppAssets.deliveredPng, 'Đã\nthực hiện', () {
+                Get.toNamed(Routes.COMPLETE_PACKAGE);
+              }),
               Gap(8.w),
               _statusPackage(
                   AppAssets.cancelPackagePng, 'Đơn đã hủy\n& hoàn trả', () {

@@ -11,7 +11,6 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tien_duong/app/data/constants/prefs_memory.dart';
-import 'package:tien_duong/app/data/local/preference/preference_manager.dart';
 import 'package:tien_duong/app/data/repository/request_model/account_model/update_location_model.dart';
 import 'package:tien_duong/app/data/repository/request_model/send_notification_tracking_model.dart';
 import 'package:dio/src/response.dart' as DioResponse;
@@ -19,7 +18,7 @@ import 'package:dio/src/response.dart' as DioResponse;
 import '../../data/constants/notification_type.dart';
 
 class BackgroundNotificationService {
-  static final String host = 'https://02c3-116-110-42-103.ap.ngrok.io';
+  static const String host = 'https://0fcb-116-110-42-103.ap.ngrok.io';
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   static Future<void> initializeService() async {
@@ -48,8 +47,10 @@ class BackgroundNotificationService {
       ),
       androidConfiguration: AndroidConfiguration(
         onStart: onStart,
-        isForegroundMode: false,
+        isForegroundMode: true,
         autoStart: true,
+        initialNotificationTitle: '',
+        initialNotificationContent: '',
       ),
     );
     service.startService();
@@ -84,6 +85,20 @@ class BackgroundNotificationService {
     final service = FlutterBackgroundService();
     if (await service.isRunning()) {
       service.invoke('stopService');
+    }
+  }
+
+  static void setAsBackground() async {
+    final service = FlutterBackgroundService();
+    if (await service.isRunning()) {
+      service.invoke('setAsBackground');
+    }
+  }
+
+  static void setAsForeground() async {
+    final service = FlutterBackgroundService();
+    if (await service.isRunning()) {
+      service.invoke('setAsForeground');
     }
   }
 

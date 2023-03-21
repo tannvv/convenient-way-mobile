@@ -20,6 +20,20 @@ class DateTimeUtils {
         : DateFormat('HH:mm - dd/MM/yyyy').format(dateTime);
   }
 
+  static String dateTimeToStringDateFixUTC(DateTime? dateTime) {
+    initializeDateFormatting();
+    return dateTime == null
+        ? '-'
+        : DateFormat('dd/MM').format(dateTime.add(const Duration(hours: 7)));
+  }
+
+  static String dateTimeToStringTimeFixUTC(DateTime? dateTime) {
+    initializeDateFormatting();
+    return dateTime == null
+        ? '-'
+        : DateFormat('HH:mm').format(dateTime.add(const Duration(hours: 7)));
+  }
+
   static String dateTimeToStringFixUTC(DateTime? dateTime) {
     initializeDateFormatting();
     if (dateTime == null) return '-';

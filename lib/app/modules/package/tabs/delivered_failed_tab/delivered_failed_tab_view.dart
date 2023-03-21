@@ -12,7 +12,7 @@ class DeliveredFailedTabView extends GetView<DeliveredFailedTabController> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(vertical: 10.h),
         child: Obx(() => SmartRefresher(
               controller: controller.refreshController,
               onRefresh: () => controller.onRefresh(),
@@ -25,11 +25,6 @@ class DeliveredFailedTabView extends GetView<DeliveredFailedTabController> {
                       children: [
                         DeliveredFailedTabItem(
                           package: controller.dataApis[index],
-                          onRefundSuccess: () =>
-                              controller.refundPackageSuccess(
-                                  controller.dataApis[index].id!),
-                          onRefundFailed: () => controller.refundPackageFailed(
-                              controller.dataApis[index].id!),
                         ),
                       ],
                     );

@@ -83,6 +83,13 @@ class UserConfigController extends BaseController {
 
   Future<void> updateDirectionSuggest(String value) async {
     if (directionSuggestField.value == value) return;
+    await authController.loadPackageCount();
+    if (authController.packageCount!.selected! > 0 ||
+        authController.packageCount!.pickupSuccess! > 0) {
+      ToastService.showError('Bạn đang nhận kiện hàng, không thể đổi lộ trình');
+      return;
+    }
+
     UpdateUserConfigModel model = UpdateUserConfigModel(
       accountId: authController.account?.id,
       configName: UserConfigName.DIRECTION_SUGGEST,
@@ -97,15 +104,24 @@ class UserConfigController extends BaseController {
   }
 
   Future<void> changeStatus() async {
+    await authController.loadPackageCount();
+    if (authController.packageCount!.selected! > 0 ||
+        authController.packageCount!.pickupSuccess! > 0) {
+      ToastService.showError(
+          'Bạn đang nhận kiện hàng, không thể chuyển trạng thái');
+      return;
+    }
+
     UpdateUserConfigModel model = UpdateUserConfigModel(
       accountId: authController.account?.id,
       configName: UserConfigName.IS_ACTIVE,
-      configValue: isActive.value ? 'TRUE' : 'FALSE',
+      configValue: !isActive.value ? 'TRUE' : 'FALSE',
     );
     var future = _accountRep.updateUserConfig(model);
     callDataService(future, onSuccess: (data) {
       ToastService.showSuccess('Chuyển trạng thái thành công');
       authController.reloadAccount();
+      isActive.value = !isActive.value;
     }, onError: showError, onStart: showOverlay, onComplete: hideOverlay);
   }
 }
