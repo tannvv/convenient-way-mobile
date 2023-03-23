@@ -113,7 +113,7 @@ class SenderPackageView extends GetView<SenderPackageController> {
               topLeft: Radius.circular(20.r),
               bottomLeft: Radius.circular(20.r)),
           icon: Icons.folder, onPressed: () {
-            if(controller.authController.isNewAccount || (controller.authController.availableBalance < 50000)) {
+            if(controller.authController.availableBalance < 50000) {
               MaterialDialogService.showConfirmDialog(
                   msg: 'Cần có tối thiểu 50.000 VNĐ trong tài khoản\nVui lòng nạp thêm tiền!',
                   closeOnFinish: false,

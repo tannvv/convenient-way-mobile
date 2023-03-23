@@ -5,7 +5,6 @@ import 'package:tien_duong/app/core/widgets/header_scaffold.dart';
 import 'package:tien_duong/app/modules/package_detail/widgets/header.dart';
 import 'package:tien_duong/app/modules/package_detail/widgets/note_info.dart';
 import 'package:tien_duong/app/modules/package_detail/widgets/separate.dart';
-
 import '../controllers/package_detail_controller.dart';
 import '../widgets/payment_info.dart';
 import '../widgets/user_info.dart';
