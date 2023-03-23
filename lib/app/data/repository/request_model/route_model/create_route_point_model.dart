@@ -3,15 +3,21 @@ class CreateRoutePointModel {
   double? longitude;
   int? index;
   String? directionType;
+  bool? isVirtual;
 
   CreateRoutePointModel(
-      {this.latitude, this.longitude, this.index, this.directionType});
+      {this.latitude,
+      this.longitude,
+      this.index,
+      this.directionType,
+      this.isVirtual = false});
 
   CreateRoutePointModel.fromJson(Map<String, dynamic> json) {
     latitude = json['latitude'];
     longitude = json['longitude'];
     index = json['index'];
     directionType = json['directionType'];
+    isVirtual = json['isVirtual'];
   }
 
   Map<String, dynamic> toJson() {
@@ -20,6 +26,7 @@ class CreateRoutePointModel {
     data['longitude'] = longitude;
     data['index'] = index;
     data['directionType'] = directionType;
+    data['isVirtual'] = isVirtual;
     return data;
   }
 }

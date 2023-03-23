@@ -42,6 +42,8 @@ class SelectRouteController extends BaseController {
   final RxDouble startLongitude = 0.0.obs;
   final RxDouble endLatitude = 0.0.obs;
   final RxDouble endLongitude = 0.0.obs;
+  double? distanceForward;
+  double? distanceBackward;
 
   final RxBool isLoadingFetchPolyline = false.obs;
 
@@ -262,6 +264,7 @@ class SelectRouteController extends BaseController {
         return;
       }
       _forwardRoutes.addAll(selectedPolyline.polyPoints!);
+      distanceForward = selectedPolyline.distance ?? 0;
       switchDirectionRoute();
     }
     currentStep.value = currentStep.value + 1;
@@ -270,6 +273,7 @@ class SelectRouteController extends BaseController {
   Future<void> createRoute() async {
     PolylineModel selectedPolyline =
         _polylines.firstWhere((element) => element.id == selectedRouteId.value);
+    distanceBackward = selectedPolyline.distance ?? 0;
     _backwardRoutes.addAll(selectedPolyline.polyPoints!);
     List<CreateRoutePointModel> points = [];
     for (var i = 0; i < _forwardRoutes.length; i++) {
@@ -296,6 +300,8 @@ class SelectRouteController extends BaseController {
     model.fromLongitude = startLongitude.value;
     model.toLatitude = endLatitude.value;
     model.toLongitude = endLongitude.value;
+    model.distanceForward = distanceForward;
+    model.distanceBackward = distanceBackward;
     model.routePoints = points;
     model.accountId = authController.account!.id;
 

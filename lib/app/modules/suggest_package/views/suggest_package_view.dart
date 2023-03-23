@@ -99,19 +99,31 @@ class SuggestPackageView extends GetView<SuggestPackageController> {
             children: [
               Text('Số dư', style: body2.copyWith(color: AppColors.floatLabel)),
               Gap(6.w),
-              _balanceAvailable(),
+              Text(
+                '(khả dụng)',
+                style: caption.copyWith(
+                  color: AppColors.softBlack,
+                  fontWeight: FontWeights.medium,
+                ),
+              ),
             ],
           ),
           SizedBox(
             height: 2.h,
           ),
           Obx(
-            () => Text(controller.balanceAccountVND,
-                style: subtitle1.copyWith(
-                  fontSize: 18.sp,
-                  color: AppColors.softBlack,
-                  fontWeight: FontWeights.medium,
-                )),
+            () => Row(
+              children: [
+                Text(controller.balanceAccountVND,
+                    style: subtitle1.copyWith(
+                      fontSize: 18.sp,
+                      color: AppColors.softBlack,
+                      fontWeight: FontWeights.medium,
+                    )),
+                Gap(8.w),
+                _balanceAvailable(),
+              ],
+            ),
           ),
           SizedBox(
             height: 3.h,

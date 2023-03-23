@@ -6,6 +6,8 @@ class RouteAcc {
   String? toName;
   double? toLongitude;
   double? toLatitude;
+  double? distanceForward;
+  double? distanceBackward;
   bool? isActive;
   String? infoUserId;
 
@@ -17,6 +19,8 @@ class RouteAcc {
       this.toName,
       this.toLongitude,
       this.toLatitude,
+      this.distanceForward,
+      this.distanceBackward,
       this.isActive,
       this.infoUserId});
 
@@ -28,6 +32,8 @@ class RouteAcc {
     toName = json['toName'];
     toLongitude = json['toLongitude'];
     toLatitude = json['toLatitude'];
+    distanceForward = json['distanceForward'];
+    distanceBackward = json['distanceBackward'];
     isActive = json['isActive'];
     infoUserId = json['infoUserId'];
   }
@@ -41,6 +47,8 @@ class RouteAcc {
     data['toName'] = toName;
     data['toLongitude'] = toLongitude;
     data['toLatitude'] = toLatitude;
+    data['distanceForward'] = distanceForward;
+    data['distanceBackward'] = distanceBackward;
     data['isActive'] = isActive;
     data['infoUserId'] = infoUserId;
     return data;

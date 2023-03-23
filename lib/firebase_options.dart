@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '465111730158',
     projectId: 'convenient-way',
     storageBucket: 'convenient-way.appspot.com',
-    androidClientId: '465111730158-bf8huljh29cfcsn3ffq3ftvfre5fdqel.apps.googleusercontent.com',
+    androidClientId: '465111730158-6pskpahi57hh64bp5rag3da3ghpn3hhc.apps.googleusercontent.com',
     iosClientId: '465111730158-9l6ld0kc37sjp9anjeuaskntirr4upj0.apps.googleusercontent.com',
     iosBundleId: 'com.example.tienDuong',
   );

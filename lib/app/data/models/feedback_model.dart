@@ -1,14 +1,17 @@
-class Feedback {
+import 'package:tien_duong/app/data/models/package_model.dart';
+
+class FeedbackModel {
   String? id;
   String? content;
   double? rating;
   String? feedbackFor;
   String? packageId;
+  Package? package;
   String? creatorId;
   String? receiverId;
   String? createdAt;
 
-  Feedback(
+  FeedbackModel(
       {this.id,
       this.content,
       this.rating,
@@ -16,9 +19,10 @@ class Feedback {
       this.packageId,
       this.creatorId,
       this.receiverId,
+      this.package,
       this.createdAt});
 
-  Feedback.fromJson(Map<String, dynamic> json) {
+  FeedbackModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     content = json['content'];
     rating = json['rating'];
@@ -26,6 +30,8 @@ class Feedback {
     packageId = json['packageId'];
     creatorId = json['creatorId'];
     receiverId = json['receiverId'];
+    package =
+        json['package'] != null ? Package.fromJson(json['package']) : null;
     createdAt = json['createdAt'];
   }
 

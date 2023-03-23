@@ -32,7 +32,7 @@ abstract class PackageReq {
   Future<SimpleResponseModel> senderCancel(CancelPackageModel model);
   Future<SimpleResponseModel> refundSuccess(String packageId);
   Future<SimpleResponseModel> refundFailed(String packageId);
-  Future<Feedback> createFeedback(CreateFeedbackModel model);
+  Future<FeedbackModel> createFeedback(CreateFeedbackModel model);
   Future<PackageCount> getPackageCount(String deliverId);
-  Future<List<Feedback>> getFeedback(FeedbackListModel model);
+  Future<List<FeedbackModel>> getFeedback(FeedbackListModel model);
 }

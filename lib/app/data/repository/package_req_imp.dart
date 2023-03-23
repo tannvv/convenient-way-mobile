@@ -138,12 +138,12 @@ class PackageReqImp extends BaseRepository implements PackageReq {
   }
 
   @override
-  Future<Feedback> createFeedback(CreateFeedbackModel model) async {
+  Future<FeedbackModel> createFeedback(CreateFeedbackModel model) async {
     String endpoint = '${DioProvider.baseUrl}/feedbacks';
     var dioCall = dioClient.post(endpoint, data: model.toJson());
     try {
       return callApi(dioCall).then((response) {
-        Feedback data = Feedback.fromJson(response.data['data']);
+        FeedbackModel data = FeedbackModel.fromJson(response.data['data']);
         return data;
       });
     } catch (e) {
@@ -229,14 +229,14 @@ class PackageReqImp extends BaseRepository implements PackageReq {
   }
 
   @override
-  Future<List<Feedback>> getFeedback(FeedbackListModel model) {
+  Future<List<FeedbackModel>> getFeedback(FeedbackListModel model) {
     String endpoint = '${DioProvider.baseUrl}/feedbacks';
     Map<String, dynamic> queryParams = model.toJson();
     var dioCall = dioClient.get(endpoint, queryParameters: queryParams);
     try {
       return callApi(dioCall).then((response) {
-        List<Feedback> data = (response.data['data'] as List)
-            .map((e) => Feedback.fromJson(e))
+        List<FeedbackModel> data = (response.data['data'] as List)
+            .map((e) => FeedbackModel.fromJson(e))
             .toList();
         return data;
       });

@@ -8,6 +8,8 @@ class CreateRoute {
   String? toName;
   double? toLongitude;
   double? toLatitude;
+  double? distanceForward;
+  double? distanceBackward;
   String? accountId;
   List<CreateRoutePointModel>? routePoints;
 
@@ -18,6 +20,8 @@ class CreateRoute {
       this.toName,
       this.toLongitude,
       this.toLatitude,
+      this.distanceForward,
+      this.distanceBackward,
       this.routePoints,
       this.accountId});
 
@@ -28,6 +32,8 @@ class CreateRoute {
     toName = json['toName'];
     toLongitude = json['toLongitude'];
     toLatitude = json['toLatitude'];
+    distanceForward = json['distanceForward'];
+    distanceBackward = json['distanceBackward'];
     accountId = json['accountId'];
     if (json['routePoints'] != null) {
       routePoints = <CreateRoutePointModel>[];
@@ -56,6 +62,8 @@ class CreateRoute {
     data['toName'] = toName;
     data['toLongitude'] = toLongitude;
     data['toLatitude'] = toLatitude;
+    data['distanceForward'] = distanceForward;
+    data['distanceBackward'] = distanceBackward;
     data['accountId'] = accountId;
     if (routePoints != null) {
       data['routePoints'] = routePoints!.map((v) => v.toJson()).toList();

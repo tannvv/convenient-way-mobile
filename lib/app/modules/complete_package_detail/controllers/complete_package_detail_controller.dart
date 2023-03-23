@@ -83,7 +83,7 @@ class CompletePackageDetailController extends BaseController {
     FeedbackListModel feedbackListModel =
         FeedbackListModel(packageId: package.id, feedbackFor: RoleName.sender);
     var future = _packageRepo.getFeedback(feedbackListModel);
-    await callDataService<List<Feedback>>(future, onSuccess: (data) {
+    await callDataService<List<FeedbackModel>>(future, onSuccess: (data) {
       if (data.isNotEmpty) {
         rating.value = data[0].rating ?? 0;
       }

@@ -109,7 +109,9 @@ class ProfilePageView extends GetView<ProfilePageController> {
             icon: Icons.star,
             text: 'Đánh giá của tôi',
             color: AppColors.yellow,
-            onPress: () {}),
+            onPress: () {
+              Get.toNamed(Routes.RATING);
+            }),
         CardItem(
             icon: Icons.alt_route_outlined,
             text: 'Các lộ trình thiết lập',

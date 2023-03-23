@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -82,8 +83,6 @@ class RegisterController extends BaseController {
     debugPrint('Phone number: 0$_phone');
     _phone = '+84$_phone';
     isLoading = true;
-    FirebaseAuth auth = FirebaseAuth.instance;
-    await auth.setSettings(appVerificationDisabledForTesting: true);
 
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: _phone,

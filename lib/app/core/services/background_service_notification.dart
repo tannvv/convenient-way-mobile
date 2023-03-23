@@ -18,7 +18,7 @@ import 'package:dio/src/response.dart' as DioResponse;
 import '../../data/constants/notification_type.dart';
 
 class BackgroundNotificationService {
-  static const String host = 'https://0fcb-116-110-42-103.ap.ngrok.io';
+  static const String host = 'https://1f50-116-110-42-103.ap.ngrok.io';
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   static Future<void> initializeService() async {
